@@ -15,6 +15,7 @@ public class Responsable {
     @JoinColumn(name = "usuario_id", unique = true)
     private Usuario usuario;
 
-
+    @ManyToOne
+    @JoinColumn(name = "aspecto_id", nullable = false, unique = true)
     private Aspecto aspecto;
 }

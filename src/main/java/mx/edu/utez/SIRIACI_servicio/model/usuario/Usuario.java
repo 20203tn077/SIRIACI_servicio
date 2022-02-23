@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.Bloqueo;
 import mx.edu.utez.SIRIACI_servicio.model.estudiante.Estudiante;
+import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
+import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Usuario {
@@ -42,5 +45,10 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private Responsable responsable;
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Incidencia> incidencias;
+
 
 }
