@@ -10,9 +10,9 @@ public class Bloqueo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private Date tiempoBloqueo;
-
     @OneToOne
-    @JoinColumn(name = "usuario_id", unique = true)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 }

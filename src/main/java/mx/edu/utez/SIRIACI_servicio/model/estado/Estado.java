@@ -11,9 +11,10 @@ public class Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private byte id;
-    @Column(name = "nombre", length = 16, nullable = false)
+    @Column(length = 16, nullable = false, unique = true)
     private String nombre;
+
     @OneToMany(mappedBy = "estado")
     @JsonIgnore
-    private List<Incidencia> insidencias;
+    private List<Incidencia> incidencias;
 }

@@ -11,8 +11,9 @@ public class Importancia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "nombre", length = 16, nullable = false)
+    @Column(length = 16, nullable = false, unique = true)
     private String nombre;
+
     @OneToMany(mappedBy = "importancia")
     @JsonIgnore
     private List<Incidencia> insidencias;

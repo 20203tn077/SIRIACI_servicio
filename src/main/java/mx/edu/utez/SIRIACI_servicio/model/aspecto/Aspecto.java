@@ -12,12 +12,12 @@ public class Aspecto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private byte id;
-    @Column(name = "nombre", length = 32, nullable = false)
+    @Column(length = 32, nullable = false, unique = true)
     private String nombre;
 
     @OneToMany(mappedBy = "aspecto")
     @JsonIgnore
-    private List<Incidencia> insidencias;
+    private List<Incidencia> incidencias;
 
     @OneToMany(mappedBy = "aspecto")
     @JsonIgnore

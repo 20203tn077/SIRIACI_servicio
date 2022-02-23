@@ -9,11 +9,13 @@ public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private String carrera;
+    @Column(nullable = false)
     private byte cuatrimestre;
+    @Column(nullable = false)
     private char grupo;
-
     @OneToOne
-    @JoinColumn(name = "usuario_id", unique = true)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 }

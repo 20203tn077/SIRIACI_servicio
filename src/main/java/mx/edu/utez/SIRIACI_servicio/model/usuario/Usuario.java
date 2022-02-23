@@ -8,6 +8,7 @@ import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
+import mx.edu.utez.SIRIACI_servicio.model.solicitudRecuperacion.SolicitudRecuperación;
 
 import javax.persistence.*;
 import java.util.List;
@@ -50,5 +51,8 @@ public class Usuario {
     @JsonIgnore
     private List<Incidencia> incidencias;
 
+    @OneToOne(mappedBy = "usuario")
+    @JsonIgnore
+    private SolicitudRecuperación solicitudRecuperación;
 
 }

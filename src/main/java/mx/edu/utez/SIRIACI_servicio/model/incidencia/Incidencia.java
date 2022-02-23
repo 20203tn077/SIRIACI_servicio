@@ -16,31 +16,32 @@ public class Incidencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "descripcion", length = 256, nullable = false)
+    @Column(nullable = false)
     private String descripcion;
-    @Column(name = "tiempoIncidencia", nullable = false)
+    @Column(nullable = false)
     private Date tiempoIncidencia;
-    @Column(name = "longitud", nullable = false)
+    @Column(nullable = false)
     private double longitud;
-    @Column(name = "latitud", nullable = false)
+    @Column(nullable = false)
     private double latitud;
-    @Column(name = "activo", nullable = false)
+    @Column(nullable = false)
     private boolean activo;
-    @Column(name = "comentario", length = 128)
+    @Column(length = 128)
     private String comentario;
     @ManyToOne
-    @JoinColumn(name = "importancia_id",  nullable = false, unique = true)
+    @JoinColumn(name = "importancia_id",  nullable = false)
     private Importancia importancia;
     @ManyToOne
-    @JoinColumn(name = "estado_id",  nullable = false, unique = true)
+    @JoinColumn(name = "estado_id",  nullable = false)
     private Estado estado;
+    @ManyToOne
+    @JoinColumn(name = "aspecto_id",  nullable = false)
+    private Aspecto aspecto;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id",  nullable = false)
+    private Usuario usuario;
+
     @OneToMany(mappedBy = "incidencia")
     @JsonIgnore
     private List<ImagenIncidencia> imagenesIncidencia;
-    @ManyToOne
-    @JoinColumn(name = "aspecto_id",  nullable = false, unique = true)
-    private Aspecto aspecto;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id",  nullable = false, unique = true)
-    private Usuario usuario;
 }
