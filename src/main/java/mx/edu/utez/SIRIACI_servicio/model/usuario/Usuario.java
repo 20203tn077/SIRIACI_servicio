@@ -7,6 +7,7 @@ import mx.edu.utez.SIRIACI_servicio.model.estudiante.Estudiante;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
+import mx.edu.utez.SIRIACI_servicio.model.notificacion.Notificacion;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 
 import javax.persistence.*;
@@ -49,6 +50,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
     private List<Incidencia> incidencias;
+
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Notificacion> notificaciones;
 
 
 }
