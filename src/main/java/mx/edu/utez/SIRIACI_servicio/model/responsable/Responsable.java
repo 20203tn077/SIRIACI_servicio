@@ -13,13 +13,11 @@ public class Responsable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @OneToOne
-    @JoinColumn(name = "usuario_id", unique = true)
+    @JoinColumn(name = "usuario_id",nullable = false, unique = true)
     private Usuario usuario;
-
     @ManyToOne
-    @JoinColumn(name = "aspecto_id", nullable = false, unique = true)
+    @JoinColumn(name = "aspecto_id", nullable = false)
     private Aspecto aspecto;
 
     @OneToMany(mappedBy = "responsable")

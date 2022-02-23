@@ -11,8 +11,6 @@ public class Administrador {
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "usuario_id", unique = true)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
-
-
 }
