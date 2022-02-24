@@ -19,13 +19,20 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private String apellido1;
     private String apellido2;
+    @Column(nullable = false, unique = true)
     private String correo;
+    @Column(nullable = false, unique = true)
     private String telefono;
+    @Column(nullable = false)
     private String contrasena;
+    @Column(nullable = false)
     private boolean activo;
+    @Column(nullable = false)
     private boolean comunidadUtez;
 
     @OneToOne(mappedBy = "usuario")
@@ -52,15 +59,11 @@ public class Usuario {
     @JsonIgnore
     private List<Incidencia> incidencias;
 
-<<<<<<< HEAD
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
     private List<Notificacion> notificaciones;
 
-=======
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private SolicitudRecuperación solicitudRecuperación;
->>>>>>> ae8dcf980261a479457d6e8825be9386723d2db9
-
 }

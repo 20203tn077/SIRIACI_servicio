@@ -9,9 +9,11 @@ public class Notificacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private String titulo;
+    @Column(nullable = false)
     private String descripcion;
     @ManyToOne
-    @JoinColumn( name = "usuario_id" ,nullable = false,unique = true)
+    @JoinColumn( name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 }
