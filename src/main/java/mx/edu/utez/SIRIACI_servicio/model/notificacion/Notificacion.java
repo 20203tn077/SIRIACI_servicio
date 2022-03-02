@@ -7,16 +7,17 @@ import javax.persistence.*;
 @Entity
 public class Notificacion {
     // ID
-    // Atributos
-    // Llaves foraneas
-    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    // Atributos
     @Column(nullable = false)
     private String titulo;
     @Column(nullable = false)
     private String descripcion;
+
+    // Llaves foraneas
     @ManyToOne
     @JoinColumn( name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;

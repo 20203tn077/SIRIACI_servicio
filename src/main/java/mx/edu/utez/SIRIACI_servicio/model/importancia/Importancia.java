@@ -9,16 +9,16 @@ import java.util.List;
 @Entity
 public class Importancia {
     // ID
-    // Atributos
-    // Llaves foraneas
-    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private byte id;
+
+    // Atributos
     @Column(length = 16, nullable = false, unique = true)
     private String nombre;
 
+    // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "importancia")
     @JsonIgnore
-    private List<Incidencia> insidencias;
+    private List<Incidencia> incidencias;
 }

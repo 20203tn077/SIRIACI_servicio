@@ -7,14 +7,15 @@ import javax.persistence.*;
 @Entity
 public class NoVerificado {
     // ID
-    // Atributos
-    // Llaves foraneas
-    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    // Atributos
     @Column(nullable = false, unique = true)
     private String codigo;
+
+    // Llaves foraneas
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;

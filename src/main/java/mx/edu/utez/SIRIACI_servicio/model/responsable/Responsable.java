@@ -11,12 +11,11 @@ import java.util.List;
 @Entity
 public class Responsable {
     // ID
-    // Atributos
-    // Llaves foraneas
-    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    // Llaves foraneas
     @OneToOne
     @JoinColumn(name = "usuario_id",nullable = false, unique = true)
     private Usuario usuario;
@@ -24,6 +23,7 @@ public class Responsable {
     @JoinColumn(name = "aspecto_id", nullable = false)
     private Aspecto aspecto;
 
+    // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "responsable")
     @JsonIgnore
     private List<Capsula> capsulas;

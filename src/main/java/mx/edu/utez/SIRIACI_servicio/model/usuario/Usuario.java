@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.Bloqueo;
 import mx.edu.utez.SIRIACI_servicio.model.estudiante.Estudiante;
-import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
 import mx.edu.utez.SIRIACI_servicio.model.notificacion.Notificacion;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
-import mx.edu.utez.SIRIACI_servicio.model.solicitudRecuperacion.SolicitudRecuperación;
+import mx.edu.utez.SIRIACI_servicio.model.solicitudRecuperacion.SolicitudRecuperacion;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,18 +18,20 @@ public class Usuario {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     // Atributos
     private long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 64)
     private String nombre;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String apellido1;
+    @Column(length = 32)
     private String apellido2;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 64)
     private String correo;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 10)
     private String telefono;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String contrasena;
     @Column(nullable = false)
     private boolean activo;
@@ -61,5 +62,5 @@ public class Usuario {
     private List<Notificacion> notificaciones;
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
-    private SolicitudRecuperación solicitudRecuperación;
+    private SolicitudRecuperacion solicitudRecuperación;
 }

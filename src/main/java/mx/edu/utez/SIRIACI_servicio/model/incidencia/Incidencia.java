@@ -14,12 +14,11 @@ import java.util.List;
 @Entity
 public class Incidencia {
     // ID
-    // Atributos
-    // Llaves foraneas
-    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    // Atributos
     @Column(nullable = false)
     private String descripcion;
     @Column(nullable = false)
@@ -32,6 +31,8 @@ public class Incidencia {
     private boolean activo;
     @Column(length = 128)
     private String comentario;
+
+    // Llaves foraneas
     @ManyToOne
     @JoinColumn(name = "importancia_id",  nullable = false)
     private Importancia importancia;
@@ -45,6 +46,7 @@ public class Incidencia {
     @JoinColumn(name = "usuario_id",  nullable = false)
     private Usuario usuario;
 
+    // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "incidencia")
     @JsonIgnore
     private List<ImagenIncidencia> imagenesIncidencia;
