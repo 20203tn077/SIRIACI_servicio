@@ -8,6 +8,10 @@ import java.util.List;
 
 @Entity
 public class Importancia {
+    // ID
+    // Atributos
+    // Llaves foraneas
+    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

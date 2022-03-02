@@ -16,8 +16,10 @@ import java.util.List;
 
 @Entity
 public class Usuario {
+    // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Atributos
     private long id;
     @Column(nullable = false)
     private String nombre;
@@ -35,34 +37,28 @@ public class Usuario {
     @Column(nullable = false)
     private boolean comunidadUtez;
 
+    // Relaciones de otras tablas con esta
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private Administrador admnistrador;
-
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private Estudiante estudiante;
-
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private Bloqueo bloqueo;
-
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private NoVerificado noVerificado;
-
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private Responsable responsable;
-
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
     private List<Incidencia> incidencias;
-
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
     private List<Notificacion> notificaciones;
-
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private SolicitudRecuperación solicitudRecuperación;

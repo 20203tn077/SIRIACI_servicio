@@ -6,6 +6,10 @@ import javax.persistence.*;
 
 @Entity
 public class NoVerificado {
+    // ID
+    // Atributos
+    // Llaves foraneas
+    // Relaciones de otras tablas con esta
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
