@@ -6,5 +6,7 @@ import java.util.Optional;
 
 public interface AdministradorRepository extends JpaRepository<Administrador, Long> {
     boolean existsById(long id);
-    Optional<Administrador> findById(long id);
+    Administrador findById(long id);
+    boolean deleteByUsuarioId(long id);
+
 }
