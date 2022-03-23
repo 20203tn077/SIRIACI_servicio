@@ -22,9 +22,4 @@ public class Responsable {
     @ManyToOne
     @JoinColumn(name = "aspecto_id", nullable = false)
     private Aspecto aspecto;
-
-    // Relaciones de otras tablas con esta
-    @OneToMany(mappedBy = "responsable")
-    @JsonIgnore
-    private List<Capsula> capsulas;
 }

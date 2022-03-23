@@ -3,6 +3,8 @@ package mx.edu.utez.SIRIACI_servicio.model.usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.Bloqueo;
+import mx.edu.utez.SIRIACI_servicio.model.capsula.Capsula;
+import mx.edu.utez.SIRIACI_servicio.model.dispositivoMovil.DispositivoMovil;
 import mx.edu.utez.SIRIACI_servicio.model.estudiante.Estudiante;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
@@ -63,4 +65,10 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
     private SolicitudRecuperacion solicitudRecuperación;
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<DispositivoMovil> dispositivosMoviles;
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Capsula> capsulas;
 }

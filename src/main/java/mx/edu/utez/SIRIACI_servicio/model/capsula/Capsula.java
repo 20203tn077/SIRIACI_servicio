@@ -3,6 +3,7 @@ package mx.edu.utez.SIRIACI_servicio.model.capsula;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.imagenCapsula.ImagenCapsula;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
+import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,11 +25,11 @@ public class Capsula {
 
     // Llaves foraneas
     @ManyToOne
-    @JoinColumn( name = "responsable_id", nullable = false, unique = true)
-    private Responsable responsable;
+    @JoinColumn( name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
 
     // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "capsula")
     @JsonIgnore
-    private List<ImagenCapsula> imagenCapsula;
+    private List<ImagenCapsula> imagenesCapsula;
 }
