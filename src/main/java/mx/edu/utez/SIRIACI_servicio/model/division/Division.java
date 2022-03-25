@@ -24,4 +24,28 @@ public class Division {
 
     public Division() {
     }
+
+    public byte getId() {
+        return id;
+    }
+
+    public void setId(byte id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public List<Carrera> getCarreras() {
+        return carreras;
+    }
+
+    public void setCarreras(List<Carrera> carreras) {
+        this.carreras = carreras;
+    }
 }
