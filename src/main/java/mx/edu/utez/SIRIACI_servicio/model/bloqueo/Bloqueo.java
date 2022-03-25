@@ -20,4 +20,7 @@ public class Bloqueo {
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
+
+    public Bloqueo() {
+    }
 }

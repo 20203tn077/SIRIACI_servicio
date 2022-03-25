@@ -21,4 +21,7 @@ public class Notificacion {
     @ManyToOne
     @JoinColumn( name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
+
+    public Notificacion() {
+    }
 }

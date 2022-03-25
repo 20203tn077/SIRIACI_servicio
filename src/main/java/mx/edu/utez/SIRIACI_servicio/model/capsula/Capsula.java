@@ -16,20 +16,23 @@ public class Capsula {
     private long id;
 
     // Atributos
-    @Column(name ="titulo",unique = true, nullable = false)
+    @Column(name ="titulo", nullable = false)
     private String titulo;
-    @Column(name ="contenido",unique = true, nullable = false)
+    @Column(name ="contenido", nullable = false)
     private String contenido; //text
-    @Column(name ="activo",unique = true, nullable = false)
+    @Column(name ="activo", nullable = false)
     private boolean activo;
 
     // Llaves foraneas
     @ManyToOne
-    @JoinColumn( name = "usuario_id", nullable = false, unique = true)
+    @JoinColumn( name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "capsula")
     @JsonIgnore
     private List<ImagenCapsula> imagenesCapsula;
+
+    public Capsula() {
+    }
 }

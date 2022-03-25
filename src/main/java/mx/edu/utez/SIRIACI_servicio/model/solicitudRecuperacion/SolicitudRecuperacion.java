@@ -22,4 +22,7 @@ public class SolicitudRecuperacion {
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
+
+    public SolicitudRecuperacion() {
+    }
 }

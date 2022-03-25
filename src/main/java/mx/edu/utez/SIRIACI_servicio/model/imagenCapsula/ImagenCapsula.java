@@ -20,4 +20,7 @@ public class ImagenCapsula {
     @ManyToOne
     @JoinColumn(name = "capsula_id", nullable = false)
     private Capsula capsula;
+
+    public ImagenCapsula() {
+    }
 }

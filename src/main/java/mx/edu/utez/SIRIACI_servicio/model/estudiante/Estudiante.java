@@ -22,9 +22,56 @@ public class Estudiante {
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
-
-    // Relaciones de otras tablas con esta
     @ManyToOne
     @JoinColumn( name = "carrera_id", nullable = false)
     private Carrera carrera;
+
+    public Estudiante() {
+    }
+
+    public Estudiante(byte cuatrimestre, char grupo, Carrera carrera) {
+        this.cuatrimestre = cuatrimestre;
+        this.grupo = grupo;
+        this.carrera = carrera;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public byte getCuatrimestre() {
+        return cuatrimestre;
+    }
+
+    public void setCuatrimestre(byte cuatrimestre) {
+        this.cuatrimestre = cuatrimestre;
+    }
+
+    public char getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(char grupo) {
+        this.grupo = grupo;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
+    }
 }

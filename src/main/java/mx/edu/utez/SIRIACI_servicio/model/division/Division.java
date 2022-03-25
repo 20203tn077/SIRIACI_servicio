@@ -21,4 +21,7 @@ public class Division {
     @OneToMany(mappedBy = "division")
     @JsonIgnore
     private List<Carrera> carreras;
+
+    public Division() {
+    }
 }

@@ -19,4 +19,12 @@ public class NoVerificado {
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
+
+    public NoVerificado(String codigo, Usuario usuario) {
+        this.codigo = codigo;
+        this.usuario = usuario;
+    }
+
+    public NoVerificado() {
+    }
 }

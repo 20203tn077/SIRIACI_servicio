@@ -19,4 +19,7 @@ public class ImagenIncidencia {
     @ManyToOne
     @JoinColumn(name = "incidencia_id", nullable = false)
     private Incidencia incidencia;
+
+    public ImagenIncidencia() {
+    }
 }

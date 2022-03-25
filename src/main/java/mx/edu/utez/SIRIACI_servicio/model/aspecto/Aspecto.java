@@ -25,4 +25,43 @@ public class Aspecto {
     @OneToMany(mappedBy = "aspecto")
     @JsonIgnore
     private List<Responsable> responsables;
+
+    public Aspecto() {
+    }
+
+    public Aspecto(byte id) {
+        this.id = id;
+    }
+
+    public byte getId() {
+        return id;
+    }
+
+    public void setId(byte id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public List<Incidencia> getIncidencias() {
+        return incidencias;
+    }
+
+    public void setIncidencias(List<Incidencia> incidencias) {
+        this.incidencias = incidencias;
+    }
+
+    public List<Responsable> getResponsables() {
+        return responsables;
+    }
+
+    public void setResponsables(List<Responsable> responsables) {
+        this.responsables = responsables;
+    }
 }

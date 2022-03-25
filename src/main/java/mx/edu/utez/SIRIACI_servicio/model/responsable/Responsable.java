@@ -22,4 +22,35 @@ public class Responsable {
     @ManyToOne
     @JoinColumn(name = "aspecto_id", nullable = false)
     private Aspecto aspecto;
+
+    public Responsable() {
+    }
+
+    public Responsable(Aspecto aspecto) {
+        this.aspecto = aspecto;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Aspecto getAspecto() {
+        return aspecto;
+    }
+
+    public void setAspecto(Aspecto aspecto) {
+        this.aspecto = aspecto;
+    }
 }

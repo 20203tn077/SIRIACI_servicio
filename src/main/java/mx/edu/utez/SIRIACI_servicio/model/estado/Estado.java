@@ -21,4 +21,7 @@ public class Estado {
     @OneToMany(mappedBy = "estado")
     @JsonIgnore
     private List<Incidencia> incidencias;
+
+    public Estado() {
+    }
 }

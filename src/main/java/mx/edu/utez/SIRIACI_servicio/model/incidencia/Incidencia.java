@@ -50,4 +50,7 @@ public class Incidencia {
     @OneToMany(mappedBy = "incidencia")
     @JsonIgnore
     private List<ImagenIncidencia> imagenesIncidencia;
+
+    public Incidencia() {
+    }
 }

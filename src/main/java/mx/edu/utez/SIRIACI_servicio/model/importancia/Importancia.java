@@ -21,4 +21,7 @@ public class Importancia {
     @OneToMany(mappedBy = "importancia")
     @JsonIgnore
     private List<Incidencia> incidencias;
+
+    public Importancia() {
+    }
 }
