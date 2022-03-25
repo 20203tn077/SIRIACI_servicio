@@ -33,7 +33,7 @@ public class Usuario {
     private String correo;
     @Column(nullable = false, length = 10)
     private String telefono;
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false)
     @JsonIgnore
     private String contrasena;
     @Column(nullable = false)

@@ -20,6 +20,7 @@ import mx.edu.utez.SIRIACI_servicio.util.Validador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,8 @@ public class UsuarioService {
     CarreraRepository carreraRepository;
     @Autowired
     AdministradorRepository administradorRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> registrarUsuario(Usuario usuario, Administrador administrador, Responsable responsable, Estudiante estudiante) {
@@ -101,6 +104,7 @@ public class UsuarioService {
 
         if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar al usuario", errores, null), HttpStatus.BAD_REQUEST);
 
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         usuario = usuarioRepository.save(usuario);
 
         if (isAdministrador) {
@@ -123,7 +127,7 @@ public class UsuarioService {
         return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
     }
 
-    @Transactional(rollbackFor = {SQLException.class})
+    /*@Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> autoregistro() {
 
     }
@@ -141,7 +145,7 @@ public class UsuarioService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> eliminarUsuario() {
 
-    }
+    }*/
     /*
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> entrada() {
