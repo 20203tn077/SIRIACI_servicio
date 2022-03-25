@@ -19,7 +19,7 @@ public class Division {
 
     // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "division")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Carrera> carreras;
 
     public Division() {

@@ -41,7 +41,8 @@ public class InicioSesionController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Map<String, Object> datos = new HashMap<>();
         datos.put("token", token);
-        datos.put("user", userDetails);
+        datos.put("correo", userDetails.getUsername());
+        datos.put("roles", userDetails.getAuthorities());
         return new ResponseEntity<>(new Mensaje(false, "OK", null, datos), HttpStatus.OK);
     }
 }

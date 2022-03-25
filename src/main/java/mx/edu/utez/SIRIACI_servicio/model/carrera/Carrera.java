@@ -21,6 +21,7 @@ public class Carrera {
     // Llaves foraneas
     @ManyToOne()
     @JoinColumn(name = "division_id", nullable = false)
+    @JsonIgnore
     private Division division;
 
     // Relaciones de otras tablas con esta
