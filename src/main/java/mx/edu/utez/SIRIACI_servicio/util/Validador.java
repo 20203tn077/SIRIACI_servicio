@@ -5,6 +5,7 @@ import java.util.Optional;
 public class Validador {
     // Expresiones regulares para validar cadenas
     private static final String REGEX_NOMBRE_VALIDO = "^[a-zA-Z\\xC0-\\uFFFF][a-zA-Z\\xC0-\\uFFFF-]+( [a-zA-Z\\xC0-\\uFFFF-]+)*$";
+    private static final String REGEX_TELEFONO_VALIDO = "^\\d{10}$";
     private static final String REGEX_CADENA_VACIA = "^[\\s.\\-_]*$";
     private static final String REGEX_CORREO_VALIDO = "^[\\w-.]+@[\\w-.]+\\.[\\w.]+$";
     private static final String REGEX_CORREO_INSTITUCIONAL = "^[\\w-.]+@utez\\.edu\\.mx$";
@@ -14,7 +15,7 @@ public class Validador {
     private static final int USUARIO_NOMBRE_MAX = 64;
     private static final int USUARIO_APELLIDO_MAX = 32;
     private static final int USUARIO_CORREO_MAX = 64;
-    private static final int USUARIO_TELEFONO_MAX = 10;
+    private static final int USUARIO_TELEFONO = 10;
     private static final int USUARIO_CONTRASENA_MIN = 8;
     private static final int USUARIO_CONTRASENA_MAX = 64;
     private static final int USUARIO_CUATRIMESTRE_MAX = 11;
@@ -37,41 +38,42 @@ public class Validador {
             {18.848439, -99.200481}
     };
 
-    public static Optional<String> validarNombre (String nombre) {
+    public static Optional<String> validarNombreUsuario (String nombre) {
         if (nombre == null || nombre.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un nombre");
-        if (!nombre.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un nombre válido");
         if (nombre.length() > USUARIO_NOMBRE_MAX) return Optional.of("Máximo " + USUARIO_NOMBRE_MAX + " caracteres");
+        if (!nombre.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un nombre válido");
         return Optional.empty();
     }
-    public static Optional<String> validarApellido (String apellido) {
+    public static Optional<String> validarApellidoUsuario (String apellido) {
         if (apellido == null || apellido.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un apellido");
-        if (!apellido.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un apellido válido");
         if (apellido.length() > USUARIO_APELLIDO_MAX) return Optional.of("Máximo " + USUARIO_APELLIDO_MAX + " caracteres");
+        if (!apellido.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un apellido válido");
         return Optional.empty();
     }
-    public static Optional<String> validarCorreo (String correo) {
-        if (correo == null || correo.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un correo");
-        if (!correo.matches(REGEX_CORREO_VALIDO)) return Optional.of("Debes ingresar un correo válido");
+    public static Optional<String> validarCorreoUsuario (String correo) {
+        if (correo == null || correo.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un correo electrónico");
         if (correo.length() > USUARIO_CORREO_MAX) return Optional.of("Máximo " + USUARIO_CORREO_MAX + " caracteres");
+        if (!correo.matches(REGEX_CORREO_VALIDO)) return Optional.of("Debes ingresar un correo electrónico válido");
         return Optional.empty();
     }
-    public static Optional<String> validarTelefono (String telefono) {
-        if (telefono == null || telefono.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un teléfono");
-        if (telefono.length() > USUARIO_TELEFONO_MAX) return Optional.of("Máximo " + USUARIO_TELEFONO_MAX + " dígitos");
+    public static Optional<String> validarTelefonoUsuario (String telefono) {
+        if (telefono == null || telefono.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un número de teléfono");
+        if (telefono.length() != USUARIO_TELEFONO) return Optional.of("El número de teléfono debe tener " + USUARIO_TELEFONO + " dígitos");
+        if (!telefono.matches(REGEX_TELEFONO_VALIDO)) return Optional.of("Debes ingresar un número de teléfono válido");
         return Optional.empty();
     }
-    public static Optional<String> validarContrasena (String contrasena) {
+    public static Optional<String> validarContrasenaUsuario (String contrasena) {
         if (contrasena == null || contrasena.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar una contraseña");
-        if (.length() > ) return Optional.of("Máximo " +  + " caracteres");
-        if (.length() < ) return Optional.of("Mínimo " +  + " caracteres");
+        if (contrasena.length() < USUARIO_CONTRASENA_MIN) return Optional.of("Mínimo " + USUARIO_CUATRIMESTRE_MAX + " caracteres");
+        if (contrasena.length() > USUARIO_CONTRASENA_MAX) return Optional.of("Máximo " + USUARIO_CONTRASENA_MAX + " caracteres");
         return Optional.empty();
     }
-    public static Optional<String> validarCuatrimestre (Byte cuatrimestre) {
+    public static Optional<String> validarCuatrimestreUsuario (Byte cuatrimestre) {
         if (cuatrimestre == null) return Optional.of("Debes ingresar un cuatrimestre");
-        if (.length() > ) return Optional.of("Máximo " +  + " caracteres");
+        if (!(cuatrimestre >= 1 && cuatrimestre <= USUARIO_CUATRIMESTRE_MAX)) return Optional.of("Ingresa un cuatrimestre válido (1-" + USUARIO_CUATRIMESTRE_MAX + ")");
         return Optional.empty();
     }
-    public static Optional<String> validarGrupo (Character grupo) {
+    public static Optional<String> validarGrupoUsuario (Character grupo) {
         if (grupo == null) return Optional.of("Debes ingresar un grupo");
         if (!(grupo >= 'A' && grupo <= 'Z')) return Optional.of("Debes ingresar un grupo válido");
         return Optional.empty();
@@ -80,7 +82,6 @@ public class Validador {
     public static boolean isCorreoEstudiante (String correo) {
         return correo.matches(REGEX_CORREO_ESTUDIANTE);
     }
-
     public static boolean isCorreoInstitucional (String correo) {
         return correo.matches(REGEX_CORREO_INSTITUCIONAL);
     }

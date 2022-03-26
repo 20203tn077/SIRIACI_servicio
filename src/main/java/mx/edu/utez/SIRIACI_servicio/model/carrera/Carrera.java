@@ -64,7 +64,7 @@ public class Carrera {
         this.division = division;
     }
 
-    public Boolean getActivo() {
+    public Boolean isActivo() {
         return activo;
     }
 

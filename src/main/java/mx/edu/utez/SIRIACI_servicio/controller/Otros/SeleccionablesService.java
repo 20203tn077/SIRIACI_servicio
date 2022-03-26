@@ -43,8 +43,4 @@ public class SeleccionablesService {
     public ResponseEntity<Mensaje> obtenerDivisiones() {
         return new ResponseEntity<>(new Mensaje(false, "OK", null, divisionRepository.findAll()),HttpStatus.OK);
     }
-    @Transactional(readOnly = true)
-    public ResponseEntity<Mensaje> obtenerCarreras() {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, carreraRepository.findAll()),HttpStatus.OK);
-    }
 }

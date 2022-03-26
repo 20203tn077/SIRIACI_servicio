@@ -76,6 +76,17 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(long id, String nombre, String apellido1, String apellido2, String correo, String telefono, String contrasena) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.contrasena = contrasena;
+    }
+
+    // Constructor para registro
     public Usuario(String nombre, String apellido1, String apellido2, String correo, String telefono, String contrasena) {
         this.nombre = nombre;
         this.apellido1 = apellido1;
@@ -141,7 +152,7 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    public Boolean getActivo() {
+    public Boolean isActivo() {
         return activo;
     }
 
@@ -149,7 +160,7 @@ public class Usuario {
         this.activo = activo;
     }
 
-    public Boolean getComunidadUtez() {
+    public Boolean isComunidadUtez() {
         return comunidadUtez;
     }
 

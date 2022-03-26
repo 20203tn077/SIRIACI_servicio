@@ -8,4 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/publico/capsulas")
 @CrossOrigin(origins = {"*"})
 public class CapsulaControllerPublico {
+    /*
+    public ResponseEntity<Mensaje> () {
+        //try {
+            return service.;
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+    */
 }

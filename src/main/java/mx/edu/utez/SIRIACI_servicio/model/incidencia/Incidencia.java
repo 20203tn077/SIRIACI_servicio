@@ -94,7 +94,7 @@ public class Incidencia {
         this.latitud = latitud;
     }
 
-    public Boolean getActivo() {
+    public Boolean isActivo() {
         return activo;
     }
 

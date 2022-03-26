@@ -60,7 +60,7 @@ public class Capsula {
         this.contenido = contenido;
     }
 
-    public Boolean getActivo() {
+    public Boolean isActivo() {
         return activo;
     }
 

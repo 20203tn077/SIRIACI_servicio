@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api/iniciosesion")
 @CrossOrigin(origins = {"*"})
 public class InicioSesionController {
 
@@ -29,7 +29,7 @@ public class InicioSesionController {
     JwtProvider provider;
 
 
-    @PostMapping("/iniciosesion")
+    @PostMapping("/")
     public ResponseEntity<Mensaje> inicioSesion(@Valid @RequestBody InicioSesionDTO inicioSesionDTO, BindingResult result) {
         if (result.hasErrors())
             return new ResponseEntity<>(new Mensaje(true, "Usuario y/o contraseña incorrectos", null, null), HttpStatus.BAD_REQUEST);
