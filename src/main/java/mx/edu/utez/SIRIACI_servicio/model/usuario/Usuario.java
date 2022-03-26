@@ -37,9 +37,9 @@ public class Usuario {
     @JsonIgnore
     private String contrasena;
     @Column(nullable = false)
-    private boolean activo = false;
+    private Boolean activo = false;
     @Column(nullable = false)
-    private boolean comunidadUtez;
+    private Boolean comunidadUtez;
 
     // Relaciones de otras tablas con esta
     @OneToOne(mappedBy = "usuario")
@@ -141,19 +141,19 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    public boolean isActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(boolean activo) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
     }
 
-    public boolean isComunidadUtez() {
+    public Boolean getComunidadUtez() {
         return comunidadUtez;
     }
 
-    public void setComunidadUtez(boolean comunidadUtez) {
+    public void setComunidadUtez(Boolean comunidadUtez) {
         this.comunidadUtez = comunidadUtez;
     }
 

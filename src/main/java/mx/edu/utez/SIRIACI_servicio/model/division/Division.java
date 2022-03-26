@@ -11,7 +11,7 @@ public class Division {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private byte id;
+    private Byte id;
 
     // Atributos
     @Column(nullable = false, unique = true)
@@ -25,11 +25,11 @@ public class Division {
     public Division() {
     }
 
-    public byte getId() {
+    public Byte getId() {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(Byte id) {
         this.id = id;
     }
 

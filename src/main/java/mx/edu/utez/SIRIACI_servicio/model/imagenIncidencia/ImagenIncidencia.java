@@ -9,11 +9,11 @@ public class ImagenIncidencia {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     // Atributos
     @Column(nullable = false, columnDefinition = "blob")
-    private byte[] imagen;
+    private Byte[] imagen;
 
     // Llaves foraneas
     @ManyToOne
@@ -21,5 +21,29 @@ public class ImagenIncidencia {
     private Incidencia incidencia;
 
     public ImagenIncidencia() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    public Incidencia getIncidencia() {
+        return incidencia;
+    }
+
+    public void setIncidencia(Incidencia incidencia) {
+        this.incidencia = incidencia;
     }
 }

@@ -12,7 +12,7 @@ public class Carrera {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private short id;
+    private Short id;
 
     // Atributos
     @Column(nullable = false, unique = true)
@@ -24,6 +24,10 @@ public class Carrera {
     @JsonIgnore
     private Division division;
 
+    //Atributos
+    @Column(nullable = false)
+    private Boolean activo = true;
+
     // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "carrera")
     @JsonIgnore
@@ -32,15 +36,15 @@ public class Carrera {
     public Carrera() {
     }
 
-    public Carrera(short id) {
+    public Carrera(Short id) {
         this.id = id;
     }
 
-    public short getId() {
+    public Short getId() {
         return id;
     }
 
-    public void setId(short id) {
+    public void setId(Short id) {
         this.id = id;
     }
 
@@ -58,6 +62,14 @@ public class Carrera {
 
     public void setDivision(Division division) {
         this.division = division;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 
     public List<Estudiante> getEstudiantes() {

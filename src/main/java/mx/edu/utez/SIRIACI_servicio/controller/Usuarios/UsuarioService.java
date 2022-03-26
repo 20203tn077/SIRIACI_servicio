@@ -14,7 +14,6 @@ import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.ResponsableRepository;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.UsuarioRepository;
-import mx.edu.utez.SIRIACI_servicio.util.ErrorFormulario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import mx.edu.utez.SIRIACI_servicio.util.Validador;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -52,9 +48,9 @@ public class UsuarioService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> registrarUsuario(Usuario usuario, Administrador administrador, Responsable responsable, Estudiante estudiante) {
-        List<ErrorFormulario> errores = new ArrayList<>();
+        Map<String, String> errores = new HashMap<>();
 
-        if (Validador.isVacio(usuario.getNombre())) errores.add(new ErrorFormulario("nombre", "No puedes dejar el campo en blanco"));
+        /*if (Validador.isVacio(usuario.getNombre())) errores.add(new ErrorFormulario("nombre", "No puedes dejar el campo en blanco"));
         else if (!Validador.isDentroRango(usuario.getNombre(), 64)) errores.add(new ErrorFormulario("nombre", "Campo vacío o fuera del rango"));
         else if (!Validador.isNombreValido(usuario.getNombre())) errores.add(new ErrorFormulario("nombre", "Ingresa un nombre válido"));
 
@@ -62,7 +58,8 @@ public class UsuarioService {
         else if (!Validador.isDentroRango(usuario.getApellido1(), 32)) errores.add(new ErrorFormulario("apellido1", "Excediste el límite"));
         else if (!Validador.isNombreValido(usuario.getApellido1())) errores.add(new ErrorFormulario("apellido1", "Ingresa un apellido válido"));
 
-        if (!usuario.getApellido2().equals("$vacio")) {
+        if (usuario.getApellido2() != null) {
+            System.out.println("A"+usuario.getApellido2()+ "B");
             if (Validador.isVacio(usuario.getApellido2())) errores.add(new ErrorFormulario("apellido2", "No puedes dejar el campo en blanco"));
             else if (!Validador.isNombreValido(usuario.getApellido2())) errores.add(new ErrorFormulario("apellido2", "Ingresa un apellido válido"));
             else if (!Validador.isDentroRango(usuario.getApellido2(), 32)) errores.add(new ErrorFormulario("apellido2", ""));
@@ -124,7 +121,8 @@ public class UsuarioService {
                 usuario
         ));
 
-        return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);*/
+        return new ResponseEntity<>(new Mensaje(), HttpStatus.OK);
     }
 
     /*@Transactional(rollbackFor = {SQLException.class})

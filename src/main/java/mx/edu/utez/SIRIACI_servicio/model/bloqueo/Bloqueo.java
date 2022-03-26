@@ -10,7 +10,7 @@ public class Bloqueo {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     // Atributos
     @Column(nullable = false)
@@ -22,5 +22,29 @@ public class Bloqueo {
     private Usuario usuario;
 
     public Bloqueo() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getTiempoBloqueo() {
+        return tiempoBloqueo;
+    }
+
+    public void setTiempoBloqueo(Date tiempoBloqueo) {
+        this.tiempoBloqueo = tiempoBloqueo;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

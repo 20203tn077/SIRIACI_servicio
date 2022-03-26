@@ -1,14 +1,17 @@
 package mx.edu.utez.SIRIACI_servicio.util;
 
 import java.util.List;
+import java.util.Map;
 
 public class Mensaje {
     private boolean error;
     private String mensajeGeneral;
-    private List<ErrorFormulario> errores;
+    private Map<String, String> errores;
     private Object datos;
 
-    public Mensaje(boolean error, String mensajeGeneral, List<ErrorFormulario> errores, Object datos) {
+    public Mensaje() {}
+
+    public Mensaje(boolean error, String mensajeGeneral, Map errores, Object datos) {
         this.error = error;
         this.mensajeGeneral = mensajeGeneral;
         this.errores = errores;
@@ -31,11 +34,11 @@ public class Mensaje {
         this.mensajeGeneral = mensajeGeneral;
     }
 
-    public List<ErrorFormulario> getErrores() {
+    public Map<String, String> getErrores() {
         return errores;
     }
 
-    public void setErrores(List<ErrorFormulario> errores) {
+    public void setErrores(Map<String, String> errores) {
         this.errores = errores;
     }
 

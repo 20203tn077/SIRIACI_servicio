@@ -8,6 +8,7 @@ import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,14 +51,20 @@ public class UsuarioController {
                         usuarioRegistroDTO.getContrasena()
                 ),
                 usuarioRegistroDTO.isAdmnistrador() ? new Administrador() : null,
-                        usuarioRegistroDTO.isResponsable() ? new Responsable(
-                                new Aspecto(usuarioRegistroDTO.getAspecto())
-                        ) : null,
+                usuarioRegistroDTO.isResponsable() ? new Responsable(
+                        new Aspecto(usuarioRegistroDTO.getAspecto())
+                ) : null,
                 new Estudiante(
                         usuarioRegistroDTO.getCuatrimestre(),
-                        usuarioRegistroDTO.getGrupo().toUpperCase().charAt(0),
+                        usuarioRegistroDTO.getGrupo(),
                         new Carrera(usuarioRegistroDTO.getCarrera())
                 )
         );
+    }
+
+    @PatchMapping("/asd/")
+    public ResponseEntity<Mensaje> modificarUsuario(@RequestBody UsuarioRegistroDTO usuarioRegistroDTO) {
+        System.out.println(usuarioRegistroDTO.getCuatrimestre());
+        return new ResponseEntity<Mensaje>(new Mensaje(false, "ok", null, null), HttpStatus.OK);
     }
 }

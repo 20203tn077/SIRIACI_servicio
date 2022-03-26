@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface CarreraRepository extends JpaRepository<Carrera, Short> {
-    Optional<Carrera> findById(Short id);
+    Optional<Carrera> findById(short id);
 }

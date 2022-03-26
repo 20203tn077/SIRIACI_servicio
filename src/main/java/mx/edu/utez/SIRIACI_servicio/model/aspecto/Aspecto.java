@@ -12,7 +12,7 @@ public class Aspecto {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private byte id;
+    private Byte id;
 
     // Atributos
     @Column(length = 32, nullable = false, unique = true)
@@ -29,15 +29,15 @@ public class Aspecto {
     public Aspecto() {
     }
 
-    public Aspecto(byte id) {
+    public Aspecto(Byte id) {
         this.id = id;
     }
 
-    public byte getId() {
+    public Byte getId() {
         return id;
     }
 
-    public void setId(byte id) {
+    public void setId(Byte id) {
         this.id = id;
     }
 

@@ -10,11 +10,11 @@ public class ImagenCapsula {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     // Atributos
     @Column(nullable = false, columnDefinition = "blob")
-    private byte[] imagen;
+    private Byte[] imagen;
 
     // Llaves foraneas
     @ManyToOne
@@ -22,5 +22,13 @@ public class ImagenCapsula {
     private Capsula capsula;
 
     public ImagenCapsula() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,5 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Usuarios;
 
+import java.util.Optional;
+
 public class UsuarioRegistroDTO {
     private String nombre;
     private String apellido1;
@@ -7,12 +9,12 @@ public class UsuarioRegistroDTO {
     private String correo;
     private String telefono;
     private String contrasena;
-    private boolean admnistrador;
-    private boolean responsable;
-    private byte aspecto;
-    private short carrera;
-    private byte cuatrimestre;
-    private String grupo;
+    private Boolean admnistrador;
+    private Boolean responsable;
+    private Byte aspecto;
+    private Short carrera;
+    private Byte cuatrimestre;
+    private Character grupo;
 
     public String getNombre() {
         return nombre;
@@ -62,51 +64,51 @@ public class UsuarioRegistroDTO {
         this.contrasena = contrasena;
     }
 
-    public boolean isAdmnistrador() {
+    public Boolean isAdmnistrador() {
         return admnistrador;
     }
 
-    public void setAdmnistrador(boolean admnistrador) {
+    public void setAdmnistrador(Boolean admnistrador) {
         this.admnistrador = admnistrador;
     }
 
-    public boolean isResponsable() {
+    public Boolean isResponsable() {
         return responsable;
     }
 
-    public void setResponsable(boolean responsable) {
+    public void setResponsable(Boolean responsable) {
         this.responsable = responsable;
     }
 
-    public byte getAspecto() {
+    public Byte getAspecto() {
         return aspecto;
     }
 
-    public void setAspecto(byte aspecto) {
+    public void setAspecto(Byte aspecto) {
         this.aspecto = aspecto;
     }
 
-    public short getCarrera() {
+    public Short getCarrera() {
         return carrera;
     }
 
-    public void setCarrera(short carrera) {
+    public void setCarrera(Short carrera) {
         this.carrera = carrera;
     }
 
-    public byte getCuatrimestre() {
+    public Byte getCuatrimestre() {
         return cuatrimestre;
     }
 
-    public void setCuatrimestre(byte cuatrimestre) {
+    public void setCuatrimestre(Byte cuatrimestre) {
         this.cuatrimestre = cuatrimestre;
     }
 
-    public String getGrupo() {
+    public Character getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(String grupo) {
+    public void setGrupo(Character grupo) {
         this.grupo = grupo;
     }
 }

@@ -10,13 +10,13 @@ public class Estudiante {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     // Atributos
     @Column(nullable = false)
-    private byte cuatrimestre;
+    private Byte cuatrimestre;
     @Column(nullable = false)
-    private char grupo;
+    private Character grupo;
 
     // Llaves foraneas
     @OneToOne
@@ -29,33 +29,33 @@ public class Estudiante {
     public Estudiante() {
     }
 
-    public Estudiante(byte cuatrimestre, char grupo, Carrera carrera) {
+    public Estudiante(Byte cuatrimestre, Character grupo, Carrera carrera) {
         this.cuatrimestre = cuatrimestre;
         this.grupo = grupo;
         this.carrera = carrera;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public byte getCuatrimestre() {
+    public Byte getCuatrimestre() {
         return cuatrimestre;
     }
 
-    public void setCuatrimestre(byte cuatrimestre) {
+    public void setCuatrimestre(Byte cuatrimestre) {
         this.cuatrimestre = cuatrimestre;
     }
 
-    public char getGrupo() {
+    public Character getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(char grupo) {
+    public void setGrupo(Character grupo) {
         this.grupo = grupo;
     }
 
