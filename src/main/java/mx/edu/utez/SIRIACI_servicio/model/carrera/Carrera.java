@@ -26,6 +26,7 @@ public class Carrera {
 
     //Atributos
     @Column(nullable = false)
+    @JsonIgnore
     private Boolean activo = true;
 
     // Relaciones de otras tablas con esta

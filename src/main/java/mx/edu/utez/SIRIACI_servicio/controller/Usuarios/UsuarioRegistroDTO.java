@@ -1,7 +1,5 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Usuarios;
 
-import java.util.Optional;
-
 public class UsuarioRegistroDTO {
     private String nombre;
     private String apellido1;
@@ -9,7 +7,7 @@ public class UsuarioRegistroDTO {
     private String correo;
     private String telefono;
     private String contrasena;
-    private Boolean admnistrador;
+    private Boolean administrador;
     private Boolean responsable;
     private Byte aspecto;
     private Short carrera;
@@ -64,12 +62,12 @@ public class UsuarioRegistroDTO {
         this.contrasena = contrasena;
     }
 
-    public Boolean isAdmnistrador() {
-        return admnistrador;
+    public Boolean isAdministrador() {
+        return administrador;
     }
 
-    public void setAdmnistrador(Boolean admnistrador) {
-        this.admnistrador = admnistrador;
+    public void setAdministrador(Boolean administrador) {
+        this.administrador = administrador;
     }
 
     public Boolean isResponsable() {

@@ -30,12 +30,17 @@ public class InicioSesionController {
 
 
     @PostMapping("/")
-    public ResponseEntity<Mensaje> inicioSesion(@Valid @RequestBody InicioSesionDTO inicioSesionDTO, BindingResult result) {
-        if (result.hasErrors())
-            return new ResponseEntity<>(new Mensaje(true, "Usuario y/o contraseña incorrectos", null, null), HttpStatus.BAD_REQUEST);
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(inicioSesionDTO.getCorreo(), inicioSesionDTO.getContrasena())
-        );
+    public ResponseEntity<Mensaje> inicioSesion(@Valid @RequestBody InicioSesionDTO inicioSesionDTO) {
+        Authentication authentication = null;
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(inicioSesionDTO.getCorreo(), inicioSesionDTO.getContrasena())
+            );
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Mensaje(true, "Correo y/o contraseña incorrectos", null, null), HttpStatus.OK);
+        }
+
+        System.out.println("2");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = provider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

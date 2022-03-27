@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.model.estudiante;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.carrera.Carrera;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
@@ -21,6 +22,7 @@ public class Estudiante {
     // Llaves foraneas
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    @JsonIgnore
     private Usuario usuario;
     @ManyToOne
     @JoinColumn( name = "carrera_id", nullable = false)
@@ -33,6 +35,12 @@ public class Estudiante {
         this.cuatrimestre = cuatrimestre;
         this.grupo = grupo;
         this.carrera = carrera;
+    }
+
+    public void actualizar(Estudiante estudiante) {
+        if (this.cuatrimestre != estudiante.cuatrimestre && estudiante.cuatrimestre != null) this.cuatrimestre = estudiante.cuatrimestre;
+        if (this.grupo != estudiante.grupo && estudiante.grupo != null) this.grupo = estudiante.grupo;
+        if (this.carrera != estudiante.carrera && estudiante.carrera != null) this.carrera = estudiante.carrera;
     }
 
     public Long getId() {

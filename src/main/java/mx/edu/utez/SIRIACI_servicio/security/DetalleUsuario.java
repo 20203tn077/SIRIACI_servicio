@@ -1,6 +1,5 @@
 package mx.edu.utez.SIRIACI_servicio.security;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +23,7 @@ public class DetalleUsuario implements UserDetails {
     public static DetalleUsuario build(Usuario usuario){
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USUARIO"));
-        if (usuario.getAdmnistrador() != null) authorities.add(new SimpleGrantedAuthority("ADMINISTRADOR"));
+        if (usuario.getAdministrador() != null) authorities.add(new SimpleGrantedAuthority("ADMINISTRADOR"));
         if (usuario.getResponsable() != null) authorities.add(new SimpleGrantedAuthority("RESPONSABLE"));
         return new DetalleUsuario(usuario.getCorreo(), usuario.getContrasena(), authorities);
     }

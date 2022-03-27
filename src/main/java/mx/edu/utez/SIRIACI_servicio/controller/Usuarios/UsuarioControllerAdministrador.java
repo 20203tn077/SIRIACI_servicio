@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/api/administrador/usuarios")
 @CrossOrigin(origins = {"*"})
@@ -57,19 +59,62 @@ public class UsuarioControllerAdministrador {
                             usuarioRegistroDTO.getTelefono(),
                             usuarioRegistroDTO.getContrasena()
                     ),
-                    usuarioRegistroDTO.isAdmnistrador() ? new Administrador() : null,
-                    usuarioRegistroDTO.isResponsable() ? new Responsable(
+                    new Administrador(),
+                    new Responsable(
                             new Aspecto(usuarioRegistroDTO.getAspecto())
-                    ) : null,
+                    ),
                     new Estudiante(
                             usuarioRegistroDTO.getCuatrimestre(),
                             usuarioRegistroDTO.getGrupo(),
                             new Carrera(usuarioRegistroDTO.getCarrera())
-                    )
+                    ),
+                    usuarioRegistroDTO.isAdministrador(),
+                    usuarioRegistroDTO.isResponsable()
             );
         /*} catch (Exception e) {
             logger.error("Error en método registrarUsuario" + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
+        }*/
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerUsuario(@PathVariable long id) {
+        //try {
+        return service.obtenerUsuario(id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Mensaje> modificarUsuario(@RequestBody UsuarioRegistroDTO usuarioRegistroDTO, @PathVariable long id) {
+        //try {
+        return service.modificarUsuario(
+                new Usuario(
+                        id,
+                        usuarioRegistroDTO.getNombre(),
+                        usuarioRegistroDTO.getApellido1(),
+                        usuarioRegistroDTO.getApellido2(),
+                        usuarioRegistroDTO.getCorreo(),
+                        usuarioRegistroDTO.getTelefono(),
+                        usuarioRegistroDTO.getContrasena()
+                ),
+                new Administrador(),
+                new Responsable(
+                        new Aspecto(usuarioRegistroDTO.getAspecto())
+                ),
+                new Estudiante(
+                        usuarioRegistroDTO.getCuatrimestre(),
+                        usuarioRegistroDTO.getGrupo(),
+                        new Carrera(usuarioRegistroDTO.getCarrera())
+                ),
+                usuarioRegistroDTO.isAdministrador(),
+                usuarioRegistroDTO.isResponsable()
+        );
+        /*} catch (Exception e) {
+            logger.error("Error en método registrarUsuario" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error al modificar al usuario", null, null), HttpStatus.BAD_REQUEST);
         }*/
     }
 

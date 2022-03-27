@@ -28,7 +28,7 @@ public class Usuario {
     @Column(nullable = false, length = 32)
     private String apellido1;
     @Column(length = 32)
-    private String apellido2 = "";
+    private String apellido2;
     @Column(nullable = false, length = 64)
     private String correo;
     @Column(nullable = false, length = 10)
@@ -44,9 +44,8 @@ public class Usuario {
     // Relaciones de otras tablas con esta
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
-    private Administrador admnistrador;
+    private Administrador administrador;
     @OneToOne(mappedBy = "usuario")
-    @JsonIgnore
     private Estudiante estudiante;
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
@@ -55,7 +54,6 @@ public class Usuario {
     @JsonIgnore
     private NoVerificado noVerificado;
     @OneToOne(mappedBy = "usuario")
-    @JsonIgnore
     private Responsable responsable;
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
@@ -94,6 +92,16 @@ public class Usuario {
         this.correo = correo;
         this.telefono = telefono;
         this.contrasena = contrasena;
+    }
+
+    public void actualizar(Usuario usuario) {
+        if (this.nombre != usuario.nombre && usuario.nombre != null) this.nombre = usuario.nombre;
+        if (this.apellido1 != usuario.apellido1 && usuario.apellido1 != null) this.apellido1 = usuario.apellido1;
+        if (this.apellido2 != usuario.apellido2 && usuario.apellido2 != null) this.apellido2 = usuario.apellido2;
+        if (this.correo != usuario.correo && usuario.correo != null) this.correo = usuario.correo;
+        if (this.telefono != usuario.telefono && usuario.telefono != null) this.telefono = usuario.telefono;
+        if (this.contrasena != usuario.contrasena && usuario.contrasena != null) this.contrasena = usuario.contrasena;
+        if (this.comunidadUtez != usuario.comunidadUtez && usuario.comunidadUtez != null) this.comunidadUtez = usuario.comunidadUtez;
     }
 
     public long getId() {
@@ -168,12 +176,12 @@ public class Usuario {
         this.comunidadUtez = comunidadUtez;
     }
 
-    public Administrador getAdmnistrador() {
-        return admnistrador;
+    public Administrador getAdministrador() {
+        return administrador;
     }
 
-    public void setAdmnistrador(Administrador admnistrador) {
-        this.admnistrador = admnistrador;
+    public void setAdministrador(Administrador admnistrador) {
+        this.administrador = admnistrador;
     }
 
     public Estudiante getEstudiante() {

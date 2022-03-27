@@ -44,8 +44,16 @@ public class Validador {
         if (!nombre.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un nombre válido");
         return Optional.empty();
     }
-    public static Optional<String> validarApellidoUsuario (String apellido) {
+    public static Optional<String> validarApellido1Usuario (String apellido) {
         if (apellido == null || apellido.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un apellido");
+        if (apellido.length() > USUARIO_APELLIDO_MAX) return Optional.of("Máximo " + USUARIO_APELLIDO_MAX + " caracteres");
+        if (!apellido.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un apellido válido");
+        return Optional.empty();
+    }
+    public static Optional<String> validarApellido2Usuario (String apellido) {
+        if (apellido == null) return Optional.of("Debes ingresar un apellido");
+        if (apellido.equals("")) return Optional.empty();
+        if (apellido.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un apellido");
         if (apellido.length() > USUARIO_APELLIDO_MAX) return Optional.of("Máximo " + USUARIO_APELLIDO_MAX + " caracteres");
         if (!apellido.matches(REGEX_NOMBRE_VALIDO)) return Optional.of("Ingresa un apellido válido");
         return Optional.empty();

@@ -18,12 +18,17 @@ public class Responsable {
     // Llaves foraneas
     @OneToOne
     @JoinColumn(name = "usuario_id",nullable = false, unique = true)
+    @JsonIgnore
     private Usuario usuario;
     @ManyToOne
     @JoinColumn(name = "aspecto_id", nullable = false)
     private Aspecto aspecto;
 
     public Responsable() {
+    }
+
+    public void actualizar(Responsable responsable) {
+        if (this.aspecto != responsable.aspecto && (responsable.aspecto != null && responsable.aspecto.getId() != null)) this.aspecto = responsable.aspecto;
     }
 
     public Responsable(Aspecto aspecto) {
