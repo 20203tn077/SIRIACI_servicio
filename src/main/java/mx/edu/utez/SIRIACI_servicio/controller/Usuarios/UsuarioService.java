@@ -483,24 +483,4 @@ public class UsuarioService {
 
         return new ResponseEntity<>(new Mensaje(false, "Usuario actualizado", null, usuario), HttpStatus.OK);
     }
-
-
-/*
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Mensaje> automodificacion() {
-
-    }
-
-    */
-    /*
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Mensaje> entrada() {
-
-    }
-
-    @Transactional(readOnly = true)
-    public ResponseEntity<Mensaje> salida() {
-
-    }
-    */
 }

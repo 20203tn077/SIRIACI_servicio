@@ -25,6 +25,10 @@ public class Importancia {
     public Importancia() {
     }
 
+    public Importancia(Byte id) {
+        this.id = id;
+    }
+
     public Byte getId() {
         return id;
     }

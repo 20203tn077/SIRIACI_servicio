@@ -74,6 +74,11 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(long id) {
+        this.id = id;
+    }
+
+    // Constructor para modificación
     public Usuario(long id, String nombre, String apellido1, String apellido2, String correo, String telefono, String contrasena) {
         this.id = id;
         this.nombre = nombre;

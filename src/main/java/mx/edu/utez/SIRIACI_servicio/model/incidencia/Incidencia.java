@@ -28,7 +28,7 @@ public class Incidencia {
     @Column(nullable = false)
     private Double latitud;
     @Column(nullable = false)
-    private Boolean activo;
+    private Boolean activo = true;
     @Column(length = 128)
     private String comentario;
 
@@ -48,10 +48,19 @@ public class Incidencia {
 
     // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "incidencia")
-    @JsonIgnore
     private List<ImagenIncidencia> imagenesIncidencia;
 
     public Incidencia() {
+    }
+
+    public Incidencia(String descripcion, Date tiempoIncidencia, Double longitud, Double latitud, Importancia importancia, Aspecto aspecto, Usuario usuario) {
+        this.descripcion = descripcion;
+        this.tiempoIncidencia = tiempoIncidencia;
+        this.longitud = longitud;
+        this.latitud = latitud;
+        this.importancia = importancia;
+        this.aspecto = aspecto;
+        this.usuario = usuario;
     }
 
     public Long getId() {

@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 
 import javax.persistence.*;
@@ -13,14 +14,19 @@ public class ImagenIncidencia {
 
     // Atributos
     @Column(nullable = false, columnDefinition = "blob")
-    private Byte[] imagen;
+    private byte[] imagen;
 
     // Llaves foraneas
     @ManyToOne
     @JoinColumn(name = "incidencia_id", nullable = false)
+    @JsonIgnore
     private Incidencia incidencia;
 
     public ImagenIncidencia() {
+    }
+
+    public ImagenIncidencia(byte[] imagen) {
+        this.imagen = imagen;
     }
 
     public Long getId() {
@@ -31,11 +37,11 @@ public class ImagenIncidencia {
         this.id = id;
     }
 
-    public Byte[] getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(Byte[] imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
