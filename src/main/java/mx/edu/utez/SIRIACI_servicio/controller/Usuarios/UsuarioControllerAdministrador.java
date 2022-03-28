@@ -11,6 +11,9 @@ import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,8 @@ import javax.websocket.server.PathParam;
 @RequestMapping("/api/administrador/usuarios")
 @CrossOrigin(origins = {"*"})
 public class UsuarioControllerAdministrador {
+    @Value("${conf.registros_por_pagina}")
+    int registrosPorPagina;
 
     private final static Logger logger = LoggerFactory.getLogger(UsuarioControllerAdministrador.class);
 
@@ -47,6 +52,7 @@ public class UsuarioControllerAdministrador {
     private List<DispositivoMovil> dispositivosMoviles;
     private List<Capsula> capsulas;*/
 
+    // 1.1 Registrar nuevo usuario
     @PostMapping("/")
     public ResponseEntity<Mensaje> registrarUsuario(@RequestBody UsuarioRegistroDTO usuarioRegistroDTO) {
         //try {
@@ -77,6 +83,7 @@ public class UsuarioControllerAdministrador {
         }*/
     }
 
+    // 1.2 Consultar usuarios
     @GetMapping("/{id}")
     public ResponseEntity<Mensaje> obtenerUsuario(@PathVariable long id) {
         //try {
@@ -87,6 +94,22 @@ public class UsuarioControllerAdministrador {
         //}
     }
 
+    // 1.3 Consultar usuario
+    @GetMapping("/")
+    public ResponseEntity<Mensaje> obtenerUsuario(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
+        //try {
+        if (filtro == null) {
+            return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
+        } else {
+            return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+        }
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    // 1.4 Modificar usuario
     @PatchMapping("/{id}")
     public ResponseEntity<Mensaje> modificarUsuario(@RequestBody UsuarioRegistroDTO usuarioRegistroDTO, @PathVariable long id) {
         //try {

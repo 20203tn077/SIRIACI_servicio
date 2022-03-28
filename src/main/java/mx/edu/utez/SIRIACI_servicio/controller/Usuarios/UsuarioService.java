@@ -17,6 +17,7 @@ import mx.edu.utez.SIRIACI_servicio.model.usuario.UsuarioRepository;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import mx.edu.utez.SIRIACI_servicio.util.Validador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,7 @@ public class UsuarioService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    // 1.1 Registrar nuevo usuario
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> registrarUsuario(Usuario usuario, Administrador administrador, Responsable responsable, Estudiante estudiante, Boolean isAdministrador, Boolean isResponsable) {
         Map<String, String> errores = new HashMap<>();
@@ -127,6 +129,17 @@ public class UsuarioService {
         return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
     }
 
+    // 1.2 Consultar usuarios
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerUsuarios(Pageable pageable) {
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, usuarioRepository.findAllByNoVerificadoIsNull(pageable)), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerUsuarios(Pageable pageable, String filtro) {
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, usuarioRepository.findByFiltro(filtro, pageable)), HttpStatus.OK);
+    }
+
+    // 1.3 Consultar usuario
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerUsuario(long id) {
         Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(id);
@@ -134,6 +147,7 @@ public class UsuarioService {
         return new ResponseEntity<>(new Mensaje(false, "OK", null, resultado.get()), HttpStatus.OK);
     }
 
+    // 1.4 Modificar usuario
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> modificarUsuario(Usuario usuario, Administrador administrador, Responsable responsable, Estudiante estudiante, Boolean isAdministrador, Boolean isResponsable) {
         Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(usuario.getId());
