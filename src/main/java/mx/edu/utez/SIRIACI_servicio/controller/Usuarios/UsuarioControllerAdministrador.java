@@ -141,6 +141,16 @@ public class UsuarioControllerAdministrador {
         }*/
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Mensaje> eliminarUsuario(@PathVariable long id) {
+        //try {
+        return service.eliminarUsuario(id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
     /*
     public ResponseEntity<Mensaje> () {
         //try {
