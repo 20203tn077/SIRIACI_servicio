@@ -311,13 +311,181 @@ public class UsuarioService {
         return new ResponseEntity<>(new Mensaje(false, "Usuario eliminado", null, usuario), HttpStatus.OK);
     }
 
-    /*@Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<Mensaje> autoregistro() {
+    // 1.6 Registrarse en el sistema
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mensaje> autorregistro(Usuario usuario, Estudiante estudiante) {
+        Map<String, String> errores = new HashMap<>();
+        Optional<String> error;
+        boolean isEstudiante = false;
+        boolean isComunidadUtez = false;
 
+        error = Validador.validarNombreUsuario(usuario.getNombre());
+        if (error.isPresent()) errores.put("nombre", error.get());
+
+        error = Validador.validarApellido1Usuario(usuario.getApellido1());
+        if (error.isPresent()) errores.put("apellido1", error.get());
+
+
+        error = Validador.validarApellido2Usuario(usuario.getApellido2());
+        if (error.isPresent()) errores.put("apellido2", error.get());
+
+        error = Validador.validarCorreoUsuario(usuario.getCorreo());
+        if (error.isPresent()) errores.put("correo", error.get());
+        else {
+            if (usuarioRepository.existsByCorreoAndActivoIsTrue(usuario.getCorreo())) errores.put("correo", "El correo ingresado ya se encuentra registrado");
+            isEstudiante = Validador.isCorreoEstudiante(usuario.getCorreo());
+            isComunidadUtez = Validador.isCorreoInstitucional(usuario.getCorreo());
+            usuario.setComunidadUtez(isComunidadUtez);
+        }
+
+        error = Validador.validarTelefonoUsuario(usuario.getTelefono());
+        if (error.isPresent()) errores.put("telefono", error.get());
+
+        error = Validador.validarContrasenaUsuario(usuario.getContrasena());
+        if (error.isPresent()) errores.put("contrasena", error.get());
+        else usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+
+        if (isEstudiante) {
+            Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
+            if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
+            else estudiante.setCarrera(carrera.get());
+
+            error = Validador.validarCuatrimestreUsuario(estudiante.getCuatrimestre());
+            if (error.isPresent()) errores.put("cuatrimestre", error.get());
+
+            error = Validador.validarGrupoUsuario(estudiante.getGrupo());
+            if (error.isPresent()) errores.put("grupo", error.get());
+        }
+
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar al usuario", errores, null), HttpStatus.BAD_REQUEST);
+
+        usuario = usuarioRepository.save(usuario);
+
+        if (isEstudiante) {
+            estudiante.setUsuario(usuario);
+            estudianteRepository.save(estudiante);
+        }
+        noVerificadoRepository.save(new NoVerificado(
+                UUID.randomUUID().toString(),
+                usuario
+        ));
+        return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
+    }
+
+    // 1.7 Modificar datos personales
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mensaje> automodificacion(Usuario usuario, Estudiante estudiante) {
+        Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(usuario.getId());
+        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuarioActual = resultado.get();
+        boolean isEstudianteActual = usuarioActual.getEstudiante() != null;
+        boolean isResponsableActual = usuarioActual.getResponsable() != null;
+        boolean isAdministradorActual = usuarioActual.getAdministrador() != null;
+
+        Map<String, String> errores = new HashMap<>();
+        Optional<String> error;
+        boolean isEstudiante = isEstudianteActual;
+        boolean isComunidadUtez = usuarioActual.isComunidadUtez();
+
+        if (usuario.getNombre() != null) {
+            error = Validador.validarNombreUsuario(usuario.getNombre());
+            if (error.isPresent()) errores.put("nombre", error.get());
+        }
+
+        if (usuario.getApellido1() != null) {
+            error = Validador.validarApellido1Usuario(usuario.getApellido1());
+            if (error.isPresent()) errores.put("apellido1", error.get());
+        }
+
+        if (usuario.getApellido2()!= null) {
+            error = Validador.validarApellido2Usuario(usuario.getApellido2());
+            if (error.isPresent()) errores.put("apellido2", error.get());
+        }
+
+
+        if (usuario.getCorreo() != null) {
+            error = Validador.validarCorreoUsuario(usuario.getCorreo());
+            if (error.isPresent()) errores.put("correo", error.get());
+            else{
+                if (usuarioRepository.existsByCorreoAndActivoIsTrue(usuario.getCorreo())) errores.put("correo", "El correo ingresado ya se encuentra registrado");
+                isEstudiante = Validador.isCorreoEstudiante(usuario.getCorreo());
+                isComunidadUtez = Validador.isCorreoInstitucional(usuario.getCorreo());
+                usuario.setComunidadUtez(isComunidadUtez);
+            }
+        }
+
+        if (usuario.getTelefono() != null) {
+            error = Validador.validarTelefonoUsuario(usuario.getTelefono());
+            if (error.isPresent()) errores.put("telefono", error.get());
+        }
+
+        if (usuario.getContrasena() != null) {
+            error = Validador.validarContrasenaUsuario(usuario.getContrasena());
+            if (error.isPresent()) errores.put("contrasena", error.get());
+            else usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+        }
+
+        if (isAdministradorActual && !isComunidadUtez) errores.put("rolAdministrador", "Debes ser parte de la comunidad UTEZ para ser administrador");
+
+
+
+        if (isResponsableActual && !isComunidadUtez) errores.put("rolResponsable", "Debes ser parte de la comunidad UTEZ para ser responsable de aspecto");
+
+
+        if (isEstudiante == isEstudianteActual) {
+            if (isEstudianteActual) {
+                if (estudiante.getCarrera().getId() != null) {
+                    Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
+                    if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
+                    else estudiante.setCarrera(carrera.get());
+                }
+
+                if (estudiante.getCuatrimestre() != null) {
+                    error = Validador.validarCuatrimestreUsuario(estudiante.getCuatrimestre());
+                    if (error.isPresent()) errores.put("cuatrimestre", error.get());
+                }
+
+                if (estudiante.getGrupo() != null) {
+                    error = Validador.validarGrupoUsuario(estudiante.getGrupo());
+                    if (error.isPresent()) errores.put("grupo", error.get());
+                }
+            }
+        } else {
+            if (isEstudiante) {
+                Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
+                if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
+                else estudiante.setCarrera(carrera.get());
+
+                error = Validador.validarCuatrimestreUsuario(estudiante.getCuatrimestre());
+                if (error.isPresent()) errores.put("cuatrimestre", error.get());
+
+                error = Validador.validarGrupoUsuario(estudiante.getGrupo());
+                if (error.isPresent()) errores.put("grupo", error.get());
+            }
+        }
+
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo modificar al usuario", errores, null), HttpStatus.BAD_REQUEST);
+
+        usuarioActual.actualizar(usuario);
+
+        if (isEstudiante == isEstudianteActual) {
+            if (isEstudiante) {
+                usuarioActual.getEstudiante().actualizar(estudiante);
+            }
+        } else if (isEstudiante != isEstudianteActual){
+            if (isEstudiante) {
+                estudiante.setUsuario(usuario);
+                estudianteRepository.save(estudiante);
+            } else {
+                estudianteRepository.delete(usuarioActual.getEstudiante());
+            }
+        }
+
+        return new ResponseEntity<>(new Mensaje(false, "Usuario actualizado", null, usuario), HttpStatus.OK);
     }
 
 
-
+/*
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> automodificacion() {
 

@@ -1,15 +1,12 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Usuarios;
 
-public class UsuarioRegistroDTO {
+public class UsuarioDTO {
     private String nombre;
     private String apellido1;
     private String apellido2;
     private String correo;
     private String telefono;
     private String contrasena;
-    private Boolean administrador;
-    private Boolean responsable;
-    private Byte aspecto;
     private Short carrera;
     private Byte cuatrimestre;
     private Character grupo;
@@ -60,30 +57,6 @@ public class UsuarioRegistroDTO {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
-    }
-
-    public Boolean isAdministrador() {
-        return administrador;
-    }
-
-    public void setAdministrador(Boolean administrador) {
-        this.administrador = administrador;
-    }
-
-    public Boolean isResponsable() {
-        return responsable;
-    }
-
-    public void setResponsable(Boolean responsable) {
-        this.responsable = responsable;
-    }
-
-    public Byte getAspecto() {
-        return aspecto;
-    }
-
-    public void setAspecto(Byte aspecto) {
-        this.aspecto = aspecto;
     }
 
     public Short getCarrera() {
