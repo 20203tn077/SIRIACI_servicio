@@ -11,6 +11,9 @@ import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +28,8 @@ import java.util.List;
 @RequestMapping("/api/incidencias")
 @CrossOrigin(origins = {"*"})
 public class IndicenciaController {
+    @Value("${conf.registros_por_pagina}")
+    int registrosPorPagina;
     private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
     @Autowired
     IncidenciaService service;
@@ -64,4 +69,57 @@ public class IndicenciaController {
         //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
         //}
     }
+
+    // 2.2 Consultar reportes de incidencia realizados
+    @GetMapping("/")
+    public ResponseEntity<Mensaje> obtenerMisIncidencias(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+        //try {
+        if (filtro == null) {
+            return service.obtenerIncidencias(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
+        } else {
+            return service.obtenerIncidencias(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+        }
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    // 2.3 Consultar reporte de incidencia
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable long id) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+        //try {
+        return service.obtenerIncidencia(usuario.getId(), id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    /*
+    public ResponseEntity<Mensaje> () {
+        //try {
+            return service.;
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+    */
 }

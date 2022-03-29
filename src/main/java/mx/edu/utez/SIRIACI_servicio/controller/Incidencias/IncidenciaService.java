@@ -14,6 +14,7 @@ import mx.edu.utez.SIRIACI_servicio.model.usuario.UsuarioRepository;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import mx.edu.utez.SIRIACI_servicio.util.Validador;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -81,18 +82,38 @@ public class IncidenciaService {
 
     }
 
-//    // 2.2 Consultar reportes de incidencia realizados
-//    @Transactional(readOnly = true)
-//    public ResponseEntity<Mensaje> salida() {
-//
-//    }
-//
-//    // 2.3 Consultar reporte de incidencia
-//    @Transactional(readOnly = true)
-//    public ResponseEntity<Mensaje> salida() {
-//
-//    }
-//
+    // 2.2 Consultar reportes de incidencia realizados
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidencias(long idUsuario, Pageable pageable) {
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndUsuario_Id(idUsuario, pageable)), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidencias(long idUsuario, Pageable pageable, String filtro) {
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndUsuario_Id(filtro, idUsuario, pageable)), HttpStatus.OK);
+    }
+
+    // 2.3 Consultar reporte de incidencia
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidencia(long idUsuario, long id) {
+        Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuario = resultadoUsuario.get();
+
+        Optional<Incidencia> resultadoIncidencia = incidenciaRepository.findById(id);
+        if (resultadoIncidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Incidencia incidencia = resultadoIncidencia.get();
+
+        if (usuario.getAdministrador() != null) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
+        else if (incidencia.isActivo()) {
+            if (
+                    usuario.getResponsable() != null && usuario.getResponsable().getAspecto().getId() == incidencia.getAspecto().getId() ||
+                    usuario.getId() == incidencia.getUsuario().getId()
+            ) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
+            else return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para ver esto", null, null), HttpStatus.UNAUTHORIZED);
+        }
+        else return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+    }
+
 //    // 2.4 Modificar reporte de incidencia
 //    @Transactional(rollbackFor = {SQLException.class})
 //    public ResponseEntity<Mensaje> entrada() {
