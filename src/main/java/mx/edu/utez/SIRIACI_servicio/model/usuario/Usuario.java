@@ -40,6 +40,9 @@ public class Usuario {
     private Boolean activo = false;
     @Column(nullable = false)
     private Boolean comunidadUtez;
+    @Column(nullable = false)
+    @JsonIgnore
+    private Integer intentosFallidos = 0;
 
     // Relaciones de otras tablas con esta
     @OneToOne(mappedBy = "usuario")
@@ -179,6 +182,14 @@ public class Usuario {
 
     public void setComunidadUtez(Boolean comunidadUtez) {
         this.comunidadUtez = comunidadUtez;
+    }
+
+    public Integer getIntentosFallidos() {
+        return intentosFallidos;
+    }
+
+    public void setIntentosFallidos(Integer intentosFallidos) {
+        this.intentosFallidos = intentosFallidos;
     }
 
     public Administrador getAdministrador() {

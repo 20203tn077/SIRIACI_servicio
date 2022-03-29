@@ -57,7 +57,10 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                //.antMatchers("/api/administrador/**").permitAll()
+//                .antMatchers("/api/publico/**").permitAll()
+//                .antMatchers("/api/seleccionables/**").hasRole("ADMINISTRADOR")
+//                .antMatchers("/api/responsable/**").hasRole("RESPONSABLE")
+//                .anyRequest().authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)

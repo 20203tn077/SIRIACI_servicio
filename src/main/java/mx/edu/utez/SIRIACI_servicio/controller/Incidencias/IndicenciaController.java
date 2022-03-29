@@ -29,6 +29,7 @@ public class IndicenciaController {
     @Autowired
     IncidenciaService service;
 
+    // 2.1 Registrar nuevo reporte de incidencia
     @PostMapping("/")
     public ResponseEntity<Mensaje> registrarIncidencia(@RequestBody IncidenciaDTO incidenciaDTO) {
         DetalleUsuario usuario = null;
@@ -37,13 +38,15 @@ public class IndicenciaController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         //try {
             List<ImagenIncidencia> imagenes = new ArrayList<>();
-            for (String imagen : incidenciaDTO.getImagenesIncidencia()) {
-                imagenes.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen)));
+            if (incidenciaDTO.getImagenesIncidencia() != null) {
+                for (String imagen : incidenciaDTO.getImagenesIncidencia()) {
+                    imagenes.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen)));
+                }
             }
             return service.registrarIncidencia(new Incidencia(
                             incidenciaDTO.getDescripcion(),

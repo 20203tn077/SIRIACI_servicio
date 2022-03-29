@@ -7,5 +7,4 @@ import java.util.Optional;
 
 @Repository
 public interface AspectoRepository extends JpaRepository<Aspecto, Byte> {
-    Optional<Aspecto> findById(byte id);
 }

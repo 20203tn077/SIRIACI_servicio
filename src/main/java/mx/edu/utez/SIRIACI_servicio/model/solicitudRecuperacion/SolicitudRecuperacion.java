@@ -17,6 +17,7 @@ public class SolicitudRecuperacion {
     private String codigo;
     @Column(nullable = false)
     private Date tiempo_solicitud;
+    private Date tiempo_canjeado;
 
     // Llaves foraneas
     @OneToOne
@@ -56,5 +57,13 @@ public class SolicitudRecuperacion {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Date getTiempo_canjeado() {
+        return tiempo_canjeado;
+    }
+
+    public void setTiempo_canjeado(Date tiempo_canjeado) {
+        this.tiempo_canjeado = tiempo_canjeado;
     }
 }

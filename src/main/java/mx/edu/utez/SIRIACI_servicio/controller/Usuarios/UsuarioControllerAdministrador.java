@@ -59,17 +59,6 @@ public class UsuarioControllerAdministrador {
     }
 
     // 1.2 Consultar usuarios
-    @GetMapping("/{id}")
-    public ResponseEntity<Mensaje> obtenerUsuario(@PathVariable long id) {
-        //try {
-        return service.obtenerUsuario(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
-    }
-
-    // 1.3 Consultar usuario
     @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerUsuario(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
         //try {
@@ -78,6 +67,17 @@ public class UsuarioControllerAdministrador {
         } else {
             return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
         }
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    // 1.3 Consultar usuario
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerUsuario(@PathVariable long id) {
+        //try {
+        return service.obtenerUsuario(id);
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());
         //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
@@ -116,6 +116,7 @@ public class UsuarioControllerAdministrador {
         }*/
     }
 
+    // 1.5 Eliminar usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<Mensaje> eliminarUsuario(@PathVariable long id) {
         //try {
