@@ -73,6 +73,11 @@ public class Incidencia {
         this.usuario = usuario;
     }
 
+    public Incidencia(Long id, String comentario) {
+        this.id = id;
+        this.comentario = comentario;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
 import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
+import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
@@ -42,6 +43,27 @@ public class IndicenciaControllerResponsable {
         } else {
             return service.obtenerIncidenciasResponsable(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
         }
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    @PatchMapping("/")
+    public ResponseEntity<Mensaje> atenderIncidencia(IncidenciaAtenderDTO incidenciaAtenderDTO) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+        //try {
+        return service.atenderIncidenciaResponsable(new Incidencia(
+                usuario.getId(),
+                incidenciaAtenderDTO.getComentario()
+        ));
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());
         //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);

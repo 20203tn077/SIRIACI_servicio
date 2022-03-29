@@ -211,10 +211,7 @@ public class IncidenciaService {
         }
 
         if (incidencia.getEstado().getId() != null) {
-            Optional<Estado> estado = estadoRepository.findById(incidencia.getEstado().getId());
-            if (estado.isEmpty()) errores.put("estado", "El estado seleccionado no existe");
-            else if (estado.get().getId() == estadoRepository.findFirstByOrderById().getId()) errores.put("estado", "El estado seleccionado no existe");
-            else incidencia.setEstado(estado.get());
+            incidencia.setEstado(estadoRepository.findById((byte)(incidenciaActual.getEstado().getId() + 1)).get());
         }
 
         if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo atender la incidencia", errores, null), HttpStatus.BAD_REQUEST);
@@ -242,10 +239,7 @@ public class IncidenciaService {
         }
 
         if (incidencia.getEstado().getId() != null) {
-            Optional<Estado> estado = estadoRepository.findById(incidencia.getEstado().getId());
-            if (estado.isEmpty()) errores.put("estado", "El estado seleccionado no existe");
-            else if (estado.get().getId() == estadoRepository.findFirstByOrderById().getId()) errores.put("estado", "El estado seleccionado no existe");
-            else incidencia.setEstado(estado.get());
+            incidencia.setEstado(estadoRepository.findById((byte)(incidenciaActual.getEstado().getId() + 1)).get());
         }
 
         if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo atender la incidencia", errores, null), HttpStatus.BAD_REQUEST);
