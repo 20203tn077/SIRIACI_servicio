@@ -13,5 +13,8 @@ import java.util.Optional;
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Long> {
     Page<Incidencia> findAllByActivoIsTrueAndUsuario_Id(long id, Pageable pageable);
     Page<Incidencia> findAllByActivoIsTrueAndDescripcionContainsAndUsuario_Id(String filtro, long id, Pageable pageable);
+    Page<Incidencia> findAllByDescripcionContains(String filtro, Pageable pageable);
+    Page<Incidencia> findAllByActivoIsTrueAndAspecto_Id(byte id, Pageable pageable);
+    Page<Incidencia> findAllByActivoIsTrueAndDescripcionContainsAndAspecto_Id(String filtro, byte id, Pageable pageable);
     Optional<Incidencia> findByIdAndActivoIsTrue(Long id);
 }

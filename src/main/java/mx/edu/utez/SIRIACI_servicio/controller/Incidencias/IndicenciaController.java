@@ -73,7 +73,7 @@ public class IndicenciaController {
 
     // 2.2 Consultar reportes de incidencia realizados
     @GetMapping("/")
-    public ResponseEntity<Mensaje> obtenerMisIncidencias(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
+    public ResponseEntity<Mensaje> obtenerIncidenciasRealizadas(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
         DetalleUsuario usuario = null;
 
         try {
@@ -84,9 +84,9 @@ public class IndicenciaController {
         }
         //try {
         if (filtro == null) {
-            return service.obtenerIncidencias(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            return service.obtenerIncidenciasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
         } else {
-            return service.obtenerIncidencias(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            return service.obtenerIncidenciasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
         }
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());

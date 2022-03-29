@@ -83,11 +83,11 @@ public class Incidencia {
         if (incidencia.latitud != null && this.latitud != null && incidencia.latitud != this.latitud) this.latitud = incidencia.latitud;
         if (incidencia.importancia.getId() != null && this.importancia.getId() != null && incidencia.importancia.getId() != this.importancia.getId()) this.importancia = incidencia.importancia;
         if (incidencia.aspecto.getId() != null && this.aspecto.getId() != null && incidencia.aspecto.getId() != this.aspecto.getId()) this.aspecto = incidencia.aspecto;
-        this.descripcion = descripcion;
-        this.longitud = longitud;
-        this.latitud = latitud;
-        this.importancia = importancia;
-        this.aspecto = aspecto;
+    }
+
+    public void atender(Incidencia incidencia) {
+        if (this.comentario != null && incidencia.comentario != null && this.comentario != incidencia.comentario) this.comentario = incidencia.comentario;
+        if (this.estado.getId() != null && incidencia.estado.getId() != null && this.estado.getId() != incidencia.estado.getId()) this.estado = incidencia.estado;
     }
 
     public void setId(Long id) {

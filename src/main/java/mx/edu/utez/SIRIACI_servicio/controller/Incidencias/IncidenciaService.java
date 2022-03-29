@@ -2,6 +2,7 @@ package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.AspectoRepository;
+import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
 import mx.edu.utez.SIRIACI_servicio.model.estado.EstadoRepository;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidenciaRepository;
@@ -84,11 +85,11 @@ public class IncidenciaService {
 
     // 2.2 Consultar reportes de incidencia realizados
     @Transactional(readOnly = true)
-    public ResponseEntity<Mensaje> obtenerIncidencias(long idUsuario, Pageable pageable) {
+    public ResponseEntity<Mensaje> obtenerIncidenciasRealizadas(long idUsuario, Pageable pageable) {
         return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndUsuario_Id(idUsuario, pageable)), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<Mensaje> obtenerIncidencias(long idUsuario, Pageable pageable, String filtro) {
+    public ResponseEntity<Mensaje> obtenerIncidenciasRealizadas(long idUsuario, Pageable pageable, String filtro) {
         return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndUsuario_Id(filtro, idUsuario, pageable)), HttpStatus.OK);
     }
 
@@ -164,22 +165,96 @@ public class IncidenciaService {
         }
 
         return new ResponseEntity<>(new Mensaje(false, "Incidencia actualizada", null, incidencia), HttpStatus.OK);
-
     }
 
-//    // 2.5 Consultar reportes de incidencia
-//    @Transactional(readOnly = true)
-//    public ResponseEntity<Mensaje> salida() {
-//
-//    }
-//
-//    // 2.6 Atender reporte de incidencia
-//    @Transactional(rollbackFor = {SQLException.class})
-//    public ResponseEntity<Mensaje> entrada() {
-//        Map<String, String> errores = new HashMap<>();
-//        Optional<String> error;
-//    }
-//
+    // 2.5 Consultar reportes de incidencia
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidenciasAdministrador(long idUsuario, Pageable pageable) {
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAll(pageable)), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidenciasAdministrador(long idUsuario, Pageable pageable, String filtro) {
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByDescripcionContains(filtro, pageable)), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidenciasResponsable(long idUsuario, Pageable pageable) {
+        Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuario = resultadoUsuario.get();
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndAspecto_Id(usuario.getResponsable().getAspecto().getId(), pageable)), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidenciasResponsable(long idUsuario, Pageable pageable, String filtro) {
+        Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuario = resultadoUsuario.get();
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndAspecto_Id(filtro, usuario.getResponsable().getAspecto().getId(), pageable)), HttpStatus.OK);
+    }
+
+
+    // 2.6 Atender reporte de incidencia
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mensaje> atenderIncidenciaAdministrador(Incidencia incidencia) {
+        Incidencia incidenciaActual = null;
+        Optional<Incidencia> resultado = incidenciaRepository.findByIdAndActivoIsTrue(incidencia.getId());
+        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        else incidenciaActual = resultado.get();
+
+        Map<String, String> errores = new HashMap<>();
+        Optional<String> error;
+
+        if (incidenciaActual.getEstado().getId() == estadoRepository.findFirstByOrderByIdDesc().getId()) return new ResponseEntity<>(new Mensaje(true, "La incidencia ya fue atendida", null, null), HttpStatus.BAD_REQUEST);
+
+        if (incidencia.getComentario() != null) {
+            error = Validador.validarComentarioIncidencia(incidencia.getComentario());
+            if (error.isPresent()) errores.put("comentario", error.get());
+        }
+
+        if (incidencia.getEstado().getId() != null) {
+            Optional<Estado> estado = estadoRepository.findById(incidencia.getEstado().getId());
+            if (estado.isEmpty()) errores.put("estado", "El estado seleccionado no existe");
+            else if (estado.get().getId() == estadoRepository.findFirstByOrderById().getId()) errores.put("estado", "El estado seleccionado no existe");
+            else incidencia.setEstado(estado.get());
+        }
+
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo atender la incidencia", errores, null), HttpStatus.BAD_REQUEST);
+
+        incidenciaActual.atender(incidencia);
+
+        return new ResponseEntity<>(new Mensaje(false, "Incidencia atendida", null, incidencia), HttpStatus.OK);
+    }
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mensaje> atenderIncidenciaResponsable(Incidencia incidencia) {
+        Incidencia incidenciaActual = null;
+        Optional<Incidencia> resultado = incidenciaRepository.findByIdAndActivoIsTrue(incidencia.getId());
+        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        else incidenciaActual = resultado.get();
+
+        Map<String, String> errores = new HashMap<>();
+        Optional<String> error;
+
+        if (incidenciaActual.getAspecto().getId() != aspectoRepository.findById(incidencia.getAspecto().getId()).get().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
+        if (incidenciaActual.getEstado().getId() == estadoRepository.findFirstByOrderByIdDesc().getId()) return new ResponseEntity<>(new Mensaje(true, "La incidencia ya fue atendida", null, null), HttpStatus.BAD_REQUEST);
+
+        if (incidencia.getComentario() != null) {
+            error = Validador.validarComentarioIncidencia(incidencia.getComentario());
+            if (error.isPresent()) errores.put("comentario", error.get());
+        }
+
+        if (incidencia.getEstado().getId() != null) {
+            Optional<Estado> estado = estadoRepository.findById(incidencia.getEstado().getId());
+            if (estado.isEmpty()) errores.put("estado", "El estado seleccionado no existe");
+            else if (estado.get().getId() == estadoRepository.findFirstByOrderById().getId()) errores.put("estado", "El estado seleccionado no existe");
+            else incidencia.setEstado(estado.get());
+        }
+
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo atender la incidencia", errores, null), HttpStatus.BAD_REQUEST);
+
+        incidenciaActual.atender(incidencia);
+
+        return new ResponseEntity<>(new Mensaje(false, "Incidencia atendida", null, incidencia), HttpStatus.OK);
+    }
+
 //    // 2.7 Eliminar reporte de incidencia
 //    @Transactional(rollbackFor = {SQLException.class})
 //    public ResponseEntity<Mensaje> entrada() {
