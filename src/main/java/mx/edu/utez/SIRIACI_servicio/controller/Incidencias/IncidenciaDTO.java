@@ -1,6 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import mx.edu.utez.SIRIACI_servicio.controller.ImagenDTO;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
@@ -20,7 +21,7 @@ public class IncidenciaDTO {
     private Byte importancia;
     private Double longitud;
     private Double latitud;
-    private List<String> imagenesIncidencia;
+    private List<ImagenDTO> imagenesIncidencia;
 
     public Byte getAspecto() {
         return aspecto;
@@ -62,11 +63,11 @@ public class IncidenciaDTO {
         this.latitud = latitud;
     }
 
-    public List<String> getImagenesIncidencia() {
+    public List<ImagenDTO> getImagenesIncidencia() {
         return imagenesIncidencia;
     }
 
-    public void setImagenesIncidencia(List<String> imagenesIncidencia) {
+    public void setImagenesIncidencia(List<ImagenDTO> imagenesIncidencia) {
         this.imagenesIncidencia = imagenesIncidencia;
     }
 }

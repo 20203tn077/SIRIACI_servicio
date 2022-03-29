@@ -63,8 +63,31 @@ public class Incidencia {
         this.usuario = usuario;
     }
 
+    public Incidencia(Long id, String descripcion, Double longitud, Double latitud, Importancia importancia, Aspecto aspecto, Usuario usuario) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.longitud = longitud;
+        this.latitud = latitud;
+        this.importancia = importancia;
+        this.aspecto = aspecto;
+        this.usuario = usuario;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void actualizar(Incidencia incidencia) {
+        if (incidencia.descripcion != null && this.descripcion != null && incidencia.descripcion != this.descripcion) this.descripcion = incidencia.descripcion;
+        if (incidencia.longitud != null && this.longitud != null && incidencia.longitud != this.longitud) this.longitud = incidencia.longitud;
+        if (incidencia.latitud != null && this.latitud != null && incidencia.latitud != this.latitud) this.latitud = incidencia.latitud;
+        if (incidencia.importancia.getId() != null && this.importancia.getId() != null && incidencia.importancia.getId() != this.importancia.getId()) this.importancia = incidencia.importancia;
+        if (incidencia.aspecto.getId() != null && this.aspecto.getId() != null && incidencia.aspecto.getId() != this.aspecto.getId()) this.aspecto = incidencia.aspecto;
+        this.descripcion = descripcion;
+        this.longitud = longitud;
+        this.latitud = latitud;
+        this.importancia = importancia;
+        this.aspecto = aspecto;
     }
 
     public void setId(Long id) {

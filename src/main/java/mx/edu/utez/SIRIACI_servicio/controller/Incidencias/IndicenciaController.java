@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
+import mx.edu.utez.SIRIACI_servicio.controller.ImagenDTO;
 import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
@@ -49,8 +50,8 @@ public class IndicenciaController {
         //try {
             List<ImagenIncidencia> imagenes = new ArrayList<>();
             if (incidenciaDTO.getImagenesIncidencia() != null) {
-                for (String imagen : incidenciaDTO.getImagenesIncidencia()) {
-                    imagenes.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen)));
+                for (ImagenDTO imagen : incidenciaDTO.getImagenesIncidencia()) {
+                    if (imagen.getImagen() != null) imagenes.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen.getImagen())));
                 }
             }
             return service.registrarIncidencia(new Incidencia(
@@ -106,6 +107,45 @@ public class IndicenciaController {
         }
         //try {
         return service.obtenerIncidencia(usuario.getId(), id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    // 2.4 Modificar reporte de incidencia
+    @PatchMapping("/{id}")
+    public ResponseEntity<Mensaje> modificarIncidencia(@RequestBody IncidenciaDTO incidenciaDTO, @PathVariable long id) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+
+        //try {
+        List<ImagenIncidencia> imagenesRegistrar = new ArrayList<>();
+        List<ImagenIncidencia> imagenesEliminar = new ArrayList<>();
+        if (incidenciaDTO.getImagenesIncidencia() != null) {
+            for (ImagenDTO imagen : incidenciaDTO.getImagenesIncidencia()) {
+                if (imagen.getImagen() != null) imagenesRegistrar.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen.getImagen())));
+                else if (imagen.getId() != null) imagenesEliminar.add(new ImagenIncidencia(imagen.getId()));
+            }
+        }
+        return service.modificarIncidencia(new Incidencia(
+                        id,
+                        incidenciaDTO.getDescripcion(),
+                        incidenciaDTO.getLongitud(),
+                        incidenciaDTO.getLatitud(),
+                        new Importancia(incidenciaDTO.getImportancia()),
+                        new Aspecto(incidenciaDTO.getAspecto()),
+                        new Usuario(usuario.getId())
+                ),
+                imagenesRegistrar,
+                imagenesEliminar
+        );
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());
         //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);

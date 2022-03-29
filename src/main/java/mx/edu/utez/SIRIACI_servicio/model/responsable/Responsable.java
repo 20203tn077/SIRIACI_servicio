@@ -28,7 +28,7 @@ public class Responsable {
     }
 
     public void actualizar(Responsable responsable) {
-        if (this.aspecto != responsable.aspecto && (responsable.aspecto != null && responsable.aspecto.getId() != null)) this.aspecto = responsable.aspecto;
+        if (this.aspecto.getId() != responsable.aspecto.getId() && (responsable.aspecto != null && responsable.aspecto.getId() != null)) this.aspecto = responsable.aspecto;
     }
 
     public Responsable(Aspecto aspecto) {

@@ -29,6 +29,10 @@ public class ImagenIncidencia {
         this.imagen = imagen;
     }
 
+    public ImagenIncidencia(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

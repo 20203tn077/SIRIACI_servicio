@@ -114,13 +114,59 @@ public class IncidenciaService {
         else return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
     }
 
-//    // 2.4 Modificar reporte de incidencia
-//    @Transactional(rollbackFor = {SQLException.class})
-//    public ResponseEntity<Mensaje> entrada() {
-//        Map<String, String> errores = new HashMap<>();
-//        Optional<String> error;
-//    }
-//
+    // 2.4 Modificar reporte de incidencia
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mensaje> modificarIncidencia(Incidencia incidencia, List<ImagenIncidencia> imagenesRegistrar, List<ImagenIncidencia> imagenesEliminar) {
+        Incidencia incidenciaActual = null;
+        Optional<Incidencia> resultado = incidenciaRepository.findByIdAndActivoIsTrue(incidencia.getId());
+        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        else incidenciaActual = resultado.get();
+
+        if (incidenciaActual.getUsuario().getId() != incidencia.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
+
+        Map<String, String> errores = new HashMap<>();
+        Optional<String> error;
+
+        if (incidencia.getDescripcion() != null) {
+            error = Validador.validarDescripcionIncidencia(incidencia.getDescripcion());
+            if (error.isPresent()) errores.put("descripcion", error.get());
+        }
+
+        if (incidencia.getLatitud() != null && incidencia.getLongitud() != null) {
+            error = Validador.validarUbicacionIncidencia(incidencia.getLatitud(), incidencia.getLongitud());
+            if (error.isPresent()) errores.put("ubicacion", error.get());
+        }
+
+        if (incidencia.getAspecto().getId() != null) {
+            Optional<Aspecto> aspecto = aspectoRepository.findById(incidencia.getAspecto().getId());
+            if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionada no existe");
+            else incidencia.setAspecto(aspecto.get());
+        }
+
+
+        if (incidencia.getImportancia().getId() != null) {
+            Optional<Importancia> importancia = importanciaRepository.findById(incidencia.getImportancia().getId());
+            if (importancia.isEmpty()) errores.put("importancia", "El nivel de importancia seleccionada no existe");
+            else incidencia.setImportancia(importancia.get());
+        }
+
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar la incidencia", errores, null), HttpStatus.BAD_REQUEST);
+
+        incidenciaActual.actualizar(incidencia);
+
+        for (ImagenIncidencia imagen : imagenesRegistrar) {
+            imagen.setIncidencia(incidenciaActual);
+            imagenIncidenciaRepository.save(imagen);
+        }
+
+        for (ImagenIncidencia imagen : imagenesEliminar) {
+            imagenIncidenciaRepository.deleteById(imagen.getId());
+        }
+
+        return new ResponseEntity<>(new Mensaje(false, "Incidencia actualizada", null, incidencia), HttpStatus.OK);
+
+    }
+
 //    // 2.5 Consultar reportes de incidencia
 //    @Transactional(readOnly = true)
 //    public ResponseEntity<Mensaje> salida() {
