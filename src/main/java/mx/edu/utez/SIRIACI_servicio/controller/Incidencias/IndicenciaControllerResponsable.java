@@ -27,6 +27,25 @@ public class IndicenciaControllerResponsable {
     @Autowired
     IncidenciaService service;
 
+    // 2.3 Consultar reporte de incidencia
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable long id) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+        //try {
+        return service.obtenerIncidenciaResponsable(usuario.getId(), id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
     // 2.5 Consultar reportes de incidencia
     @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerIncidencias(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {

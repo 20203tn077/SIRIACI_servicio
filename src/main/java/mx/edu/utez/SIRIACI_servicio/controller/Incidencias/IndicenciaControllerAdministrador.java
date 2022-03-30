@@ -24,6 +24,19 @@ public class IndicenciaControllerAdministrador {
     private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
     @Autowired
     IncidenciaService service;
+
+    // 2.3 Consultar reporte de incidencia
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable long id) {
+        //try {
+        return service.obtenerIncidenciaAdministrador(id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
+    // 2.5 Consultar reportes de incidencia
     @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerIncidencias(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
         DetalleUsuario usuario = null;
@@ -60,8 +73,9 @@ public class IndicenciaControllerAdministrador {
         //}
     }
 
+    // 2.7 Eliminar reporte de incidencia
     @DeleteMapping("/{id}")
-    public ResponseEntity<Mensaje> eliminarIncidencia (@PathVariable Long id) {
+    public ResponseEntity<Mensaje> eliminarIncidencia(@PathVariable Long id) {
         //try {
             return service.eliminarIncidencia(id);
         //} catch (Exception e) {
