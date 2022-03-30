@@ -114,6 +114,30 @@ public class IncidenciaService {
         }
         else return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
     }
+    public ResponseEntity<Mensaje> obtenerIncidenciaResponsable(long idUsuario, long id) {
+        Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuario = resultadoUsuario.get();
+
+        Optional<Incidencia> resultadoIncidencia = incidenciaRepository.findById(id);
+        if (resultadoIncidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Incidencia incidencia = resultadoIncidencia.get();
+
+        if (usuario.getAdministrador() != null) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
+        else if (incidencia.isActivo()) {
+            if (
+                    usuario.getResponsable() != null && usuario.getResponsable().getAspecto().getId() == incidencia.getAspecto().getId() ||
+                            usuario.getId() == incidencia.getUsuario().getId()
+            ) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
+            else return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para ver esto", null, null), HttpStatus.UNAUTHORIZED);
+        }
+        else return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+    }
+    public ResponseEntity<Mensaje> obtenerIncidenciaAdministrador(long id) {
+        Optional<Incidencia> resultadoIncidencia = incidenciaRepository.findById(id);
+        if (resultadoIncidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia.get()), HttpStatus.OK);
+    }
 
     // 2.4 Modificar reporte de incidencia
     @Transactional(rollbackFor = {SQLException.class})
@@ -124,6 +148,10 @@ public class IncidenciaService {
         else incidenciaActual = resultado.get();
 
         if (incidenciaActual.getUsuario().getId() != incidencia.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
+        if (incidenciaActual.getEstado().getId() != estadoRepository.findFirstByOrderById().getId()) {
+            if (incidenciaActual.getEstado().getId() == estadoRepository.findFirstByOrderByIdDesc().getId()) return new ResponseEntity<>(new Mensaje(true, "No puedes modificar tu reporte, la incidencia ya fue atendida", null, null), HttpStatus.BAD_REQUEST);
+            else return new ResponseEntity<>(new Mensaje(true, "No puedes modificar tu reporte, la incidencia ya está siendo atendida", null, null), HttpStatus.BAD_REQUEST);
+        }
 
         Map<String, String> errores = new HashMap<>();
         Optional<String> error;
@@ -210,7 +238,7 @@ public class IncidenciaService {
             if (error.isPresent()) errores.put("comentario", error.get());
         }
 
-        if (incidencia.getEstado().getId() != null) {
+        if (incidenciaActual.getEstado().getId() != null) {
             incidencia.setEstado(estadoRepository.findById((byte)(incidenciaActual.getEstado().getId() + 1)).get());
         }
 
@@ -226,11 +254,14 @@ public class IncidenciaService {
         Optional<Incidencia> resultado = incidenciaRepository.findByIdAndActivoIsTrue(incidencia.getId());
         if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
         else incidenciaActual = resultado.get();
+        Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(incidencia.getUsuario().getId());
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuario = resultadoUsuario.get();
 
         Map<String, String> errores = new HashMap<>();
         Optional<String> error;
 
-        if (incidenciaActual.getAspecto().getId() != aspectoRepository.findById(incidencia.getAspecto().getId()).get().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
+        if (incidenciaActual.getAspecto().getId() != usuario.getResponsable().getAspecto().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
         if (incidenciaActual.getEstado().getId() == estadoRepository.findFirstByOrderByIdDesc().getId()) return new ResponseEntity<>(new Mensaje(true, "La incidencia ya fue atendida", null, null), HttpStatus.BAD_REQUEST);
 
         if (incidencia.getComentario() != null) {
@@ -238,7 +269,7 @@ public class IncidenciaService {
             if (error.isPresent()) errores.put("comentario", error.get());
         }
 
-        if (incidencia.getEstado().getId() != null) {
+        if (incidenciaActual.getEstado().getId() != null) {
             incidencia.setEstado(estadoRepository.findById((byte)(incidenciaActual.getEstado().getId() + 1)).get());
         }
 
@@ -249,9 +280,12 @@ public class IncidenciaService {
         return new ResponseEntity<>(new Mensaje(false, "Incidencia atendida", null, incidencia), HttpStatus.OK);
     }
 
-//    // 2.7 Eliminar reporte de incidencia
-//    @Transactional(rollbackFor = {SQLException.class})
-//    public ResponseEntity<Mensaje> entrada() {
-//
-//    }
+    // 2.7 Eliminar reporte de incidencia
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mensaje> eliminarIncidencia(long id) {
+        Optional<Incidencia> incidencia = incidenciaRepository.findByIdAndActivoIsTrue(id);
+        if (incidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        incidencia.get().setActivo(false);
+        return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+    }
 }

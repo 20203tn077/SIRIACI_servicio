@@ -61,9 +61,10 @@ public class UsuarioService {
         error = Validador.validarApellido1Usuario(usuario.getApellido1());
         if (error.isPresent()) errores.put("apellido1", error.get());
 
-
-        error = Validador.validarApellido2Usuario(usuario.getApellido2());
-        if (error.isPresent()) errores.put("apellido2", error.get());
+        if (usuario.getApellido2()!= null) {
+            error = Validador.validarApellido2Usuario(usuario.getApellido2());
+            if (error.isPresent()) errores.put("apellido2", error.get());
+        }
 
         error = Validador.validarCorreoUsuario(usuario.getCorreo());
         if (error.isPresent()) errores.put("correo", error.get());
@@ -88,16 +89,22 @@ public class UsuarioService {
         else {
             if (isResponsable && !isComunidadUtez) errores.put("rolResponsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
             if (isResponsable) {
-                Optional<Aspecto> aspecto = aspectoRepository.findById(responsable.getAspecto().getId());
-                if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionado no existe");
-                else responsable.setAspecto(aspecto.get());
+                if (responsable.getAspecto().getId() == null) errores.put("aspecto", "Debes seleccionar un aspecto");
+                else {
+                    Optional<Aspecto> aspecto = aspectoRepository.findById(responsable.getAspecto().getId());
+                    if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionado no existe");
+                    else responsable.setAspecto(aspecto.get());
+                }
             }
         }
 
         if (isEstudiante) {
-            Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
-            if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
-            else estudiante.setCarrera(carrera.get());
+            if (estudiante.getCarrera().getId() == null) errores.put("carrera", "Debes seleccionar una carrera");
+            else {
+                Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
+                if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
+                else estudiante.setCarrera(carrera.get());
+            }
 
             error = Validador.validarCuatrimestreUsuario(estudiante.getCuatrimestre());
             if (error.isPresent()) errores.put("cuatrimestre", error.get());
@@ -218,9 +225,12 @@ public class UsuarioService {
         } else {
             if (isResponsable && !isComunidadUtez) errores.put("rolResponsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
             if (isResponsable) {
-                Optional<Aspecto> aspecto = aspectoRepository.findById(responsable.getAspecto().getId());
-                if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionado no existe");
-                else responsable.setAspecto(aspecto.get());
+                if (responsable.getAspecto().getId() == null) errores.put("aspecto", "Debes seleccionar un aspecto");
+                else {
+                    Optional<Aspecto> aspecto = aspectoRepository.findById(responsable.getAspecto().getId());
+                    if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionado no existe");
+                    else responsable.setAspecto(aspecto.get());
+                }
             }
         }
 
@@ -244,9 +254,12 @@ public class UsuarioService {
             }
         } else {
             if (isEstudiante) {
-                Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
-                if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
-                else estudiante.setCarrera(carrera.get());
+                if (estudiante.getCarrera().getId() == null) errores.put("carrera", "Debes seleccionar una carrera");
+                else {
+                    Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
+                    if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
+                    else estudiante.setCarrera(carrera.get());
+                }
 
                 error = Validador.validarCuatrimestreUsuario(estudiante.getCuatrimestre());
                 if (error.isPresent()) errores.put("cuatrimestre", error.get());

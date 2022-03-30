@@ -20,16 +20,16 @@ public class Usuario {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     // Atributos
-    private long id;
     @Column(nullable = false, length = 64)
     private String nombre;
     @Column(nullable = false, length = 32)
     private String apellido1;
     @Column(length = 32)
     private String apellido2;
-    @Column(nullable = false, length = 64)
+    @Column(length = 64)
     private String correo;
     @Column(nullable = false, length = 10)
     private String telefono;
@@ -77,12 +77,12 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(long id) {
+    public Usuario(Long id) {
         this.id = id;
     }
 
     // Constructor para modificación
-    public Usuario(long id, String nombre, String apellido1, String apellido2, String correo, String telefono, String contrasena) {
+    public Usuario(Long id, String nombre, String apellido1, String apellido2, String correo, String telefono, String contrasena) {
         this.id = id;
         this.nombre = nombre;
         this.apellido1 = apellido1;
@@ -112,11 +112,11 @@ public class Usuario {
         if (this.comunidadUtez != usuario.comunidadUtez && usuario.comunidadUtez != null) this.comunidadUtez = usuario.comunidadUtez;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

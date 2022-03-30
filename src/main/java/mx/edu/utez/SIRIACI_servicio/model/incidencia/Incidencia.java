@@ -78,21 +78,27 @@ public class Incidencia {
         this.comentario = comentario;
     }
 
+    public Incidencia(Long id, String comentario, Usuario usuario) {
+        this.id = id;
+        this.comentario = comentario;
+        this.usuario = usuario;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void actualizar(Incidencia incidencia) {
-        if (incidencia.descripcion != null && this.descripcion != null && incidencia.descripcion != this.descripcion) this.descripcion = incidencia.descripcion;
-        if (incidencia.longitud != null && this.longitud != null && incidencia.longitud != this.longitud) this.longitud = incidencia.longitud;
-        if (incidencia.latitud != null && this.latitud != null && incidencia.latitud != this.latitud) this.latitud = incidencia.latitud;
-        if (incidencia.importancia.getId() != null && this.importancia.getId() != null && incidencia.importancia.getId() != this.importancia.getId()) this.importancia = incidencia.importancia;
-        if (incidencia.aspecto.getId() != null && this.aspecto.getId() != null && incidencia.aspecto.getId() != this.aspecto.getId()) this.aspecto = incidencia.aspecto;
+        if (incidencia.descripcion != null && incidencia.descripcion != this.descripcion) this.descripcion = incidencia.descripcion;
+        if (incidencia.longitud != null && incidencia.longitud != this.longitud) this.longitud = incidencia.longitud;
+        if (incidencia.latitud != null && incidencia.latitud != this.latitud) this.latitud = incidencia.latitud;
+        if (incidencia.importancia != null && incidencia.importancia.getId() != null && incidencia.importancia.getId() != this.importancia.getId()) this.importancia = incidencia.importancia;
+        if (incidencia.aspecto != null && incidencia.aspecto.getId() != null && incidencia.aspecto.getId() != this.aspecto.getId()) this.aspecto = incidencia.aspecto;
     }
 
     public void atender(Incidencia incidencia) {
-        if (this.comentario != null && incidencia.comentario != null && this.comentario != incidencia.comentario) this.comentario = incidencia.comentario;
-        if (this.estado.getId() != null && incidencia.estado.getId() != null && this.estado.getId() != incidencia.estado.getId()) this.estado = incidencia.estado;
+        if (incidencia.comentario != null && this.comentario != incidencia.comentario) this.comentario = incidencia.comentario;
+        if (incidencia.estado.getId() != null && this.estado.getId() != incidencia.estado.getId()) this.estado = incidencia.estado;
     }
 
     public void setId(Long id) {

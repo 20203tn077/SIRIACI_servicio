@@ -2,6 +2,7 @@ package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
 import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
+import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
@@ -49,10 +50,10 @@ public class IndicenciaControllerResponsable {
         //}
     }
 
-    @PatchMapping("/")
-    public ResponseEntity<Mensaje> atenderIncidencia(IncidenciaAtenderDTO incidenciaAtenderDTO) {
+    // 2.6 Atender reporte de incidencia
+    @PatchMapping("/{id}")
+    public ResponseEntity<Mensaje> atenderIncidencia(@RequestBody IncidenciaAtenderDTO incidenciaAtenderDTO, @PathVariable long id) {
         DetalleUsuario usuario = null;
-
         try {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
@@ -61,8 +62,9 @@ public class IndicenciaControllerResponsable {
         }
         //try {
         return service.atenderIncidenciaResponsable(new Incidencia(
-                usuario.getId(),
-                incidenciaAtenderDTO.getComentario()
+                id,
+                incidenciaAtenderDTO.getComentario(),
+                new Usuario(usuario.getId())
         ));
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());

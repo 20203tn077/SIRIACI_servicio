@@ -47,19 +47,11 @@ public class IndicenciaControllerAdministrador {
     }
 
     // 2.6 Atender reporte de incidencia
-    @PatchMapping("/")
-    public ResponseEntity<Mensaje> atenderIncidencia(IncidenciaAtenderDTO incidenciaAtenderDTO) {
-        DetalleUsuario usuario = null;
-
-        try {
-            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        } catch (ClassCastException e) {
-            logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
-        }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Mensaje> atenderIncidencia(@RequestBody IncidenciaAtenderDTO incidenciaAtenderDTO, @PathVariable long id) {
         //try {
         return service.atenderIncidenciaAdministrador(new Incidencia(
-                usuario.getId(),
+                id,
                 incidenciaAtenderDTO.getComentario()
         ));
         //} catch (Exception e) {
@@ -68,14 +60,13 @@ public class IndicenciaControllerAdministrador {
         //}
     }
 
-    /*
-    public ResponseEntity<Mensaje> () {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Mensaje> eliminarIncidencia (@PathVariable Long id) {
         //try {
-            return service.;
+            return service.eliminarIncidencia(id);
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());
         //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
         //}
     }
-    */
 }

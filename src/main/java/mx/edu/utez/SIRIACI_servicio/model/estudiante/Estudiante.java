@@ -40,7 +40,7 @@ public class Estudiante {
     public void actualizar(Estudiante estudiante) {
         if (this.cuatrimestre != estudiante.cuatrimestre && estudiante.cuatrimestre != null) this.cuatrimestre = estudiante.cuatrimestre;
         if (this.grupo != estudiante.grupo && estudiante.grupo != null) this.grupo = estudiante.grupo;
-        if (this.carrera != estudiante.carrera && (estudiante.carrera != null && estudiante.carrera.getId() != null)) this.carrera = estudiante.carrera;
+        if (this.carrera != estudiante.carrera && estudiante.carrera != null && estudiante.carrera.getId() != null) this.carrera = estudiante.carrera;
     }
 
     public Long getId() {
