@@ -62,4 +62,24 @@ public class UsuarioController {
             return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
         }*/
     }
+
+    @GetMapping("perfil/")
+    // 1.7 Modificar datos personales
+    public ResponseEntity<Mensaje> perfil() {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.BAD_REQUEST);
+        }
+
+        //try {
+        return service.obtenerUsuario(usuario.getId());
+        /*} catch (Exception e) {
+            logger.error("Error en método registrarUsuario" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
+        }*/
+    }
 }
