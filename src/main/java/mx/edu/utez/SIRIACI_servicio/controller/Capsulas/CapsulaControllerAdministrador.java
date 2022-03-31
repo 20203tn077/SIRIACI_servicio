@@ -1,6 +1,10 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Capsulas;
 
+import mx.edu.utez.SIRIACI_servicio.controller.ImagenDTO;
 import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
+import mx.edu.utez.SIRIACI_servicio.model.capsula.Capsula;
+import mx.edu.utez.SIRIACI_servicio.model.imagenCapsula.ImagenCapsula;
+import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
@@ -13,6 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/administrador/capsulas")
@@ -49,14 +57,33 @@ public class CapsulaControllerAdministrador {
     }
 
     // 3.5 Modificar cápsula informativa
-//    public ResponseEntity<Mensaje> modificarCapsula() {
-//        //try {
-//            return service.;
-//        //} catch (Exception e) {
-//        //    logger.error("Error en método " + e.getMessage());
-//        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-//        //}
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Mensaje> modificarCapsula(@RequestBody CapsulaDTO capsulaDTO, @PathVariable long id) {
+
+        List<ImagenCapsula> imagenesRegistrar = new ArrayList<>();
+        List<ImagenCapsula> imagenesEliminar = new ArrayList<>();
+        if (capsulaDTO.getImagenesCapsula() != null) {
+            for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
+                if (imagen.getImagen() != null) imagenesRegistrar.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
+                else if (imagen.getId() != null) imagenesEliminar.add(new ImagenCapsula(imagen.getId()));
+            }
+        }
+
+        //try {
+        return service.modificarCapsulaAdministrador(
+                new Capsula(
+                        id,
+                        capsulaDTO.getTitulo(),
+                        capsulaDTO.contenido
+                ),
+                imagenesRegistrar,
+                imagenesEliminar
+        );
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
 
     // 3.6 Eliminar cápsula informativa
     @DeleteMapping("/{id}")

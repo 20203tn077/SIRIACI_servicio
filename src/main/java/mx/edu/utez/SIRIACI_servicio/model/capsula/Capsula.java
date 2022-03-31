@@ -49,6 +49,12 @@ public class Capsula {
         this.usuario = usuario;
     }
 
+    public Capsula(Long id, String titulo, String contenido) {
+        this.id = id;
+        this.titulo = titulo;
+        this.contenido = contenido;
+    }
+
     public void actualizar(Capsula capsula) {
         if (capsula.titulo != null && this.titulo != capsula.titulo) this.titulo = capsula.titulo;
         if (capsula.contenido != null && this.contenido != capsula.contenido) this.contenido = capsula.contenido;
