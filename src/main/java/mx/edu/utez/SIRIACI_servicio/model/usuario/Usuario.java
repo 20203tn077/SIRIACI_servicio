@@ -192,6 +192,14 @@ public class Usuario {
         this.intentosFallidos = intentosFallidos;
     }
 
+    public void aumentarIntentosFallidos() {
+        this.intentosFallidos++;
+    }
+
+    public void reiniciarIntentosFallidos() {
+        this.intentosFallidos = 0;
+    }
+
     public Administrador getAdministrador() {
         return administrador;
     }

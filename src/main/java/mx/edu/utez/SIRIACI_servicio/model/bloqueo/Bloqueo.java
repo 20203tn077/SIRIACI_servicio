@@ -24,6 +24,11 @@ public class Bloqueo {
     public Bloqueo() {
     }
 
+    public Bloqueo(Date tiempoBloqueo, Usuario usuario) {
+        this.tiempoBloqueo = tiempoBloqueo;
+        this.usuario = usuario;
+    }
+
     public Long getId() {
         return id;
     }
