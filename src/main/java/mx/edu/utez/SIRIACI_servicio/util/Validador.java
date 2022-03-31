@@ -120,6 +120,11 @@ public class Validador {
         return Optional.empty();
     }
 
+    public static Optional<String> validarContenidoCapsula (String contenido) {
+        if (contenido == null || contenido.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar algo como contenido");
+        return Optional.empty();
+    }
+
     private static boolean isUbicacionDentroUtez(double latitud, double longitud) {
         int interseccionesNorte = 0;
         int interseccionesSur = 0;

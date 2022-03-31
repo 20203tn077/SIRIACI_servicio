@@ -359,9 +359,12 @@ public class UsuarioService {
         else usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
 
         if (isEstudiante) {
-            Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
-            if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
-            else estudiante.setCarrera(carrera.get());
+            if (estudiante.getCarrera().getId() == null) errores.put("carrera", "Debes seleccionar una carrera");
+            else {
+                Optional<Carrera> carrera = carreraRepository.findById(estudiante.getCarrera().getId());
+                if (carrera.isEmpty()) errores.put("carrera", "La carrera seleccionada no existe");
+                else estudiante.setCarrera(carrera.get());
+            }
 
             error = Validador.validarCuatrimestreUsuario(estudiante.getCuatrimestre());
             if (error.isPresent()) errores.put("cuatrimestre", error.get());

@@ -56,13 +56,17 @@ public class IncidenciaService {
         error = Validador.validarUbicacionIncidencia(incidencia.getLatitud(), incidencia.getLongitud());
         if (error.isPresent()) errores.put("ubicacion", error.get());
 
-        Optional<Aspecto> aspecto = aspectoRepository.findById(incidencia.getAspecto().getId());
-        if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionada no existe");
-        else incidencia.setAspecto(aspecto.get());
+        if (incidencia.getAspecto().getId() != null) {
+            Optional<Aspecto> aspecto = aspectoRepository.findById(incidencia.getAspecto().getId());
+            if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionada no existe");
+            else incidencia.setAspecto(aspecto.get());
+        } else return new ResponseEntity<>(new Mensaje(true, "Debes seleccionar un aspecto", null, null), HttpStatus.BAD_REQUEST);
 
-        Optional<Importancia> importancia = importanciaRepository.findById(incidencia.getImportancia().getId());
-        if (importancia.isEmpty()) errores.put("importancia", "El nivel de importancia seleccionada no existe");
-        else incidencia.setImportancia(importancia.get());
+        if (incidencia.getImportancia().getId() != null) {
+            Optional<Importancia> importancia = importanciaRepository.findById(incidencia.getImportancia().getId());
+            if (importancia.isEmpty()) errores.put("importancia", "El nivel de importancia seleccionada no existe");
+            else incidencia.setImportancia(importancia.get());
+        } else return new ResponseEntity<>(new Mensaje(true, "Debes seleccionar un nivel de importancia", null, null), HttpStatus.BAD_REQUEST);
 
         Optional<Usuario> usuario = usuarioRepository.findByIdAndActivoIsTrue(incidencia.getUsuario().getId());
         if (usuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);

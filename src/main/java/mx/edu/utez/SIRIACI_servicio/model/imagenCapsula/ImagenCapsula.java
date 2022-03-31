@@ -14,7 +14,7 @@ public class ImagenCapsula {
 
     // Atributos
     @Column(nullable = false, columnDefinition = "blob")
-    private Byte[] imagen;
+    private byte[] imagen;
 
     // Llaves foraneas
     @ManyToOne
@@ -24,11 +24,31 @@ public class ImagenCapsula {
     public ImagenCapsula() {
     }
 
+    public ImagenCapsula(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    public Capsula getCapsula() {
+        return capsula;
+    }
+
+    public void setCapsula(Capsula capsula) {
+        this.capsula = capsula;
     }
 }
