@@ -1,6 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Capsulas;
 
 import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
+import mx.edu.utez.SIRIACI_servicio.model.capsula.Capsula;
 import mx.edu.utez.SIRIACI_servicio.model.capsula.CapsulaRepository;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,10 +33,15 @@ public class CapsulaService {
     }
 
     // 3.2 Consultar cápsula informativa
-//    @Transactional(readOnly = true)
-//    public ResponseEntity<Mensaje> obtenerCapsula() {
-//
-//    }
+    /*@Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerCapsula(long id) {
+        Optional<Capsula> capsula = capsulaRepository.findById(id);
+        if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente"))
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerCapsulaAdministrador(long id) {
+
+    }*/
 
     // 3.3 Registrar cápsula informativa
 //    @Transactional(rollbackFor = {SQLException.class})

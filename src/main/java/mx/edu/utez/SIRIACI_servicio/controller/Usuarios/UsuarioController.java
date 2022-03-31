@@ -63,8 +63,8 @@ public class UsuarioController {
         }*/
     }
 
-    @GetMapping("perfil/")
-    // 1.7 Modificar datos personales
+    @GetMapping("/perfil/")
+    // 1.8 Consultar perfíl
     public ResponseEntity<Mensaje> perfil() {
         DetalleUsuario usuario = null;
 

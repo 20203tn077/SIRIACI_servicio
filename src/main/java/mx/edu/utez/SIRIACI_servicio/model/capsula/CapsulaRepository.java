@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CapsulaRepository extends JpaRepository<Capsula, Long> {
-
+    Optional<Capsula> findByIdAndActivoIsTrue(Long id);
     Page<Capsula> findAllByActivoIsTrue(Pageable pageable);
     Page<Capsula> findAllByActivoIsTrueAndTituloContains(String filtro, Pageable pageable);
     Page<Capsula> findAllByTituloContains(String filtro, Pageable pageable);
