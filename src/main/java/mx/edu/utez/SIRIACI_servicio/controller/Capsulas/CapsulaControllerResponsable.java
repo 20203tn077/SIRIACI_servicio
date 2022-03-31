@@ -67,6 +67,7 @@ public class CapsulaControllerResponsable {
     }
 
     // 3.4 Consultar cápsulas informativas realizadas
+    @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerCapsulas(@RequestParam(required = false) String filtro, @RequestParam(required = false) Integer pagina) {
         DetalleUsuario usuario = null;
 
@@ -90,22 +91,60 @@ public class CapsulaControllerResponsable {
     }
 
     // 3.5 Modificar cápsula informativa
-//    public ResponseEntity<Mensaje> modificarCapsula() {
-//        //try {
-//            return service.;
-//        //} catch (Exception e) {
-//        //    logger.error("Error en método " + e.getMessage());
-//        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-//        //}
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Mensaje> modificarCapsula(@RequestBody CapsulaDTO capsulaDTO, @PathVariable long id) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+
+        List<ImagenCapsula> imagenesRegistrar = new ArrayList<>();
+        List<ImagenCapsula> imagenesEliminar = new ArrayList<>();
+        if (capsulaDTO.getImagenesCapsula() != null) {
+            for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
+                if (imagen.getImagen() != null) imagenesRegistrar.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
+                else if (imagen.getId() != null) imagenesEliminar.add(new ImagenCapsula(imagen.getId()));
+            }
+        }
+
+        //try {
+            return service.modificarCapsula(
+                    new Capsula(
+                            id,
+                            capsulaDTO.getTitulo(),
+                            capsulaDTO.contenido,
+                            new Usuario(usuario.getId())
+                    ),
+                    imagenesRegistrar,
+                    imagenesEliminar
+            );
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
 
     // 3.6 Eliminar cápsula informativa
-//    public ResponseEntity<Mensaje> eliminarCapsula() {
-//        //try {
-//            return service.;
-//        //} catch (Exception e) {
-//        //    logger.error("Error en método " + e.getMessage());
-//        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-//        //}
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Mensaje> eliminarCapsula(@PathVariable long id) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+
+        //try {
+            return service.eliminarCapsula(id, usuario.getId());
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
 }

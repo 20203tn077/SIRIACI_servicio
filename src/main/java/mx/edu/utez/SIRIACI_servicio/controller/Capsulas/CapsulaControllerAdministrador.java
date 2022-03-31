@@ -1,6 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Capsulas;
 
 import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
+import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/administrador/capsulas")
@@ -59,12 +59,13 @@ public class CapsulaControllerAdministrador {
 //    }
 
     // 3.6 Eliminar cápsula informativa
-//    public ResponseEntity<Mensaje> eliminarCapsula() {
-//        //try {
-//            return service.;
-//        //} catch (Exception e) {
-//        //    logger.error("Error en método " + e.getMessage());
-//        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-//        //}
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Mensaje> eliminarCapsula(@PathVariable long id) {
+        //try {
+        return service.eliminarCapsulaAdministrador(id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
 }

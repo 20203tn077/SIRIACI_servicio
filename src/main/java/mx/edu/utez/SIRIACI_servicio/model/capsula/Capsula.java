@@ -49,7 +49,7 @@ public class Capsula {
         this.usuario = usuario;
     }
 
-    public void Actualizar(Capsula capsula) {
+    public void actualizar(Capsula capsula) {
         if (capsula.titulo != null && this.titulo != capsula.titulo) this.titulo = capsula.titulo;
         if (capsula.contenido != null && this.contenido != capsula.contenido) this.contenido = capsula.contenido;
     }

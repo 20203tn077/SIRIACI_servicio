@@ -28,6 +28,10 @@ public class ImagenCapsula {
         this.imagen = imagen;
     }
 
+    public ImagenCapsula(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
