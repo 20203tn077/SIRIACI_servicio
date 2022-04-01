@@ -1,8 +1,10 @@
 package mx.edu.utez.SIRIACI_servicio.model.noVerificado;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 public class NoVerificado {
@@ -13,14 +15,15 @@ public class NoVerificado {
 
     // Atributos
     @Column(nullable = false, unique = true)
-    private String codigo;
+    private UUID codigo;
 
     // Llaves foraneas
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
-    public NoVerificado(String codigo, Usuario usuario) {
+    public NoVerificado(UUID codigo, Usuario usuario) {
         this.codigo = codigo;
         this.usuario = usuario;
     }
@@ -36,11 +39,11 @@ public class NoVerificado {
         this.id = id;
     }
 
-    public String getCodigo() {
+    public UUID getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(UUID codigo) {
         this.codigo = codigo;
     }
 

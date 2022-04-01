@@ -1,4 +1,4 @@
-package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion;
+package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.InicioSesion;
 
 public class InicioSesionDTO {
     private String correo;

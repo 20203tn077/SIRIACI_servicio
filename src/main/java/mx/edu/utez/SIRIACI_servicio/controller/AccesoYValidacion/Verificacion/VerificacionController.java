@@ -1,4 +1,4 @@
-package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion;
+package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.Verificacion;
 
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.springframework.beans.factory.annotation.Autowired;

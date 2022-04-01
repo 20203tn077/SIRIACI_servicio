@@ -1,4 +1,4 @@
-package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion;
+package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.Bloqueos;
 
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.Bloqueo;
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.BloqueoRepository;

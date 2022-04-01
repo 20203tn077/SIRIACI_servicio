@@ -1,4 +1,4 @@
-package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion;
+package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.Verificacion;
 
 import mx.edu.utez.SIRIACI_servicio.model.administrador.AdministradorRepository;
 import mx.edu.utez.SIRIACI_servicio.model.estudiante.EstudianteRepository;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -34,7 +35,7 @@ public class VerificacionService {
 
     // 4.4 Validar código de verificación
     @Transactional
-    public ResponseEntity<Mensaje> verificarUsuario(String codigo) {
+    public ResponseEntity<Mensaje> verificarUsuario(UUID codigo) {
         if (codigo == null)
             return new ResponseEntity<>(new Mensaje(true, "Código de verificación ausente", null, null), HttpStatus.BAD_REQUEST);
 

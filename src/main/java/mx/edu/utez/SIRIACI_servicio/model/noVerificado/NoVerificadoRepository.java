@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface NoVerificadoRepository extends JpaRepository<NoVerificado, Long> {
     boolean existsByUsuario(Usuario usuario);
-    Optional<NoVerificado> findByCodigo(String codigo);
+    Optional<NoVerificado> findByCodigo(UUID codigo);
     void deleteAllByUsuario_Correo(String correo);
 }

@@ -1,4 +1,4 @@
-package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion;
+package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.InicioSesion;
 
 import mx.edu.utez.SIRIACI_servicio.security.IntentoInicioSesionService;
 import mx.edu.utez.SIRIACI_servicio.security.jwt.JwtProvider;

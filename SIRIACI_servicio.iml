@@ -3,7 +3,9 @@
   <component name="FacetManager">
     <facet type="web" name="Web">
       <configuration>
-        <webroots />
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+        </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
@@ -36,6 +38,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.devskiller.friendly-id:friendly-id-spring-boot-starter:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.devskiller.friendly-id:friendly-id-spring-boot:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.devskiller.friendly-id:friendly-id-jackson-datatype:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.devskiller.friendly-id:friendly-id:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.6.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.6.3" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.7" level="project" />

@@ -130,7 +130,7 @@ public class UsuarioService {
             estudianteRepository.save(estudiante);
         }
         noVerificadoRepository.save(new NoVerificado(
-                UUID.randomUUID().toString(),
+                UUID.randomUUID(),
                 usuario
         ));
         return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
@@ -382,7 +382,7 @@ public class UsuarioService {
             estudianteRepository.save(estudiante);
         }
         noVerificadoRepository.save(new NoVerificado(
-                UUID.randomUUID().toString(),
+                UUID.randomUUID(),
                 usuario
         ));
         return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
