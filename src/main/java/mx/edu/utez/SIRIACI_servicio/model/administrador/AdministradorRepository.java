@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface AdministradorRepository extends JpaRepository<Administrador, Long> {
     int countByUsuario_ActivoIsTrue();
+    void deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(String correo, String codigo);
 }

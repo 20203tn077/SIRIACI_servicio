@@ -4,8 +4,12 @@ import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface NoVerificadoRepository extends JpaRepository<NoVerificado, Long> {
-    public boolean existsByUsuario(Usuario usuario);
-
+    boolean existsByUsuario(Usuario usuario);
+    Optional<NoVerificado> findByCodigo(String codigo);
+    void deleteAllByUsuario_Correo(String correo);
 }

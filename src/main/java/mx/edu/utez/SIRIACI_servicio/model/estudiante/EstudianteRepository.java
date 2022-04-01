@@ -7,4 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface EstudianteRepository extends JpaRepository<Estudiante, Long> {
+    void deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(String correo, String codigo);
 }
