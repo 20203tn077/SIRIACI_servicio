@@ -27,6 +27,24 @@ public class SolicitudRecuperacion {
     public SolicitudRecuperacion() {
     }
 
+    public SolicitudRecuperacion(String codigo, Usuario usuario) {
+        this.codigo = codigo;
+        this.usuario = usuario;
+    }
+
+    public SolicitudRecuperacion(String codigo, Date tiempo_solicitud, Usuario usuario) {
+        this.codigo = codigo;
+        this.tiempo_solicitud = tiempo_solicitud;
+        this.usuario = usuario;
+    }
+
+    public void reemplazar (SolicitudRecuperacion solicitudRecuperacion) {
+        this.codigo = solicitudRecuperacion.codigo;
+        this.tiempo_solicitud = solicitudRecuperacion.tiempo_solicitud;
+        this.tiempo_canjeado = solicitudRecuperacion.tiempo_canjeado;
+        this.usuario = solicitudRecuperacion.usuario;
+    }
+
     public Long getId() {
         return id;
     }

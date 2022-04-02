@@ -63,9 +63,9 @@ public class UsuarioController {
         }*/
     }
 
-    @GetMapping("/perfil/")
+    @GetMapping("/")
     // 1.8 Consultar perfíl
-    public ResponseEntity<Mensaje> perfil() {
+    public ResponseEntity<Mensaje> obtenerPerfil() {
         DetalleUsuario usuario = null;
 
         try {

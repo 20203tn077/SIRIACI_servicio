@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.model.usuario;
 
+import com.devskiller.friendly_id.FriendlyId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.Bloqueo;
@@ -81,6 +82,10 @@ public class Usuario {
         this.id = id;
     }
 
+    public Usuario(String correo) {
+        this.correo = correo;
+    }
+
     // Constructor para modificación
     public Usuario(Long id, String nombre, String apellido1, String apellido2, String correo, String telefono, String contrasena) {
         this.id = id;
@@ -110,6 +115,11 @@ public class Usuario {
         if (this.telefono != usuario.telefono && usuario.telefono != null) this.telefono = usuario.telefono;
         if (this.contrasena != usuario.contrasena && usuario.contrasena != null) this.contrasena = usuario.contrasena;
         if (this.comunidadUtez != usuario.comunidadUtez && usuario.comunidadUtez != null) this.comunidadUtez = usuario.comunidadUtez;
+    }
+
+    public Usuario(String correo, String contrasena) {
+        this.correo = correo;
+        this.contrasena = contrasena;
     }
 
     public Long getId() {

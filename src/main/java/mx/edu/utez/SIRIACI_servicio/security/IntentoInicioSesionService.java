@@ -50,10 +50,7 @@ public class IntentoInicioSesionService {
     public void verificarBloqueo(String correo) {
         Bloqueo bloqueo = usuarioRepository.findByCorreoAndActivoIsTrue(correo).get().getBloqueo();
         if (bloqueo != null) {
-            long minutosRestantes = Duration.between(new Date().toInstant(), bloqueo.getTiempoBloqueo().toInstant().plus(30, ChronoUnit.MINUTES)).toMinutes();
-            System.out.println(minutosRestantes);
-            System.out.println(new Date());
-            System.out.println(bloqueo.getTiempoBloqueo());
+            long minutosRestantes = Duration.between(new Date().toInstant(), bloqueo.getTiempoBloqueo().toInstant().plus(duracionBloqueo, ChronoUnit.MINUTES)).toMinutes();
             if (minutosRestantes > 0) {
                 throw new RuntimeException("MSJFRONT Tu cuenta se encuentra bloqueada, vuelve a intentarlo en " + minutosRestantes + " minuto" + (minutosRestantes == 1 ? "" : "s"));
             } else {

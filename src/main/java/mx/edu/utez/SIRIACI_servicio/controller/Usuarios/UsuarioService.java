@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Usuarios;
 
+import com.devskiller.friendly_id.FriendlyId;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.AdministradorRepository;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
