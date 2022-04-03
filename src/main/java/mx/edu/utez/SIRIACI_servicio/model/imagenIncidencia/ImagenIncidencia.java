@@ -13,7 +13,7 @@ public class ImagenIncidencia {
     private Long id;
 
     // Atributos
-    @Column(nullable = false, columnDefinition = "blob")
+    @Column(nullable = false, columnDefinition = "MEDIUMBLOB")
     private byte[] imagen;
 
     // Llaves foraneas

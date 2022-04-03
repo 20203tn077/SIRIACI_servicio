@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.model.imagenCapsula;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.capsula.Capsula;
 
 import javax.persistence.*;
@@ -13,12 +14,13 @@ public class ImagenCapsula {
     private Long id;
 
     // Atributos
-    @Column(nullable = false, columnDefinition = "blob")
+    @Column(nullable = false, columnDefinition = "MEDIUMBLOB")
     private byte[] imagen;
 
     // Llaves foraneas
     @ManyToOne
     @JoinColumn(name = "capsula_id", nullable = false)
+    @JsonIgnore
     private Capsula capsula;
 
     public ImagenCapsula() {

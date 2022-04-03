@@ -30,7 +30,6 @@ public class Capsula {
 
     // Relaciones de otras tablas con esta
     @OneToMany(mappedBy = "capsula")
-    @JsonIgnore
     private List<ImagenCapsula> imagenesCapsula;
 
     public Capsula() {

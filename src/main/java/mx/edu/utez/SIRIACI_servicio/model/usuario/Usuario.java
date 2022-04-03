@@ -55,7 +55,7 @@ public class Usuario {
     @JsonIgnore
     private Bloqueo bloqueo;
     @OneToOne(mappedBy = "usuario")
-    //@JsonIgnore
+    @JsonIgnore
     private NoVerificado noVerificado;
     @OneToOne(mappedBy = "usuario")
     private Responsable responsable;
