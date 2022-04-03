@@ -1,6 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.model.incidencia;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import mx.edu.utez.SIRIACI_servicio.controller.Incidencias.IncidenciaSalidaDTO;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
@@ -99,6 +100,10 @@ public class Incidencia {
     public void atender(Incidencia incidencia) {
         if (incidencia.comentario != null && this.comentario != incidencia.comentario) this.comentario = incidencia.comentario;
         if (incidencia.estado.getId() != null && this.estado.getId() != incidencia.estado.getId()) this.estado = incidencia.estado;
+    }
+
+    public IncidenciaSalidaDTO convertirSalida() {
+        return new IncidenciaSalidaDTO(this);
     }
 
     public void setId(Long id) {

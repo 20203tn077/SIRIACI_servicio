@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -33,14 +34,38 @@ public class CapsulaControllerAdministrador {
     CapsulaService service;
 
     // 3.3 Registrar cápsula informativa
-//    public ResponseEntity<Mensaje> registrarCapsula() {
-//        //try {
-//            return service.;
-//        //} catch (Exception e) {
-//        //    logger.error("Error en método " + e.getMessage());
-//        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-//        //}
-//    }
+    @PostMapping("/")
+    public ResponseEntity<Mensaje> registrarCapsula(@RequestBody CapsulaDTO capsulaDTO) {
+        DetalleUsuario usuario = null;
+
+        try {
+            usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (ClassCastException e) {
+            logger.error("Error en método automodificacion" + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+        }
+
+        //try {
+        List<ImagenCapsula> imagenes = new ArrayList<>();
+        if (capsulaDTO.getImagenesCapsula() != null) {
+            for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
+                if (imagen.getImagen() != null) imagenes.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
+            }
+        }
+        return service.registrarCapsula(
+                new Capsula(
+                        capsulaDTO.getTitulo(),
+                        capsulaDTO.contenido,
+                        new Date(),
+                        new Usuario(usuario.getId())
+                ),
+                imagenes
+        );
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
 
     // 3.4 Consultar cápsulas informativas realizadas
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(@RequestParam(required = false) String filtro, @RequestParam(required = false) Integer pagina) {

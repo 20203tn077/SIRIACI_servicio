@@ -90,11 +90,11 @@ public class IncidenciaService {
     // 2.2 Consultar reportes de incidencia realizados
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciasRealizadas(long idUsuario, Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndUsuario_Id(idUsuario, pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndUsuario_Id(idUsuario, pageable).map(incidencia -> incidencia.convertirSalida())), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciasRealizadas(long idUsuario, Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndUsuario_Id(filtro, idUsuario, pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndUsuario_Id(filtro, idUsuario, pageable).map(incidencia -> incidencia.convertirSalida())), HttpStatus.OK);
     }
 
     // 2.3 Consultar reporte de incidencia
@@ -188,25 +188,25 @@ public class IncidenciaService {
     // 2.5 Consultar reportes de incidencia
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciasAdministrador(long idUsuario, Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAll(pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAll(pageable).map(incidencia -> incidencia.convertirSalida())), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciasAdministrador(long idUsuario, Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByDescripcionContains(filtro, pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByDescripcionContains(filtro, pageable).map(incidencia -> incidencia.convertirSalida())), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciasResponsable(long idUsuario, Pageable pageable) {
         Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
         if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
         Usuario usuario = resultadoUsuario.get();
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndAspecto_Id(usuario.getResponsable().getAspecto().getId(), pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndAspecto_Id(usuario.getResponsable().getAspecto().getId(), pageable).map(incidencia -> incidencia.convertirSalida())), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciasResponsable(long idUsuario, Pageable pageable, String filtro) {
         Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
         if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
         Usuario usuario = resultadoUsuario.get();
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndAspecto_Id(filtro, usuario.getResponsable().getAspecto().getId(), pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidenciaRepository.findAllByActivoIsTrueAndDescripcionContainsAndAspecto_Id(filtro, usuario.getResponsable().getAspecto().getId(), pageable).map(incidencia -> incidencia.convertirSalida())), HttpStatus.OK);
     }
 
 

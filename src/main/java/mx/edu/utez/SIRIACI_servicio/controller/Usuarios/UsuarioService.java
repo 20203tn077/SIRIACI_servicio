@@ -140,11 +140,11 @@ public class UsuarioService {
     // 1.2 Consultar usuarios
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerUsuarios(Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, usuarioRepository.findAllByNoVerificadoIsNull(pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, usuarioRepository.findAllByNoVerificadoIsNull(pageable).map(usuario -> usuario.convertirSalida())), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerUsuarios(Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, usuarioRepository.findByFiltro(filtro, pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, usuarioRepository.findByFiltro(filtro, pageable).map(usuario -> usuario.convertirSalida())), HttpStatus.OK);
     }
 
     // 1.3 Consultar usuario

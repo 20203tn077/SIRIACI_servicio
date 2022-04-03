@@ -1,7 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.model.usuario;
 
-import com.devskiller.friendly_id.FriendlyId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioSalidaDTO;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.bloqueo.Bloqueo;
 import mx.edu.utez.SIRIACI_servicio.model.capsula.Capsula;
@@ -11,7 +11,7 @@ import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
 import mx.edu.utez.SIRIACI_servicio.model.notificacion.Notificacion;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
-import mx.edu.utez.SIRIACI_servicio.model.solicitudRecuperacion.SolicitudRecuperacion;
+import mx.edu.utez.SIRIACI_servicio.model.solicitudRestablecimiento.SolicitudRestablecimiento;
 
 import javax.persistence.*;
 import java.util.List;
@@ -67,7 +67,7 @@ public class Usuario {
     private List<Notificacion> notificaciones;
     @OneToOne(mappedBy = "usuario")
     @JsonIgnore
-    private SolicitudRecuperacion solicitudRecuperación;
+    private SolicitudRestablecimiento solicitudRecuperación;
     @OneToMany(mappedBy = "usuario")
     @JsonIgnore
     private List<DispositivoMovil> dispositivosMoviles;
@@ -120,6 +120,10 @@ public class Usuario {
     public Usuario(String correo, String contrasena) {
         this.correo = correo;
         this.contrasena = contrasena;
+    }
+
+    public UsuarioSalidaDTO convertirSalida() {
+        return new UsuarioSalidaDTO(this);
     }
 
     public Long getId() {
@@ -266,11 +270,11 @@ public class Usuario {
         this.notificaciones = notificaciones;
     }
 
-    public SolicitudRecuperacion getSolicitudRecuperación() {
+    public SolicitudRestablecimiento getSolicitudRecuperación() {
         return solicitudRecuperación;
     }
 
-    public void setSolicitudRecuperación(SolicitudRecuperacion solicitudRecuperación) {
+    public void setSolicitudRecuperación(SolicitudRestablecimiento solicitudRecuperación) {
         this.solicitudRecuperación = solicitudRecuperación;
     }
 

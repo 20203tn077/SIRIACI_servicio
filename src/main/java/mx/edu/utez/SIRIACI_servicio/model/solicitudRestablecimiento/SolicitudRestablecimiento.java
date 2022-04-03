@@ -1,4 +1,4 @@
-package mx.edu.utez.SIRIACI_servicio.model.solicitudRecuperacion;
+package mx.edu.utez.SIRIACI_servicio.model.solicitudRestablecimiento;
 
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class SolicitudRecuperacion {
+public class SolicitudRestablecimiento {
     // ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,25 +24,25 @@ public class SolicitudRecuperacion {
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
-    public SolicitudRecuperacion() {
+    public SolicitudRestablecimiento() {
     }
 
-    public SolicitudRecuperacion(String codigo, Usuario usuario) {
+    public SolicitudRestablecimiento(String codigo, Usuario usuario) {
         this.codigo = codigo;
         this.usuario = usuario;
     }
 
-    public SolicitudRecuperacion(String codigo, Date tiempo_solicitud, Usuario usuario) {
+    public SolicitudRestablecimiento(String codigo, Date tiempo_solicitud, Usuario usuario) {
         this.codigo = codigo;
         this.tiempo_solicitud = tiempo_solicitud;
         this.usuario = usuario;
     }
 
-    public void reemplazar (SolicitudRecuperacion solicitudRecuperacion) {
-        this.codigo = solicitudRecuperacion.codigo;
-        this.tiempo_solicitud = solicitudRecuperacion.tiempo_solicitud;
-        this.tiempo_canjeado = solicitudRecuperacion.tiempo_canjeado;
-        this.usuario = solicitudRecuperacion.usuario;
+    public void reemplazar (SolicitudRestablecimiento solicitudRestablecimiento) {
+        this.codigo = solicitudRestablecimiento.codigo;
+        this.tiempo_solicitud = solicitudRestablecimiento.tiempo_solicitud;
+        this.tiempo_canjeado = solicitudRestablecimiento.tiempo_canjeado;
+        this.usuario = solicitudRestablecimiento.usuario;
     }
 
     public Long getId() {

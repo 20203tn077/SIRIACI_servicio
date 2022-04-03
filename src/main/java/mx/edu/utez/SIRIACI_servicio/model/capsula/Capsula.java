@@ -1,11 +1,13 @@
 package mx.edu.utez.SIRIACI_servicio.model.capsula;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import mx.edu.utez.SIRIACI_servicio.controller.Capsulas.CapsulaSalidaDTO;
 import mx.edu.utez.SIRIACI_servicio.model.imagenCapsula.ImagenCapsula;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,12 +18,14 @@ public class Capsula {
     private Long id;
 
     // Atributos
-    @Column(name ="titulo", nullable = false)
+    @Column(nullable = false)
     private String titulo;
-    @Column(name ="contenido", nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String contenido; //text
-    @Column(name ="activo", nullable = false)
+    @Column(nullable = false)
     private Boolean activo = true;
+    @Column(nullable = false)
+    private Date fechaPublicacion;
 
     // Llaves foraneas
     @ManyToOne
@@ -42,7 +46,7 @@ public class Capsula {
         this.usuario = usuario;
     }
 
-    public Capsula(String titulo, String contenido, Usuario usuario) {
+    public Capsula(String titulo, String contenido, Date fechaPublicacion, Usuario usuario) {
         this.titulo = titulo;
         this.contenido = contenido;
         this.usuario = usuario;
@@ -57,6 +61,10 @@ public class Capsula {
     public void actualizar(Capsula capsula) {
         if (capsula.titulo != null && this.titulo != capsula.titulo) this.titulo = capsula.titulo;
         if (capsula.contenido != null && this.contenido != capsula.contenido) this.contenido = capsula.contenido;
+    }
+
+    public CapsulaSalidaDTO convertirSalida() {
+        return new CapsulaSalidaDTO(this);
     }
 
     public Long getId() {
@@ -105,5 +113,13 @@ public class Capsula {
 
     public void setImagenesCapsula(List<ImagenCapsula> imagenesCapsula) {
         this.imagenesCapsula = imagenesCapsula;
+    }
+
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
     }
 }
