@@ -37,12 +37,13 @@ public class CapsulaControllerPublico {
     }
 
     // 3.2 Consultar cápsula informativa
-//    public ResponseEntity<Mensaje> obtenerCapsula() {
-//        //try {
-//            return service.;
-//        //} catch (Exception e) {
-//        //    logger.error("Error en método " + e.getMessage());
-//        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-//        //}
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerCapsula(@PathVariable long id) {
+        //try {
+            return service.obtenerCapsula(id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
 }

@@ -33,6 +33,17 @@ public class CapsulaControllerAdministrador {
     @Autowired
     CapsulaService service;
 
+    // 3.2 Consultar cápsula informativa
+    @GetMapping("/{id}")
+    public ResponseEntity<Mensaje> obtenerCapsula(@PathVariable long id) {
+        //try {
+        return service.obtenerCapsulaAdministrador(id);
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+    }
+
     // 3.3 Registrar cápsula informativa
     @PostMapping("/")
     public ResponseEntity<Mensaje> registrarCapsula(@RequestBody CapsulaDTO capsulaDTO) {
