@@ -49,6 +49,7 @@ public class Capsula {
     public Capsula(String titulo, String contenido, Date fechaPublicacion, Usuario usuario) {
         this.titulo = titulo;
         this.contenido = contenido;
+        this.fechaPublicacion = fechaPublicacion;
         this.usuario = usuario;
     }
 

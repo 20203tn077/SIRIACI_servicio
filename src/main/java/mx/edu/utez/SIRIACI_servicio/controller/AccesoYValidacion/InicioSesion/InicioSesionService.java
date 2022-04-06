@@ -43,7 +43,7 @@ public class InicioSesionService {
             if (e.getMessage().startsWith("MSJFRONT ")) {
                 return new ResponseEntity<>(new Mensaje(true, e.getMessage().replaceFirst("MSJFRONT ", ""), null, null), HttpStatus.OK);
             } else
-                return new ResponseEntity<>(new Mensaje(true, "Correo y/o contraseña incorrectos: " + e.getMessage(), null, null), HttpStatus.OK);
+                return new ResponseEntity<>(new Mensaje(true, "Correo y/o contraseña incorrectos", null, null), HttpStatus.OK);
         }
 
         intentoInicioSesionService.inicioExitoso(correo);

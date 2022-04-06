@@ -150,6 +150,8 @@ public class UsuarioService {
     // 1.3 Consultar usuario
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerUsuario(long id) {
+        System.out.println(FriendlyId.toFriendlyId(noVerificadoRepository.findAll().get(1).getCodigo()));
+
         Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(id);
         if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "El usuario no existe", null, null), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(new Mensaje(false, "OK", null, resultado.get()), HttpStatus.OK);

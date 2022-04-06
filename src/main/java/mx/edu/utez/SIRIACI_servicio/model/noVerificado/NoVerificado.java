@@ -14,7 +14,7 @@ public class NoVerificado {
     private Long id;
 
     // Atributos
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID codigo;
 
     // Llaves foraneas

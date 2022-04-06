@@ -96,7 +96,7 @@ public class Validador {
 
     public static Optional<String> validarDescripcionIncidencia (String descripcion) {
         if (descripcion == null || descripcion.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar una descripción");
-        if (descripcion.length() > INCIDENCIA_DESCRIPCION_MAX) return  Optional.of("Máximo " + INCIDENCIA_DESCRIPCION_MAX + "caracteres");
+        if (descripcion.length() > INCIDENCIA_DESCRIPCION_MAX) return  Optional.of("Máximo " + INCIDENCIA_DESCRIPCION_MAX + " caracteres");
         return Optional.empty();
     }
 
@@ -104,7 +104,7 @@ public class Validador {
         if (comentario == null) return Optional.of("Debes ingresar una descripción");
         if (comentario.equals("")) return Optional.empty();
         if (comentario.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar una descripción");
-        if (comentario.length() > INCIDENCIA_COMENTARIO_MAX) return  Optional.of("Máximo " + INCIDENCIA_COMENTARIO_MAX + "caracteres");
+        if (comentario.length() > INCIDENCIA_COMENTARIO_MAX) return  Optional.of("Máximo " + INCIDENCIA_COMENTARIO_MAX + " caracteres");
         return Optional.empty();
     }
 
@@ -116,7 +116,7 @@ public class Validador {
 
     public static Optional<String> validarTituloCapsula (String titulo) {
         if (titulo == null || titulo.matches(REGEX_CADENA_VACIA)) return Optional.of("Debes ingresar un título");
-        if (titulo.length() > CAPSULA_TITULO_MAX) return  Optional.of("Máximo " + CAPSULA_TITULO_MAX + "caracteres");
+        if (titulo.length() > CAPSULA_TITULO_MAX) return  Optional.of("Máximo " + CAPSULA_TITULO_MAX + " caracteres");
         return Optional.empty();
     }
 

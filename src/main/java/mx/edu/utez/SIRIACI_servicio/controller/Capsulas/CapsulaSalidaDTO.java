@@ -16,6 +16,7 @@ public class CapsulaSalidaDTO {
     private String titulo;
     private Boolean activo;
     private Date fechaPublicacion;
+    private String contenido;
     private byte[] imagenCapsula;
 
     public CapsulaSalidaDTO(Capsula capsula) {
@@ -23,6 +24,7 @@ public class CapsulaSalidaDTO {
         this.titulo = capsula.getTitulo();
         this.activo = capsula.isActivo();
         this.fechaPublicacion = capsula.getFechaPublicacion();
+        this.contenido = capsula.getContenido().length() > 64 ? capsula.getContenido().substring(0, 64).trim() + "..." : capsula.getContenido();
         this.imagenCapsula = capsula.getImagenesCapsula().isEmpty() ? null : capsula.getImagenesCapsula().get(0).getImagen();
     }
 
@@ -56,5 +58,21 @@ public class CapsulaSalidaDTO {
 
     public void setImagenCapsula(byte[] imagenCapsula) {
         this.imagenCapsula = imagenCapsula;
+    }
+
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
     }
 }
