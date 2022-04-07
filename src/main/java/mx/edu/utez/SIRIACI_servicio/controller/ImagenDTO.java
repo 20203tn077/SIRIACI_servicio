@@ -10,7 +10,7 @@ public class ImagenDTO {
         return id;
     }
 
-    public void setId(Long asd) {
+    public void setId(Long id) {
         this.id = id;
     }
 
