@@ -1,13 +1,10 @@
 package mx.edu.utez.SIRIACI_servicio.model.capsula;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.controller.Capsulas.CapsulaSalidaDTO;
 import mx.edu.utez.SIRIACI_servicio.model.imagenCapsula.ImagenCapsula;
-import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -25,7 +22,7 @@ public class Capsula {
     @Column(nullable = false)
     private Boolean activo = true;
     @Column(nullable = false)
-    private Date fechaPublicacion;
+    private LocalDateTime fechaPublicacion;
 
     // Llaves foraneas
     @ManyToOne
@@ -46,7 +43,7 @@ public class Capsula {
         this.usuario = usuario;
     }
 
-    public Capsula(String titulo, String contenido, Date fechaPublicacion, Usuario usuario) {
+    public Capsula(String titulo, String contenido, LocalDateTime fechaPublicacion, Usuario usuario) {
         this.titulo = titulo;
         this.contenido = contenido;
         this.fechaPublicacion = fechaPublicacion;
@@ -116,11 +113,11 @@ public class Capsula {
         this.imagenesCapsula = imagenesCapsula;
     }
 
-    public Date getFechaPublicacion() {
+    public LocalDateTime getFechaPublicacion() {
         return fechaPublicacion;
     }
 
-    public void setFechaPublicacion(Date fechaPublicacion) {
+    public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
 }

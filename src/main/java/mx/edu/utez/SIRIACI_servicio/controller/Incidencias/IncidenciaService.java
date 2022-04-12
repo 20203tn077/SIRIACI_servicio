@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
+import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.CorreosService;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.AspectoRepository;
 import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
@@ -42,6 +43,8 @@ public class IncidenciaService {
     EstadoRepository estadoRepository;
     @Autowired
     ImagenIncidenciaRepository imagenIncidenciaRepository;
+    @Autowired
+    CorreosService correosService;
 
 
     // 2.1 Registrar nuevo reporte de incidencia
@@ -82,6 +85,11 @@ public class IncidenciaService {
             imagen.setIncidencia(incidencia);
             imagenIncidenciaRepository.save(imagen);
         }
+
+        Incidencia finalIncidencia = incidencia;
+        new Thread(() -> {
+            correosService.enviarCorreoPorNuevaIndicencia(finalIncidencia);
+        }).start();
 
         return new ResponseEntity<>(new Mensaje(false, "Incidencia registrada", null, incidencia), HttpStatus.OK);
 

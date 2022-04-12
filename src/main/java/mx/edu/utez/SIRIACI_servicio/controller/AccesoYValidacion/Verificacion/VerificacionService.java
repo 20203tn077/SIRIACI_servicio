@@ -47,8 +47,6 @@ public class VerificacionService {
         responsableRepository.deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(usuario.getCorreo(), codigo);
         estudianteRepository.deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(usuario.getCorreo(), codigo);
         noVerificadoRepository.deleteAllByUsuario_Correo(usuario.getCorreo());
-        System.out.println(usuario.getCorreo());
-        System.out.println(usuario.getId());
         usuarioRepository.deleteAllByCorreoAndIdIsNot(usuario.getCorreo(), usuario.getId());
 
         resultado.get().getUsuario().setActivo(true);

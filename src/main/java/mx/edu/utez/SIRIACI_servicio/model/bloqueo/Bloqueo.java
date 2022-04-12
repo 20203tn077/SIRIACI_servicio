@@ -3,7 +3,7 @@ package mx.edu.utez.SIRIACI_servicio.model.bloqueo;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class Bloqueo {
@@ -14,7 +14,7 @@ public class Bloqueo {
 
     // Atributos
     @Column(nullable = false)
-    private Date tiempoBloqueo;
+    private LocalDateTime tiempoBloqueo;
 
     // Llaves foraneas
     @OneToOne
@@ -24,7 +24,7 @@ public class Bloqueo {
     public Bloqueo() {
     }
 
-    public Bloqueo(Date tiempoBloqueo, Usuario usuario) {
+    public Bloqueo(LocalDateTime tiempoBloqueo, Usuario usuario) {
         this.tiempoBloqueo = tiempoBloqueo;
         this.usuario = usuario;
     }
@@ -37,11 +37,11 @@ public class Bloqueo {
         this.id = id;
     }
 
-    public Date getTiempoBloqueo() {
+    public LocalDateTime getTiempoBloqueo() {
         return tiempoBloqueo;
     }
 
-    public void setTiempoBloqueo(Date tiempoBloqueo) {
+    public void setTiempoBloqueo(LocalDateTime tiempoBloqueo) {
         this.tiempoBloqueo = tiempoBloqueo;
     }
 

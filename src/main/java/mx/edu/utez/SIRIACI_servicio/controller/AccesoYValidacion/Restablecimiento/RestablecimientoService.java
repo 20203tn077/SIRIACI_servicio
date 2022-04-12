@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.Restablecimiento;
 
+import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.CorreosService;
 import mx.edu.utez.SIRIACI_servicio.model.solicitudRestablecimiento.SolicitudRestablecimiento;
 import mx.edu.utez.SIRIACI_servicio.model.solicitudRestablecimiento.SolicitudRestablecimientoRepository;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +36,8 @@ public class RestablecimientoService {
     UsuarioRepository usuarioRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    CorreosService correosService;
 
     // 4.5 Solicitar restablecimiento de contraseña
     @Transactional(rollbackFor = {SQLException.class})
@@ -47,7 +51,13 @@ public class RestablecimientoService {
         if (solicitudRestablecimiento.getUsuario().getCorreo() == null) return new ResponseEntity<>(new Mensaje(true, "Debes ingresar un código", null, null), HttpStatus.BAD_REQUEST);
         Optional<SolicitudRestablecimiento> resultadoSolicitud = solicitudRestablecimientoRepository.findByUsuario_Id(usuario.getId());
         if (resultadoSolicitud.isPresent()) resultadoSolicitud.get().reemplazar(solicitudRestablecimiento);
-        else solicitudRestablecimientoRepository.save(solicitudRestablecimiento);
+        else {
+            solicitudRestablecimientoRepository.save(solicitudRestablecimiento);
+        }
+
+        new Thread(() -> {
+            correosService.enviarCorreoPorRestablecimiento(usuario, solicitudRestablecimiento);
+        }).start();
 
         return new ResponseEntity<>(new Mensaje(false, "Solicitud realizada", null, null), HttpStatus.OK);
     }
@@ -66,7 +76,7 @@ public class RestablecimientoService {
         SolicitudRestablecimiento solicitudRestablecimientoActual = resultadoSolicitud.get();
 
         if (solicitudRestablecimiento.getCodigo() == null) return new ResponseEntity<>(new Mensaje(true, "Código de restablecimiento ausente", null, null), HttpStatus.BAD_REQUEST);
-        if (Duration.between(new Date().toInstant(), solicitudRestablecimientoActual.getTiempo_solicitud().toInstant().plus(duracionSolicitud, ChronoUnit.MINUTES)).toMinutes() <= 0) {
+        if (Duration.between(LocalDateTime.now(), solicitudRestablecimientoActual.getTiempo_solicitud().plus(duracionSolicitud, ChronoUnit.MINUTES)).toMinutes() <= 0) {
             solicitudRestablecimientoRepository.delete(solicitudRestablecimientoActual);
             return new ResponseEntity<>(new Mensaje(true, "Se agotó el tiempo para utilizar el código", null, null), HttpStatus.BAD_REQUEST);
         }
@@ -75,7 +85,7 @@ public class RestablecimientoService {
         if (!solicitudRestablecimiento.getCodigo().equals(solicitudRestablecimientoActual.getCodigo())) return new ResponseEntity<>(new Mensaje(true, "Código incorrecto", null, null), HttpStatus.BAD_REQUEST);
         if (solicitudRestablecimientoActual.getTiempo_canjeado() != null) return new ResponseEntity<>(new Mensaje(true, "Este código ya fue canjeado", null, null), HttpStatus.BAD_REQUEST);
 
-        solicitudRestablecimientoActual.setTiempo_canjeado(new Date());
+        solicitudRestablecimientoActual.setTiempo_canjeado(LocalDateTime.now());
 
         return new ResponseEntity<>(new Mensaje(true, "Código canjeado", null, null), HttpStatus.BAD_REQUEST);
     }
@@ -96,7 +106,7 @@ public class RestablecimientoService {
         if (!solicitudRestablecimiento.getCodigo().equals(solicitudRestablecimientoActual.getCodigo())) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.BAD_REQUEST);
         if (solicitudRestablecimientoActual.getTiempo_canjeado() == null) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.BAD_REQUEST);
 
-        if (Duration.between(new Date().toInstant(), solicitudRestablecimientoActual.getTiempo_canjeado().toInstant().plus(duracionSolicitud, ChronoUnit.MINUTES)).toMinutes() <= 0) {
+        if (Duration.between(LocalDateTime.now(), solicitudRestablecimientoActual.getTiempo_canjeado().plus(duracionSolicitud, ChronoUnit.MINUTES)).toMinutes() <= 0) {
             solicitudRestablecimientoRepository.delete(solicitudRestablecimientoActual);
             return new ResponseEntity<>(new Mensaje(true, "Se agotó el tiempo para cambiar la contraseña", null, null), HttpStatus.BAD_REQUEST);
         }

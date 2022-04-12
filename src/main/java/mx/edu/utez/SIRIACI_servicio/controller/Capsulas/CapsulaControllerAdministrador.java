@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -67,7 +68,7 @@ public class CapsulaControllerAdministrador {
                 new Capsula(
                         capsulaDTO.getTitulo(),
                         capsulaDTO.contenido,
-                        new Date(),
+                        LocalDateTime.now(),
                         new Usuario(usuario.getId())
                 ),
                 imagenes

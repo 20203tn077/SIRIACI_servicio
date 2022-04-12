@@ -1,23 +1,12 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
-import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
-import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
-import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
-import mx.edu.utez.SIRIACI_servicio.model.importancia.Importancia;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
-import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class IncidenciaSalidaDTO {
     private Long id;
     private String descripcion;
-    private Date tiempoIncidencia;
+    private LocalDateTime tiempoIncidencia;
     private Boolean activo;
     private String importancia;
     private String estado;
@@ -49,11 +38,11 @@ public class IncidenciaSalidaDTO {
         this.descripcion = descripcion;
     }
 
-    public Date getTiempoIncidencia() {
+    public LocalDateTime getTiempoIncidencia() {
         return tiempoIncidencia;
     }
 
-    public void setTiempoIncidencia(Date tiempoIncidencia) {
+    public void setTiempoIncidencia(LocalDateTime tiempoIncidencia) {
         this.tiempoIncidencia = tiempoIncidencia;
     }
 

@@ -1,6 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Usuarios;
 
 import com.devskiller.friendly_id.FriendlyId;
+import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.CorreosService;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
 import mx.edu.utez.SIRIACI_servicio.model.administrador.AdministradorRepository;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
@@ -47,6 +48,8 @@ public class UsuarioService {
     AdministradorRepository administradorRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    CorreosService correosService;
 
     // 1.1 Registrar nuevo usuario
     @Transactional(rollbackFor = {SQLException.class})
@@ -130,10 +133,15 @@ public class UsuarioService {
             estudiante.setUsuario(usuario);
             estudianteRepository.save(estudiante);
         }
-        noVerificadoRepository.save(new NoVerificado(
+        NoVerificado noVerificado = noVerificadoRepository.save(new NoVerificado(
                 UUID.randomUUID(),
                 usuario
         ));
+
+        Usuario finalUsuario = usuario;
+        new Thread(() -> {
+            correosService.enviarCorreoPorRegistro(finalUsuario, noVerificado);
+        }).start();
         return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
     }
 
@@ -150,7 +158,6 @@ public class UsuarioService {
     // 1.3 Consultar usuario
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerUsuario(long id) {
-        System.out.println(FriendlyId.toFriendlyId(noVerificadoRepository.findAll().get(1).getCodigo()));
 
         Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(id);
         if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "El usuario no existe", null, null), HttpStatus.BAD_REQUEST);
@@ -384,10 +391,15 @@ public class UsuarioService {
             estudiante.setUsuario(usuario);
             estudianteRepository.save(estudiante);
         }
-        noVerificadoRepository.save(new NoVerificado(
+        NoVerificado noVerificado = noVerificadoRepository.save(new NoVerificado(
                 UUID.randomUUID(),
                 usuario
         ));
+
+        Usuario finalUsuario = usuario;
+        new Thread(() -> {
+            correosService.enviarCorreoPorAutorregistro(finalUsuario, noVerificado);
+        }).start();
         return new ResponseEntity<>(new Mensaje(false, "Usuario registrado", null, usuario), HttpStatus.OK);
     }
 

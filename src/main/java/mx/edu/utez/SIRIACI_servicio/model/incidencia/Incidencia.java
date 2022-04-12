@@ -1,6 +1,5 @@
 package mx.edu.utez.SIRIACI_servicio.model.incidencia;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.controller.Incidencias.IncidenciaSalidaDTO;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
@@ -9,8 +8,9 @@ import mx.edu.utez.SIRIACI_servicio.model.importancia.Importancia;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Incidencia {
@@ -23,7 +23,7 @@ public class Incidencia {
     @Column(nullable = false)
     private String descripcion;
     @Column(nullable = false)
-    private Date tiempoIncidencia;
+    private LocalDateTime tiempoIncidencia;
     @Column(nullable = false)
     private Double longitud;
     @Column(nullable = false)
@@ -32,6 +32,8 @@ public class Incidencia {
     private Boolean activo = true;
     @Column(length = 128)
     private String comentario;
+    @Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
+    private UUID codigo;
 
     // Llaves foraneas
     @ManyToOne
@@ -54,11 +56,12 @@ public class Incidencia {
     public Incidencia() {
     }
 
-    public Incidencia(String descripcion, Date tiempoIncidencia, Double longitud, Double latitud, Importancia importancia, Aspecto aspecto, Usuario usuario) {
+    public Incidencia(String descripcion, LocalDateTime tiempoIncidencia, Double longitud, Double latitud, UUID codigo, Importancia importancia, Aspecto aspecto, Usuario usuario) {
         this.descripcion = descripcion;
         this.tiempoIncidencia = tiempoIncidencia;
         this.longitud = longitud;
         this.latitud = latitud;
+        this.codigo = codigo;
         this.importancia = importancia;
         this.aspecto = aspecto;
         this.usuario = usuario;
@@ -118,11 +121,11 @@ public class Incidencia {
         this.descripcion = descripcion;
     }
 
-    public Date getTiempoIncidencia() {
+    public LocalDateTime getTiempoIncidencia() {
         return tiempoIncidencia;
     }
 
-    public void setTiempoIncidencia(Date tiempoIncidencia) {
+    public void setTiempoIncidencia(LocalDateTime tiempoIncidencia) {
         this.tiempoIncidencia = tiempoIncidencia;
     }
 
@@ -196,5 +199,13 @@ public class Incidencia {
 
     public void setImagenesIncidencia(List<ImagenIncidencia> imagenesIncidencia) {
         this.imagenesIncidencia = imagenesIncidencia;
+    }
+
+    public UUID getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(UUID codigo) {
+        this.codigo = codigo;
     }
 }

@@ -47,7 +47,6 @@ public class Usuario {
 
     // Relaciones de otras tablas con esta
     @OneToOne(mappedBy = "usuario")
-    @JsonIgnore
     private Administrador administrador;
     @OneToOne(mappedBy = "usuario")
     private Estudiante estudiante;

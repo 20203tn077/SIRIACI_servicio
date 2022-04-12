@@ -1,5 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.model.administrador;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class Administrador {
     // Llaves foraneas
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    @JsonIgnore
     private Usuario usuario;
 
     public Administrador() {

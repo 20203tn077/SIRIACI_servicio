@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @RestController
@@ -21,8 +22,8 @@ public class RestablecimientoController {
     @PostMapping("/")
     public ResponseEntity<Mensaje> registrarSolicitud(@RequestBody RestablecimientoDTO restablecimientoDTO) {
         return service.registrarSolicitud(new SolicitudRestablecimiento(
-                FriendlyId.createFriendlyId().substring(0,6),
-                new Date(),
+                FriendlyId.createFriendlyId().substring(0,6).toUpperCase(),
+                LocalDateTime.now(),
                 new Usuario(restablecimientoDTO.getCorreo())
         ));
     }

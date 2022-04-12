@@ -20,10 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/incidencias")
@@ -56,9 +54,10 @@ public class IndicenciaController {
             }
             return service.registrarIncidencia(new Incidencia(
                             incidenciaDTO.getDescripcion(),
-                            new Date(),
+                            LocalDateTime.now(),
                             incidenciaDTO.getLongitud(),
                             incidenciaDTO.getLatitud(),
+                            UUID.randomUUID(),
                             new Importancia(incidenciaDTO.getImportancia()),
                             new Aspecto(incidenciaDTO.getAspecto()),
                             new Usuario(usuario.getId())

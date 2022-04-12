@@ -3,7 +3,7 @@ package mx.edu.utez.SIRIACI_servicio.model.solicitudRestablecimiento;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class SolicitudRestablecimiento {
@@ -16,8 +16,8 @@ public class SolicitudRestablecimiento {
     @Column(nullable = false, unique = true)
     private String codigo;
     @Column(nullable = false)
-    private Date tiempo_solicitud;
-    private Date tiempo_canjeado;
+    private LocalDateTime tiempo_solicitud;
+    private LocalDateTime tiempo_canjeado;
 
     // Llaves foraneas
     @OneToOne
@@ -32,7 +32,7 @@ public class SolicitudRestablecimiento {
         this.usuario = usuario;
     }
 
-    public SolicitudRestablecimiento(String codigo, Date tiempo_solicitud, Usuario usuario) {
+    public SolicitudRestablecimiento(String codigo, LocalDateTime tiempo_solicitud, Usuario usuario) {
         this.codigo = codigo;
         this.tiempo_solicitud = tiempo_solicitud;
         this.usuario = usuario;
@@ -61,11 +61,11 @@ public class SolicitudRestablecimiento {
         this.codigo = codigo;
     }
 
-    public Date getTiempo_solicitud() {
+    public LocalDateTime getTiempo_solicitud() {
         return tiempo_solicitud;
     }
 
-    public void setTiempo_solicitud(Date tiempo_solicitud) {
+    public void setTiempo_solicitud(LocalDateTime tiempo_solicitud) {
         this.tiempo_solicitud = tiempo_solicitud;
     }
 
@@ -77,11 +77,11 @@ public class SolicitudRestablecimiento {
         this.usuario = usuario;
     }
 
-    public Date getTiempo_canjeado() {
+    public LocalDateTime getTiempo_canjeado() {
         return tiempo_canjeado;
     }
 
-    public void setTiempo_canjeado(Date tiempo_canjeado) {
+    public void setTiempo_canjeado(LocalDateTime tiempo_canjeado) {
         this.tiempo_canjeado = tiempo_canjeado;
     }
 }

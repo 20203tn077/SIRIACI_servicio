@@ -8,14 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CapsulaSalidaDTO {
     private Long id;
     private String titulo;
     private Boolean activo;
-    private Date fechaPublicacion;
+    private LocalDateTime fechaPublicacion;
     private String contenido;
     private byte[] imagenCapsula;
 
@@ -60,11 +60,11 @@ public class CapsulaSalidaDTO {
         this.imagenCapsula = imagenCapsula;
     }
 
-    public Date getFechaPublicacion() {
+    public LocalDateTime getFechaPublicacion() {
         return fechaPublicacion;
     }
 
-    public void setFechaPublicacion(Date fechaPublicacion) {
+    public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
 

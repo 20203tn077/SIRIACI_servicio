@@ -27,7 +27,7 @@ public class UsuarioSalidaDTO {
     private Boolean activo;
 
     public UsuarioSalidaDTO(Usuario usuario) {
-        this.id = id;
+        this.id = usuario.getId();
         this.nombre = usuario.getNombre() + " " + usuario.getApellido1() + (usuario.getApellido2() != null ? (" " + usuario.getApellido2()) : "");
         this.correo = usuario.getCorreo();
         this.telefono = usuario.getTelefono();
