@@ -167,7 +167,14 @@ public class IncidenciaService {
         if (incidencia.getAspecto().getId() != null) {
             Optional<Aspecto> aspecto = aspectoRepository.findById(incidencia.getAspecto().getId());
             if (aspecto.isEmpty()) errores.put("aspecto", "El aspecto seleccionada no existe");
-            else incidencia.setAspecto(aspecto.get());
+            else {
+                Incidencia finalIncidenciaActual = incidenciaActual;
+                Byte idAspecto = finalIncidenciaActual.getAspecto().getId();
+                new Thread(() -> {
+                    correosService.enviarCorreoPorReasignacion(finalIncidenciaActual, idAspecto, aspecto.get().getId());
+                }).start();
+                incidencia.setAspecto(aspecto.get());
+            }
         }
 
 
