@@ -40,11 +40,11 @@ public class CapsulaService {
     // 3.1 Consultar cápsulas informativas
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulas(Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, null, null, capsulaRepository.findAllByActivoIsTrue(pageable).map(capsula -> capsula.convertirSalida())), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, null, null, capsulaRepository.findAllByActivoIsTrue(pageable).map(capsula -> new CapsulaVistaDTO(capsula))), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulas(Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndTituloContains(filtro, pageable).map(capsula -> capsula.convertirSalida())), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndTituloContains(filtro, pageable).map(capsula -> new CapsulaVistaDTO(capsula))), HttpStatus.OK);
     }
 
     // 3.2 Consultar cápsula informativa
@@ -52,13 +52,13 @@ public class CapsulaService {
     public ResponseEntity<Mensaje> obtenerCapsula(long id) {
         Optional<Capsula> capsula = capsulaRepository.findByIdAndActivoIsTrue(id);
         if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
-        else return new ResponseEntity<>(new Mensaje(true, "OK", null, capsula.get()), HttpStatus.OK);
+        else return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula.get()), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulaAdministrador(long id) {
         Optional<Capsula> capsula = capsulaRepository.findById(id);
         if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
-        else return new ResponseEntity<>(new Mensaje(true, "OK", null, capsula.get()), HttpStatus.OK);
+        else return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula.get()), HttpStatus.OK);
     }
 
     // 3.3 Registrar cápsula informativa
@@ -92,19 +92,19 @@ public class CapsulaService {
     // 3.4 Consultar cápsulas informativas realizadas
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(long id, Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndUsuario_Id(id, pageable).map(capsula -> capsula.convertirSalida())), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndUsuario_Id(id, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(long id, Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndUsuario_IdAndTituloContains(id, filtro, pageable).map(capsula -> capsula.convertirSalida())), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndUsuario_IdAndTituloContains(id, filtro, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadasAdministrador(Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAll(pageable).map(capsula -> capsula.convertirSalida())), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAll(pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadasAdministrador(Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByTituloContains(filtro, pageable).map(capsula -> capsula.convertirSalida())), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByTituloContains(filtro, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
     }
 
     // 3.5 Modificar cápsula informativa

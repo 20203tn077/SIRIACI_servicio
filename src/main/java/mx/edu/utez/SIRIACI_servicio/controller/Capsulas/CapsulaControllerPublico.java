@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/publico/capsulas")
 @CrossOrigin(origins = {"*"})
 public class CapsulaControllerPublico {
-    @Value("${conf.registros_por_pagina}")
-    int registrosPorPagina;
+    @Value("${conf.capsulas_por_pagina}")
+    int capsulasPorPagina;
     private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
     @Autowired
     CapsulaService service;
@@ -26,9 +26,9 @@ public class CapsulaControllerPublico {
     public ResponseEntity<Mensaje> obtenerCapsulas(@RequestParam(required = false) String filtro, @RequestParam(required = false) Integer pagina) {
         //try {
         if (filtro == null) {
-            return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina -1 : 0, capsulasPorPagina, Sort.by("id").descending()));
         } else {
-            return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina -1 : 0, capsulasPorPagina, Sort.by("id").descending()), filtro);
         }
         //} catch (Exception e) {
         //    logger.error("Error en método " + e.getMessage());

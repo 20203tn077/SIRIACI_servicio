@@ -11,17 +11,17 @@ import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CapsulaSalidaDTO {
+public class CapsulaVistaDTO {
     private Long id;
     private String titulo;
-    private Boolean activo;
-    private LocalDateTime fechaPublicacion;
+    private String contenido;
+    private byte[] imagenCapsula;
 
-    public CapsulaSalidaDTO(Capsula capsula) {
+    public CapsulaVistaDTO(Capsula capsula) {
         this.id = capsula.getId();
         this.titulo = capsula.getTitulo();
-        this.activo = capsula.isActivo();
-        this.fechaPublicacion = capsula.getFechaPublicacion();
+        this.contenido = capsula.getContenido().length() > 64 ? capsula.getContenido().substring(0, 64).trim() + "..." : capsula.getContenido();
+        this.imagenCapsula = capsula.getImagenesCapsula().isEmpty() ? null : capsula.getImagenesCapsula().get(0).getImagen();
     }
 
     public Long getId() {
@@ -40,20 +40,19 @@ public class CapsulaSalidaDTO {
         this.titulo = titulo;
     }
 
-    public Boolean getActivo() {
-        return activo;
+    public byte[] getImagenCapsula() {
+        return imagenCapsula;
     }
 
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
+    public void setImagenCapsula(byte[] imagenCapsula) {
+        this.imagenCapsula = imagenCapsula;
     }
 
-    public LocalDateTime getFechaPublicacion() {
-        return fechaPublicacion;
+    public String getContenido() {
+        return contenido;
     }
 
-    public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
     }
-
 }

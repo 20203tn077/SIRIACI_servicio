@@ -1,5 +1,7 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
+import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
+import mx.edu.utez.SIRIACI_servicio.model.importancia.Importancia;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import java.time.LocalDateTime;
 
@@ -8,8 +10,8 @@ public class IncidenciaSalidaDTO {
     private String descripcion;
     private LocalDateTime tiempoIncidencia;
     private Boolean activo;
-    private String importancia;
-    private String estado;
+    private Importancia importancia;
+    private Estado estado;
     private String aspecto;
 
     public IncidenciaSalidaDTO(Incidencia incidencia) {
@@ -17,8 +19,8 @@ public class IncidenciaSalidaDTO {
         this.descripcion = incidencia.getDescripcion();
         this.tiempoIncidencia = incidencia.getTiempoIncidencia();
         this.activo = incidencia.isActivo();
-        this.importancia = incidencia.getImportancia().getNombre();
-        this.estado = incidencia.getEstado().getNombre();
+        this.importancia = incidencia.getImportancia();
+        this.estado = incidencia.getEstado();
         this.aspecto = incidencia.getAspecto().getNombre();
     }
 
@@ -54,19 +56,19 @@ public class IncidenciaSalidaDTO {
         this.activo = activo;
     }
 
-    public String getImportancia() {
+    public Importancia getImportancia() {
         return importancia;
     }
 
-    public void setImportancia(String importancia) {
+    public void setImportancia(Importancia importancia) {
         this.importancia = importancia;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

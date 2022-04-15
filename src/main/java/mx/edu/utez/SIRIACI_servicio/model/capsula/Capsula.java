@@ -61,10 +61,6 @@ public class Capsula {
         if (capsula.contenido != null && this.contenido != capsula.contenido) this.contenido = capsula.contenido;
     }
 
-    public CapsulaSalidaDTO convertirSalida() {
-        return new CapsulaSalidaDTO(this);
-    }
-
     public Long getId() {
         return id;
     }

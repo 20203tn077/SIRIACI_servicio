@@ -80,6 +80,7 @@ public class CapsulaControllerAdministrador {
     }
 
     // 3.4 Consultar cápsulas informativas realizadas
+    @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(@RequestParam(required = false) String filtro, @RequestParam(required = false) Integer pagina) {
         //try {
         if (filtro == null) {

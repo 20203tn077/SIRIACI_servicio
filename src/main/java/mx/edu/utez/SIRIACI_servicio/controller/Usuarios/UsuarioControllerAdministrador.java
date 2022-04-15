@@ -60,7 +60,7 @@ public class UsuarioControllerAdministrador {
 
     // 1.2 Consultar usuarios
     @GetMapping("/")
-    public ResponseEntity<Mensaje> obtenerUsuario(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
+    public ResponseEntity<Mensaje> obtenerUsuarios (@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
         //try {
         if (filtro == null) {
             return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
