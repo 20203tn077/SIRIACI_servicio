@@ -15,6 +15,12 @@ public class VerificacionController {
     // 4.4 Validar código de verificación
     @PostMapping("/")
     public ResponseEntity<Mensaje> verificarUsuario(@RequestBody VerificacionDTO verificacionDTO) {
-        return service.verificarUsuario(verificacionDTO.getCodigo());
+        //try {
+        return service.verificarUsuario(verificacionDTO.getCorreo(), verificacionDTO.getCodigo());
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
+
     }
 }

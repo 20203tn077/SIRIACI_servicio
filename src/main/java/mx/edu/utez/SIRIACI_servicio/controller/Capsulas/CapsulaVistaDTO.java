@@ -20,7 +20,7 @@ public class CapsulaVistaDTO {
     public CapsulaVistaDTO(Capsula capsula) {
         this.id = capsula.getId();
         this.titulo = capsula.getTitulo();
-        this.contenido = capsula.getContenido().length() > 64 ? capsula.getContenido().substring(0, 64).trim() + "..." : capsula.getContenido();
+        this.contenido = capsula.getContenido().length() > 64 ? capsula.getContenido().substring(0, 84).trim() + "..." : capsula.getContenido();
         this.imagenCapsula = capsula.getImagenesCapsula().isEmpty() ? null : capsula.getImagenesCapsula().get(0).getImagen();
     }
 

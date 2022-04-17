@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class IntentoInicioSesionService {
     public void verificarBloqueo(String correo) {
         Bloqueo bloqueo = usuarioRepository.findByCorreoAndActivoIsTrue(correo).get().getBloqueo();
         if (bloqueo != null) {
-            long minutosRestantes = Duration.between(new Date().toInstant(), bloqueo.getTiempoBloqueo().plus(duracionBloqueo, ChronoUnit.MINUTES)).toMinutes();
+            long minutosRestantes = Duration.between(LocalDateTime.now(), bloqueo.getTiempoBloqueo().plus(duracionBloqueo, ChronoUnit.MINUTES)).toMinutes();
             if (minutosRestantes > 0) {
                 throw new RuntimeException("MSJFRONT Tu cuenta se encuentra bloqueada, vuelve a intentarlo en " + minutosRestantes + " minuto" + (minutosRestantes == 1 ? "" : "s"));
             } else {

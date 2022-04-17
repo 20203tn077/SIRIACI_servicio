@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -119,6 +116,7 @@ public class IncidenciaService {
         if (usuario.getId() == incidencia.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
         else return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para ver esto", null, null), HttpStatus.UNAUTHORIZED);
     }
+    @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciaResponsable(long idUsuario, long id) {
         Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
         if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
@@ -131,8 +129,28 @@ public class IncidenciaService {
         if (usuario.getResponsable().getAspecto().getId() == incidencia.getAspecto().getId()) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
         else return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para ver esto", null, null), HttpStatus.UNAUTHORIZED);
     }
+    @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerIncidenciaAdministrador(long id) {
         Optional<Incidencia> incidencia = incidenciaRepository.findById(id);
+        if (incidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia.get()), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidenciaResponsableByCodigo(long idUsuario, UUID codigo) {
+        Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Usuario usuario = resultadoUsuario.get();
+
+        Optional<Incidencia> resultadoIncidencia = incidenciaRepository.findByCodigoAndActivoIsTrue(codigo);
+        if (resultadoIncidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
+        Incidencia incidencia = resultadoIncidencia.get();
+
+        if (usuario.getResponsable().getAspecto().getId() == incidencia.getAspecto().getId()) return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia), HttpStatus.OK);
+        else return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para ver esto", null, null), HttpStatus.UNAUTHORIZED);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerIncidenciaAdministradorByCodigo(UUID codigo) {
+        Optional<Incidencia> incidencia = incidenciaRepository.findByCodigo(codigo);
         if (incidencia.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Incidencia inexistente", null, null), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(new Mensaje(false, "OK", null, incidencia.get()), HttpStatus.OK);
     }

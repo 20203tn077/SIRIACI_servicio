@@ -1,7 +1,6 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
 import mx.edu.utez.SIRIACI_servicio.controller.ImagenDTO;
-import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
 import mx.edu.utez.SIRIACI_servicio.model.importancia.Importancia;
@@ -26,10 +25,10 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/incidencias")
 @CrossOrigin(origins = {"*"})
-public class IndicenciaController {
+public class IncidenciaController {
     @Value("${conf.registros_por_pagina}")
     int registrosPorPagina;
-    private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+    private final static Logger logger = LoggerFactory.getLogger(IncidenciaController.class);
     @Autowired
     IncidenciaService service;
 
@@ -45,11 +44,12 @@ public class IndicenciaController {
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
-        //try {
+        try {
             List<ImagenIncidencia> imagenes = new ArrayList<>();
             if (incidenciaDTO.getImagenesIncidencia() != null) {
                 for (ImagenDTO imagen : incidenciaDTO.getImagenesIncidencia()) {
-                    if (imagen.getImagen() != null) imagenes.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen.getImagen())));
+                    if (imagen.getImagen() != null)
+                        imagenes.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen.getImagen())));
                 }
             }
             return service.registrarIncidencia(new Incidencia(
@@ -64,10 +64,10 @@ public class IndicenciaController {
                     ),
                     imagenes
             );
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método registrarIncidencia: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 2.2 Consultar reportes de incidencia realizados
@@ -81,16 +81,16 @@ public class IndicenciaController {
             logger.error("Error en método automodificacion" + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
-        //try {
-        if (filtro == null) {
-            return service.obtenerIncidenciasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
-        } else {
-            return service.obtenerIncidenciasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+        try {
+            if (filtro == null) {
+                return service.obtenerIncidenciasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            } else {
+                return service.obtenerIncidenciasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            }
+        } catch (Exception e) {
+            logger.error("Error en método obtenerIncidenciasRealizadas: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
     }
 
     // 2.3 Consultar reporte de incidencia
@@ -104,12 +104,12 @@ public class IndicenciaController {
             logger.error("Error en método automodificacion" + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
-        //try {
-        return service.obtenerIncidencia(usuario.getId(), id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        try {
+            return service.obtenerIncidencia(usuario.getId(), id);
+        } catch (Exception e) {
+            logger.error("Error en método obtenerIncidencia: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 2.4 Modificar reporte de incidencia
@@ -124,41 +124,31 @@ public class IndicenciaController {
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
-        //try {
-        List<ImagenIncidencia> imagenesRegistrar = new ArrayList<>();
-        List<ImagenIncidencia> imagenesEliminar = new ArrayList<>();
-        if (incidenciaDTO.getImagenesIncidencia() != null) {
-            for (ImagenDTO imagen : incidenciaDTO.getImagenesIncidencia()) {
-                if (imagen.getImagen() != null) imagenesRegistrar.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen.getImagen())));
-                else if (imagen.getId() != null) imagenesEliminar.add(new ImagenIncidencia(imagen.getId()));
+        try {
+            List<ImagenIncidencia> imagenesRegistrar = new ArrayList<>();
+            List<ImagenIncidencia> imagenesEliminar = new ArrayList<>();
+            if (incidenciaDTO.getImagenesIncidencia() != null) {
+                for (ImagenDTO imagen : incidenciaDTO.getImagenesIncidencia()) {
+                    if (imagen.getImagen() != null)
+                        imagenesRegistrar.add(new ImagenIncidencia(Base64.getDecoder().decode(imagen.getImagen())));
+                    else if (imagen.getId() != null) imagenesEliminar.add(new ImagenIncidencia(imagen.getId()));
+                }
             }
+            return service.modificarIncidencia(new Incidencia(
+                            id,
+                            incidenciaDTO.getDescripcion(),
+                            incidenciaDTO.getLongitud(),
+                            incidenciaDTO.getLatitud(),
+                            new Importancia(incidenciaDTO.getImportancia()),
+                            new Aspecto(incidenciaDTO.getAspecto()),
+                            new Usuario(usuario.getId())
+                    ),
+                    imagenesRegistrar,
+                    imagenesEliminar
+            );
+        } catch (Exception e) {
+            logger.error("Error en método modificarIncidencia: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
-        return service.modificarIncidencia(new Incidencia(
-                        id,
-                        incidenciaDTO.getDescripcion(),
-                        incidenciaDTO.getLongitud(),
-                        incidenciaDTO.getLatitud(),
-                        new Importancia(incidenciaDTO.getImportancia()),
-                        new Aspecto(incidenciaDTO.getAspecto()),
-                        new Usuario(usuario.getId())
-                ),
-                imagenesRegistrar,
-                imagenesEliminar
-        );
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
     }
-
-    /*
-    public ResponseEntity<Mensaje> () {
-        //try {
-            return service.;
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
-    }
-    */
 }

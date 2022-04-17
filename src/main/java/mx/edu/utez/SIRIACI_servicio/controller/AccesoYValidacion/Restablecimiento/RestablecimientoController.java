@@ -21,17 +21,23 @@ public class RestablecimientoController {
     // 4.5 Solicitar restablecimiento de contraseña
     @PostMapping("/")
     public ResponseEntity<Mensaje> registrarSolicitud(@RequestBody RestablecimientoDTO restablecimientoDTO) {
+        //try {
         return service.registrarSolicitud(new SolicitudRestablecimiento(
                 FriendlyId.createFriendlyId().substring(0,6).toUpperCase(),
                 LocalDateTime.now(),
                 new Usuario(restablecimientoDTO.getCorreo())
         ));
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
     }
 
     // 4.6 Validar código de recuperación
     // 4.7 Establecer nueva contraseña
     @PatchMapping("/")
     public ResponseEntity<Mensaje> validarYRestablecer(@RequestBody RestablecimientoDTO restablecimientoDTO) {
+        //try {
         if (restablecimientoDTO.getContrasena() == null) return service.verificarCodigo(new SolicitudRestablecimiento(
                 restablecimientoDTO.getCodigo(),
                 new Usuario(restablecimientoDTO.getCorreo())
@@ -40,5 +46,9 @@ public class RestablecimientoController {
                 restablecimientoDTO.getCodigo(),
                 new Usuario(restablecimientoDTO.getCorreo(), restablecimientoDTO.getContrasena())
         ));
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
     }
 }

@@ -31,7 +31,7 @@ import java.util.List;
 public class CapsulaControllerResponsable {
     @Value("${conf.registros_por_pagina}")
     int registrosPorPagina;
-    private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+    private final static Logger logger = LoggerFactory.getLogger(CapsulaControllerResponsable.class);
     @Autowired
     CapsulaService service;
 
@@ -47,7 +47,7 @@ public class CapsulaControllerResponsable {
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
-        //try {
+        try {
             List<ImagenCapsula> imagenes = new ArrayList<>();
             if (capsulaDTO.getImagenesCapsula() != null) {
                 for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
@@ -63,10 +63,10 @@ public class CapsulaControllerResponsable {
                     ),
                     imagenes
             );
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método registrarCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.4 Consultar cápsulas informativas realizadas
@@ -81,16 +81,16 @@ public class CapsulaControllerResponsable {
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
-        //try {
+        try {
         if (filtro == null) {
             return service.obtenerCapsulasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
         } else {
             return service.obtenerCapsulasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
         }
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método obtenerCapsulas: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.5 Modificar cápsula informativa
@@ -114,7 +114,7 @@ public class CapsulaControllerResponsable {
             }
         }
 
-        //try {
+        try {
             return service.modificarCapsula(
                     new Capsula(
                             id,
@@ -125,10 +125,10 @@ public class CapsulaControllerResponsable {
                     imagenesRegistrar,
                     imagenesEliminar
             );
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método modificarCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.6 Eliminar cápsula informativa
@@ -143,11 +143,11 @@ public class CapsulaControllerResponsable {
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
-        //try {
+        try {
             return service.eliminarCapsula(id, usuario.getId());
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método eliminarCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 }

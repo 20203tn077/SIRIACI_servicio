@@ -1,23 +1,16 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Usuarios;
 
-import mx.edu.utez.SIRIACI_servicio.model.administrador.Administrador;
-import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.carrera.Carrera;
 import mx.edu.utez.SIRIACI_servicio.model.estudiante.Estudiante;
-import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,10 +30,10 @@ public class UsuarioController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
 
-        //try {
+        try {
         return service.automodificacion(
                 new Usuario(
                         usuario.getId(),
@@ -57,10 +50,10 @@ public class UsuarioController {
                         new Carrera(usuarioDTO.getCarrera())
                 )
         );
-        /*} catch (Exception e) {
-            logger.error("Error en método registrarUsuario" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
-        }*/
+        } catch (Exception e) {
+            logger.error("Error en método automodificacion: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/")
@@ -72,14 +65,14 @@ public class UsuarioController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
 
-        //try {
-        return service.obtenerUsuario(usuario.getId());
-        /*} catch (Exception e) {
-            logger.error("Error en método registrarUsuario" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
-        }*/
+        try {
+        return service.obtenerPerfil(usuario.getId());
+        } catch (Exception e) {
+            logger.error("Error en método obtenerPerfil: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 }

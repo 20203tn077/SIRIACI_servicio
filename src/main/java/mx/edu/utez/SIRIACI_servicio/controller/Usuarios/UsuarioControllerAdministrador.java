@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +21,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/administrador/usuarios")
 @CrossOrigin(origins = {"*"})
 public class UsuarioControllerAdministrador {
+    private final static Logger logger = LoggerFactory.getLogger(UsuarioControllerAdministrador.class);
     @Value("${conf.registros_por_pagina}")
     int registrosPorPagina;
-
-    private final static Logger logger = LoggerFactory.getLogger(UsuarioControllerAdministrador.class);
     @Autowired
     UsuarioService service;
 
     // 1.1 Registrar nuevo usuario
     @PostMapping("/")
     public ResponseEntity<Mensaje> registrarUsuario(@RequestBody UsuarioAdministradorDTO usuarioAdministradorDTO) {
-        //try {
+        try {
             return service.registrarUsuario(
                     new Usuario(
                             usuarioAdministradorDTO.getNombre(),
@@ -52,78 +52,78 @@ public class UsuarioControllerAdministrador {
                     usuarioAdministradorDTO.isAdministrador(),
                     usuarioAdministradorDTO.isResponsable()
             );
-        /*} catch (Exception e) {
-            logger.error("Error en método registrarUsuario" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
-        }*/
+        } catch (Exception e) {
+            logger.error("Error en método registrarUsuario: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 1.2 Consultar usuarios
     @GetMapping("/")
-    public ResponseEntity<Mensaje> obtenerUsuarios (@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
-        //try {
-        if (filtro == null) {
-            return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
-        } else {
-            return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+    public ResponseEntity<Mensaje> obtenerUsuarios(@RequestParam(required = false) Integer pagina, @RequestParam(required = false) String filtro) {
+        try {
+            if (filtro == null) {
+                return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            } else {
+                return service.obtenerUsuarios(PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            }
+        } catch (Exception e) {
+            logger.error("Error en método obtenerUsuarios: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
     }
 
     // 1.3 Consultar usuario
     @GetMapping("/{id}")
     public ResponseEntity<Mensaje> obtenerUsuario(@PathVariable long id) {
-        //try {
-        return service.obtenerUsuario(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        try {
+            return service.obtenerUsuario(id);
+        } catch (Exception e) {
+            logger.error("Error en método obtenerUsuario: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 1.4 Modificar usuario
     @PatchMapping("/{id}")
     public ResponseEntity<Mensaje> modificarUsuario(@RequestBody UsuarioAdministradorDTO usuarioAdministradorDTO, @PathVariable long id) {
-        //try {
-        return service.modificarUsuario(
-                new Usuario(
-                        id,
-                        usuarioAdministradorDTO.getNombre(),
-                        usuarioAdministradorDTO.getApellido1(),
-                        usuarioAdministradorDTO.getApellido2(),
-                        usuarioAdministradorDTO.getCorreo(),
-                        usuarioAdministradorDTO.getTelefono(),
-                        usuarioAdministradorDTO.getContrasena()
-                ),
-                new Administrador(),
-                new Responsable(
-                        new Aspecto(usuarioAdministradorDTO.getAspecto())
-                ),
-                new Estudiante(
-                        usuarioAdministradorDTO.getCuatrimestre(),
-                        usuarioAdministradorDTO.getGrupo(),
-                        new Carrera(usuarioAdministradorDTO.getCarrera())
-                ),
-                usuarioAdministradorDTO.isAdministrador(),
-                usuarioAdministradorDTO.isResponsable()
-        );
-        /*} catch (Exception e) {
-            logger.error("Error en método registrarUsuario" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al modificar al usuario", null, null), HttpStatus.BAD_REQUEST);
-        }*/
+        try {
+            return service.modificarUsuario(
+                    new Usuario(
+                            id,
+                            usuarioAdministradorDTO.getNombre(),
+                            usuarioAdministradorDTO.getApellido1(),
+                            usuarioAdministradorDTO.getApellido2(),
+                            usuarioAdministradorDTO.getCorreo(),
+                            usuarioAdministradorDTO.getTelefono(),
+                            usuarioAdministradorDTO.getContrasena()
+                    ),
+                    new Administrador(),
+                    new Responsable(
+                            new Aspecto(usuarioAdministradorDTO.getAspecto())
+                    ),
+                    new Estudiante(
+                            usuarioAdministradorDTO.getCuatrimestre(),
+                            usuarioAdministradorDTO.getGrupo(),
+                            new Carrera(usuarioAdministradorDTO.getCarrera())
+                    ),
+                    usuarioAdministradorDTO.isAdministrador(),
+                    usuarioAdministradorDTO.isResponsable()
+            );
+        } catch (Exception e) {
+            logger.error("Error en método modificarUsuario : " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 1.5 Eliminar usuario
     @DeleteMapping("/{id}")
     public ResponseEntity<Mensaje> eliminarUsuario(@PathVariable long id) {
-        //try {
+        try {
         return service.eliminarUsuario(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método eliminarUsuario: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 }

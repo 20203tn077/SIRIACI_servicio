@@ -7,6 +7,7 @@ import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/publico/usuarios")
 @CrossOrigin(origins = {"*"})
 public class UsuarioControllerPublico {
-
     private final static Logger logger = LoggerFactory.getLogger(UsuarioControllerPublico.class);
     @Autowired
     UsuarioService service;
@@ -22,7 +22,7 @@ public class UsuarioControllerPublico {
     // 1.6 Registrarse en el sistema
     @PostMapping("/")
     public ResponseEntity<Mensaje> autorregistro(@RequestBody UsuarioDTO usuarioDTO) {
-        //try {
+        try {
             return service.autorregistro(
                     new Usuario(
                             usuarioDTO.getNombre(),
@@ -38,9 +38,9 @@ public class UsuarioControllerPublico {
                             new Carrera(usuarioDTO.getCarrera())
                     )
             );
-        /*} catch (Exception e) {
-            logger.error("Error en método registrarUsuario" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al registrar al usuario", null, null), HttpStatus.BAD_REQUEST);
-        }*/
+        } catch (Exception e) {
+            logger.error("Error en método autorregistro: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 }

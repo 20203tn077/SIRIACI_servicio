@@ -1,6 +1,5 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Otros;
 
-import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioControllerAdministrador;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +25,8 @@ public class SeleccionablesController {
         try {
             return service.obtenerImportancias();
         } catch (Exception e) {
-            logger.error("Error en método obtenerImportancias" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+            logger.error("Error en método obtenerImportancias: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("estados/")
@@ -35,8 +34,8 @@ public class SeleccionablesController {
         try {
             return service.obtenerEstados();
         } catch (Exception e) {
-            logger.error("Error en método obtenerEstados" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+            logger.error("Error en método obtenerEstados: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("aspectos/")
@@ -44,8 +43,8 @@ public class SeleccionablesController {
         try {
             return service.obtenerAspectos();
         } catch (Exception e) {
-            logger.error("Error en método obtenerAspectos" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+            logger.error("Error en método obtenerAspectos: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("carreras/")
@@ -53,8 +52,8 @@ public class SeleccionablesController {
         try {
             return service.obtenerDivisiones();
         } catch (Exception e) {
-            logger.error("Error en método obtenerDivisiones" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+            logger.error("Error en método obtenerDivisiones: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
 

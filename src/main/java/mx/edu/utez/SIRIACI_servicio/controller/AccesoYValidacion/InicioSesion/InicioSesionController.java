@@ -17,6 +17,11 @@ public class InicioSesionController {
     // 4.1 Iniciar sesión
     @PostMapping("/")
     public ResponseEntity<Mensaje> iniciarSesion(@Valid @RequestBody InicioSesionDTO inicioSesionDTO) {
+        //try {
         return service.iniciarSesion(inicioSesionDTO.getCorreo(), inicioSesionDTO.getContrasena());
+        //} catch (Exception e) {
+        //    logger.error("Error en método " + e.getMessage());
+        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
+        //}
     }
 }

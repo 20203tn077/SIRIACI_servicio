@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface NoVerificadoRepository extends JpaRepository<NoVerificado, Long> {
-    boolean existsByUsuario(Usuario usuario);
-    Optional<NoVerificado> findByCodigo(UUID codigo);
+    Optional<NoVerificado> findByCorreoAndCodigo(String correo, UUID codigo);
     void deleteAllByUsuario_Correo(String correo);
 }

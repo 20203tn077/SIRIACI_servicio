@@ -30,19 +30,19 @@ import java.util.List;
 public class CapsulaControllerAdministrador {
     @Value("${conf.registros_por_pagina}")
     int registrosPorPagina;
-    private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+    private final static Logger logger = LoggerFactory.getLogger(CapsulaControllerAdministrador.class);
     @Autowired
     CapsulaService service;
 
     // 3.2 Consultar cápsula informativa
     @GetMapping("/{id}")
     public ResponseEntity<Mensaje> obtenerCapsula(@PathVariable long id) {
-        //try {
+        try {
         return service.obtenerCapsulaAdministrador(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método obtenerCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.3 Registrar cápsula informativa
@@ -57,7 +57,7 @@ public class CapsulaControllerAdministrador {
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
 
-        //try {
+        try {
         List<ImagenCapsula> imagenes = new ArrayList<>();
         if (capsulaDTO.getImagenesCapsula() != null) {
             for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
@@ -73,25 +73,25 @@ public class CapsulaControllerAdministrador {
                 ),
                 imagenes
         );
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método registrarCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.4 Consultar cápsulas informativas realizadas
     @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(@RequestParam(required = false) String filtro, @RequestParam(required = false) Integer pagina) {
-        //try {
+        try {
         if (filtro == null) {
             return service.obtenerCapsulasRealizadasAdministrador(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
         } else {
             return service.obtenerCapsulasRealizadasAdministrador(PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
         }
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método obtenerCapsulasRealizadas: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.5 Modificar cápsula informativa
@@ -107,7 +107,7 @@ public class CapsulaControllerAdministrador {
             }
         }
 
-        //try {
+        try {
         return service.modificarCapsulaAdministrador(
                 new Capsula(
                         id,
@@ -117,20 +117,20 @@ public class CapsulaControllerAdministrador {
                 imagenesRegistrar,
                 imagenesEliminar
         );
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método modificarCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 3.6 Eliminar cápsula informativa
     @DeleteMapping("/{id}")
     public ResponseEntity<Mensaje> eliminarCapsula(@PathVariable long id) {
-        //try {
+        try {
         return service.eliminarCapsulaAdministrador(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método eliminarCapsula: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 }

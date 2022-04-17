@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Long> {
@@ -17,4 +18,6 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Long> {
     Page<Incidencia> findAllByActivoIsTrueAndAspecto_Id(byte id, Pageable pageable);
     Page<Incidencia> findAllByActivoIsTrueAndDescripcionContainsAndAspecto_Id(String filtro, byte id, Pageable pageable);
     Optional<Incidencia> findByIdAndActivoIsTrue(Long id);
+    Optional<Incidencia> findByCodigoAndActivoIsTrue(UUID codigo);
+    Optional<Incidencia> findByCodigo(UUID codigo);
 }

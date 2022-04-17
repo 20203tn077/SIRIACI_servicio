@@ -35,11 +35,11 @@ public class VerificacionService {
 
     // 4.4 Validar código de verificación
     @Transactional
-    public ResponseEntity<Mensaje> verificarUsuario(UUID codigo) {
+    public ResponseEntity<Mensaje> verificarUsuario(String correo, UUID codigo) {
         if (codigo == null)
             return new ResponseEntity<>(new Mensaje(true, "Código de verificación ausente", null, null), HttpStatus.BAD_REQUEST);
 
-        Optional<NoVerificado> resultado = noVerificadoRepository.findByCodigo(codigo);
+        Optional<NoVerificado> resultado = noVerificadoRepository.findByCorreoAndCodigo(correo, codigo);
         if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Código de verificación inválido", null, null), HttpStatus.BAD_REQUEST);
         Usuario usuario = resultado.get().getUsuario();
         

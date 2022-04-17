@@ -159,7 +159,7 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerUsuario(long id) {
 
-        Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(id);
+        Optional<Usuario> resultado = usuarioRepository.findByIdAndNoVerificadoIsNull(id);
         if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "El usuario no existe", null, null), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(new Mensaje(false, "OK", null, resultado.get()), HttpStatus.OK);
     }
@@ -513,5 +513,14 @@ public class UsuarioService {
         }
 
         return new ResponseEntity<>(new Mensaje(false, "Usuario actualizado", null, usuario), HttpStatus.OK);
+    }
+
+    // 1.8 Consultar perfil
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerPerfil(long id) {
+
+        Optional<Usuario> resultado = usuarioRepository.findByIdAndActivoIsTrue(id);
+        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "El usuario no existe", null, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, resultado.get()), HttpStatus.OK);
     }
 }

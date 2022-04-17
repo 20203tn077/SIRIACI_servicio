@@ -1,6 +1,5 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
-import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
@@ -15,25 +14,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/administrador/incidencias")
 @CrossOrigin(origins = {"*"})
-public class IndicenciaControllerAdministrador {
+public class IncidenciaControllerAdministrador {
     @Value("${conf.registros_por_pagina}")
     int registrosPorPagina;
-    private final static Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+    private final static Logger logger = LoggerFactory.getLogger(IncidenciaControllerAdministrador.class);
     @Autowired
     IncidenciaService service;
 
     // 2.3 Consultar reporte de incidencia
     @GetMapping("/{id}")
     public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable long id) {
-        //try {
+        try {
         return service.obtenerIncidenciaAdministrador(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método obtenerIncidencia: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/codigo/{id}")
+    public ResponseEntity<Mensaje> obtenerIncidenciaByCodigo(@PathVariable UUID codigo) {
+        try {
+        return service.obtenerIncidenciaAdministradorByCodigo(codigo);
+        } catch (Exception e) {
+            logger.error("Error en método obtenerIncidenciaByCodigo: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 2.5 Consultar reportes de incidencia
@@ -47,40 +57,40 @@ public class IndicenciaControllerAdministrador {
             logger.error("Error en método automodificacion" + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
         }
-        //try {
+        try {
         if (filtro == null) {
             return service.obtenerIncidenciasAdministrador(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
         } else {
             return service.obtenerIncidenciasAdministrador(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
         }
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método obtenerIncidencias: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 2.6 Atender reporte de incidencia
     @PatchMapping("/{id}")
     public ResponseEntity<Mensaje> atenderIncidencia(@RequestBody IncidenciaAtenderDTO incidenciaAtenderDTO, @PathVariable long id) {
-        //try {
+        try {
         return service.atenderIncidenciaAdministrador(new Incidencia(
                 id,
                 incidenciaAtenderDTO.getComentario()
         ));
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método atenderIncidencia: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // 2.7 Eliminar reporte de incidencia
     @DeleteMapping("/{id}")
     public ResponseEntity<Mensaje> eliminarIncidencia(@PathVariable Long id) {
-        //try {
+        try {
             return service.eliminarIncidencia(id);
-        //} catch (Exception e) {
-        //    logger.error("Error en método " + e.getMessage());
-        //    return new ResponseEntity<>(new Mensaje(true, "Error al ", null, null), HttpStatus.BAD_REQUEST);
-        //}
+        } catch (Exception e) {
+            logger.error("Error en método eliminarIncidencia: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
+        }
     }
 }
