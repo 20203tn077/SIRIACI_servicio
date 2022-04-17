@@ -41,7 +41,7 @@ public class IncidenciaController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         try {
@@ -79,7 +79,7 @@ public class IncidenciaController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
             if (filtro == null) {
@@ -102,7 +102,7 @@ public class IncidenciaController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
             return service.obtenerIncidencia(usuario.getId(), id);
@@ -121,7 +121,7 @@ public class IncidenciaController {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         try {

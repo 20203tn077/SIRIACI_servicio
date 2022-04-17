@@ -54,7 +54,7 @@ public class CapsulaControllerAdministrador {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         try {

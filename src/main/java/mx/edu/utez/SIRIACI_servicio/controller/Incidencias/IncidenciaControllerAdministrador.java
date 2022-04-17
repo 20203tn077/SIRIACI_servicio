@@ -30,16 +30,17 @@ public class IncidenciaControllerAdministrador {
     @GetMapping("/{id}")
     public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable long id) {
         try {
-        return service.obtenerIncidenciaAdministrador(id);
+            return service.obtenerIncidenciaAdministrador(id);
         } catch (Exception e) {
             logger.error("Error en método obtenerIncidencia: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/codigo/{id}")
     public ResponseEntity<Mensaje> obtenerIncidenciaByCodigo(@PathVariable UUID codigo) {
         try {
-        return service.obtenerIncidenciaAdministradorByCodigo(codigo);
+            return service.obtenerIncidenciaAdministradorByCodigo(codigo);
         } catch (Exception e) {
             logger.error("Error en método obtenerIncidenciaByCodigo: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
@@ -55,14 +56,14 @@ public class IncidenciaControllerAdministrador {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
-        if (filtro == null) {
-            return service.obtenerIncidenciasAdministrador(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
-        } else {
-            return service.obtenerIncidenciasAdministrador(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
-        }
+            if (filtro == null) {
+                return service.obtenerIncidenciasAdministrador(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            } else {
+                return service.obtenerIncidenciasAdministrador(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            }
         } catch (Exception e) {
             logger.error("Error en método obtenerIncidencias: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
@@ -73,10 +74,10 @@ public class IncidenciaControllerAdministrador {
     @PatchMapping("/{id}")
     public ResponseEntity<Mensaje> atenderIncidencia(@RequestBody IncidenciaAtenderDTO incidenciaAtenderDTO, @PathVariable long id) {
         try {
-        return service.atenderIncidenciaAdministrador(new Incidencia(
-                id,
-                incidenciaAtenderDTO.getComentario()
-        ));
+            return service.atenderIncidenciaAdministrador(new Incidencia(
+                    id,
+                    incidenciaAtenderDTO.getComentario()
+            ));
         } catch (Exception e) {
             logger.error("Error en método atenderIncidencia: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);

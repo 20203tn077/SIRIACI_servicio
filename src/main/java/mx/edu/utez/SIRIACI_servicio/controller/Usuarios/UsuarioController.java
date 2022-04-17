@@ -34,22 +34,22 @@ public class UsuarioController {
         }
 
         try {
-        return service.automodificacion(
-                new Usuario(
-                        usuario.getId(),
-                        usuarioDTO.getNombre(),
-                        usuarioDTO.getApellido1(),
-                        usuarioDTO.getApellido2(),
-                        usuarioDTO.getCorreo(),
-                        usuarioDTO.getTelefono(),
-                        usuarioDTO.getContrasena()
-                ),
-                new Estudiante(
-                        usuarioDTO.getCuatrimestre(),
-                        usuarioDTO.getGrupo(),
-                        new Carrera(usuarioDTO.getCarrera())
-                )
-        );
+            return service.automodificacion(
+                    new Usuario(
+                            usuario.getId(),
+                            usuarioDTO.getNombre(),
+                            usuarioDTO.getApellido1(),
+                            usuarioDTO.getApellido2(),
+                            usuarioDTO.getCorreo(),
+                            usuarioDTO.getTelefono(),
+                            usuarioDTO.getContrasena()
+                    ),
+                    new Estudiante(
+                            usuarioDTO.getCuatrimestre(),
+                            usuarioDTO.getGrupo(),
+                            new Carrera(usuarioDTO.getCarrera())
+                    )
+            );
         } catch (Exception e) {
             logger.error("Error en método automodificacion: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
@@ -69,7 +69,7 @@ public class UsuarioController {
         }
 
         try {
-        return service.obtenerPerfil(usuario.getId());
+            return service.obtenerPerfil(usuario.getId());
         } catch (Exception e) {
             logger.error("Error en método obtenerPerfil: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);

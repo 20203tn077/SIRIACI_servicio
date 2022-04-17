@@ -26,11 +26,11 @@ public class CapsulaControllerPublico {
     @GetMapping("/")
     public ResponseEntity<Mensaje> obtenerCapsulas(@RequestParam(required = false) String filtro, @RequestParam(required = false) Integer pagina) {
         try {
-        if (filtro == null) {
-            return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina -1 : 0, capsulasPorPagina, Sort.by("id").descending()));
-        } else {
-            return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina -1 : 0, capsulasPorPagina, Sort.by("id").descending()), filtro);
-        }
+            if (filtro == null) {
+                return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina - 1 : 0, capsulasPorPagina, Sort.by("id").descending()));
+            } else {
+                return service.obtenerCapsulas(PageRequest.of(pagina != null ? pagina - 1 : 0, capsulasPorPagina, Sort.by("id").descending()), filtro);
+            }
         } catch (Exception e) {
             logger.error("Error en método obtenerCapsulas: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);

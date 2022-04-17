@@ -120,7 +120,7 @@ public class UsuarioControllerAdministrador {
     @DeleteMapping("/{id}")
     public ResponseEntity<Mensaje> eliminarUsuario(@PathVariable long id) {
         try {
-        return service.eliminarUsuario(id);
+            return service.eliminarUsuario(id);
         } catch (Exception e) {
             logger.error("Error en método eliminarUsuario: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);

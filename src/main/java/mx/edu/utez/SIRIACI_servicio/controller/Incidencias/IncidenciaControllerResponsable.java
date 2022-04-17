@@ -36,15 +36,16 @@ public class IncidenciaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
-        return service.obtenerIncidenciaResponsable(usuario.getId(), id);
+            return service.obtenerIncidenciaResponsable(usuario.getId(), id);
         } catch (Exception e) {
             logger.error("Error en método obtenerIncidencia: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/codigo/{id}")
     public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable UUID codigo) {
         DetalleUsuario usuario = null;
@@ -53,10 +54,10 @@ public class IncidenciaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
-        return service.obtenerIncidenciaResponsableByCodigo(usuario.getId(), codigo);
+            return service.obtenerIncidenciaResponsableByCodigo(usuario.getId(), codigo);
         } catch (Exception e) {
             logger.error("Error en método obtenerIncidencia: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
@@ -72,14 +73,14 @@ public class IncidenciaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
-        if (filtro == null) {
-            return service.obtenerIncidenciasResponsable(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
-        } else {
-            return service.obtenerIncidenciasResponsable(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
-        }
+            if (filtro == null) {
+                return service.obtenerIncidenciasResponsable(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            } else {
+                return service.obtenerIncidenciasResponsable(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            }
         } catch (Exception e) {
             logger.error("Error en método obtenerIncidencias: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
@@ -94,14 +95,14 @@ public class IncidenciaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
         try {
-        return service.atenderIncidenciaResponsable(new Incidencia(
-                id,
-                incidenciaAtenderDTO.getComentario(),
-                new Usuario(usuario.getId())
-        ));
+            return service.atenderIncidenciaResponsable(new Incidencia(
+                    id,
+                    incidenciaAtenderDTO.getComentario(),
+                    new Usuario(usuario.getId())
+            ));
         } catch (Exception e) {
             logger.error("Error en método atenderIncidencia: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);

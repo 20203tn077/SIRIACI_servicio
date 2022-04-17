@@ -44,14 +44,15 @@ public class CapsulaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         try {
             List<ImagenCapsula> imagenes = new ArrayList<>();
             if (capsulaDTO.getImagenesCapsula() != null) {
                 for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
-                    if (imagen.getImagen() != null) imagenes.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
+                    if (imagen.getImagen() != null)
+                        imagenes.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
                 }
             }
             return service.registrarCapsula(
@@ -78,15 +79,15 @@ public class CapsulaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         try {
-        if (filtro == null) {
-            return service.obtenerCapsulasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()));
-        } else {
-            return service.obtenerCapsulasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina -1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
-        }
+            if (filtro == null) {
+                return service.obtenerCapsulasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()));
+            } else {
+                return service.obtenerCapsulasRealizadas(usuario.getId(), PageRequest.of(pagina != null ? pagina - 1 : 0, registrosPorPagina, Sort.by("id").descending()), filtro);
+            }
         } catch (Exception e) {
             logger.error("Error en método obtenerCapsulas: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
@@ -102,14 +103,15 @@ public class CapsulaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         List<ImagenCapsula> imagenesRegistrar = new ArrayList<>();
         List<ImagenCapsula> imagenesEliminar = new ArrayList<>();
         if (capsulaDTO.getImagenesCapsula() != null) {
             for (ImagenDTO imagen : capsulaDTO.getImagenesCapsula()) {
-                if (imagen.getImagen() != null) imagenesRegistrar.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
+                if (imagen.getImagen() != null)
+                    imagenesRegistrar.add(new ImagenCapsula(Base64.getDecoder().decode(imagen.getImagen())));
                 else if (imagen.getId() != null) imagenesEliminar.add(new ImagenCapsula(imagen.getId()));
             }
         }
@@ -140,7 +142,7 @@ public class CapsulaControllerResponsable {
             usuario = (DetalleUsuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException e) {
             logger.error("Error en método automodificacion" + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación", null, null), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new Mensaje(true, "Error de autenticación.", null, null), HttpStatus.UNAUTHORIZED);
         }
 
         try {

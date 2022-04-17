@@ -29,6 +29,7 @@ public class SeleccionablesController {
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("estados/")
     public ResponseEntity<Mensaje> obtenerEstados() {
         try {
@@ -38,6 +39,7 @@ public class SeleccionablesController {
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("aspectos/")
     public ResponseEntity<Mensaje> obtenerAspectos() {
         try {
@@ -47,6 +49,7 @@ public class SeleccionablesController {
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("carreras/")
     public ResponseEntity<Mensaje> obtenerDivisiones() {
         try {
