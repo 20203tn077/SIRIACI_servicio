@@ -3,6 +3,7 @@ package mx.edu.utez.SIRIACI_servicio.model.dispositivoMovil;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class DispositivoMovil {
@@ -12,8 +13,10 @@ public class DispositivoMovil {
     private Long id;
 
     // Atributos
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String token;
+    @Column(nullable = false)
+    private LocalDateTime tiempoSuscripcion;
 
     // Llaves foraneas
     @ManyToOne
@@ -21,6 +24,18 @@ public class DispositivoMovil {
     private Usuario usuario;
 
     public DispositivoMovil() {
+    }
+
+    public DispositivoMovil(String token, LocalDateTime tiempoSuscripcion, Usuario usuario) {
+        this.token = token;
+        this.tiempoSuscripcion = tiempoSuscripcion;
+        this.usuario = usuario;
+    }
+
+    public void reemplazar(DispositivoMovil dispositivoMovil) {
+        this.token = dispositivoMovil.token;
+        this.tiempoSuscripcion = dispositivoMovil.tiempoSuscripcion;
+        this.usuario = dispositivoMovil.usuario;
     }
 
     public Long getId() {
@@ -45,5 +60,13 @@ public class DispositivoMovil {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public LocalDateTime getTiempoSuscripcion() {
+        return tiempoSuscripcion;
+    }
+
+    public void setTiempoSuscripcion(LocalDateTime tiempoSuscripcion) {
+        this.tiempoSuscripcion = tiempoSuscripcion;
     }
 }

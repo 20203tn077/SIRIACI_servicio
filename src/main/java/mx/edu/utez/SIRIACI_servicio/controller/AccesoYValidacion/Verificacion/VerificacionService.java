@@ -39,7 +39,7 @@ public class VerificacionService {
         if (codigo == null)
             return new ResponseEntity<>(new Mensaje(true, "Código de verificación ausente", null, null), HttpStatus.BAD_REQUEST);
 
-        Optional<NoVerificado> resultado = noVerificadoRepository.findByCorreoAndCodigo(correo, codigo);
+        Optional<NoVerificado> resultado = noVerificadoRepository.findByUsuario_CorreoAndCodigo(correo, codigo);
         if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Código de verificación inválido", null, null), HttpStatus.BAD_REQUEST);
         Usuario usuario = resultado.get().getUsuario();
         

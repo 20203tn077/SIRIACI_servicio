@@ -1,5 +1,8 @@
 package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.InicioSesion;
 
+import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.NotificacionesService;
+import mx.edu.utez.SIRIACI_servicio.model.dispositivoMovil.DispositivoMovil;
+import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.security.IntentoInicioSesionService;
 import mx.edu.utez.SIRIACI_servicio.security.jwt.JwtProvider;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
@@ -14,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class InicioSesionService {
@@ -25,9 +30,11 @@ public class InicioSesionService {
     JwtProvider provider;
     @Autowired
     IntentoInicioSesionService intentoInicioSesionService;
+    @Autowired
+    NotificacionesService notificacionesService;
 
     // 4.1 Iniciar sesión
-    public ResponseEntity<Mensaje> iniciarSesion(String correo, String contrasena) {
+    public ResponseEntity<Mensaje> iniciarSesion(String correo, String contrasena, String dispositivoMovil) {
         Authentication authentication = null;
         try {
             try {
@@ -46,7 +53,12 @@ public class InicioSesionService {
                 return new ResponseEntity<>(new Mensaje(true, "Correo y/o contraseña incorrectos", null, null), HttpStatus.OK);
         }
 
-        intentoInicioSesionService.inicioExitoso(correo);
+        Usuario usuario = intentoInicioSesionService.inicioExitoso(correo);
+        if (dispositivoMovil != null) notificacionesService.suscribirse(new DispositivoMovil(
+                dispositivoMovil,
+                LocalDateTime.now(),
+                usuario
+        ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = provider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

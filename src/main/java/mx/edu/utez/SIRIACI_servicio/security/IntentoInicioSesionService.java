@@ -27,10 +27,11 @@ public class IntentoInicioSesionService {
     @Autowired
     BloqueosService bloqueosService;
 
-    public void inicioExitoso(String correo) {
+    public Usuario inicioExitoso(String correo) {
         Usuario usuario = usuarioRepository.findByCorreoAndActivoIsTrue(correo).get();
         usuario.reiniciarIntentosFallidos();
-        usuarioRepository.save(usuario);
+
+        return usuarioRepository.save(usuario);
     }
 
     public String inicioFallido(String correo) {

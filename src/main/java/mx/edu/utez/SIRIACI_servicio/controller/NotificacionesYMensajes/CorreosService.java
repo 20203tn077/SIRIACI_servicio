@@ -1,13 +1,13 @@
 package mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes;
 
 import com.devskiller.friendly_id.FriendlyId;
-import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.AspectoRepository;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.incidencia.IncidenciaRepository;
 import mx.edu.utez.SIRIACI_servicio.model.noVerificado.NoVerificado;
 import mx.edu.utez.SIRIACI_servicio.model.responsable.Responsable;
+import mx.edu.utez.SIRIACI_servicio.model.responsable.ResponsableRepository;
 import mx.edu.utez.SIRIACI_servicio.model.solicitudRestablecimiento.SolicitudRestablecimiento;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.util.Formateador;
@@ -15,13 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,15 +43,17 @@ public class CorreosService {
     private IncidenciaRepository incidenciaRepository;
     @Autowired
     private AspectoRepository aspectoRepository;
+    @Autowired
+    private ResponsableRepository responsableRepository;
 
     // 5.1 Enviar correo por nuevo reporte de incidencia
     @Transactional(readOnly = true)
-    public void enviarCorreoPorNuevaIndicencia(Incidencia incidencia) {
+    public void enviarCorreoPorNuevaIncidencia(Incidencia incidencia) {
         try {
             incidencia = incidenciaRepository.getById(incidencia.getId());
 
             List<String> correosResponsables = new ArrayList<>();
-            for (Responsable responsable : incidencia.getAspecto().getResponsables()) {
+            for (Responsable responsable : responsableRepository.findAllByAspecto_IdAndUsuario_ActivoIsTrue(incidencia.getAspecto().getId())) {
                 correosResponsables.add(responsable.getUsuario().getCorreo());
             }
 
@@ -63,12 +63,12 @@ public class CorreosService {
             helper.setTo(correosResponsables.toArray(new String[correosResponsables.size()]));
             helper.setCc(correoRecursosMateriales);
             helper.setSubject("¡Nueva incidencia ambiental!");
-            String boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "hola?id=" + FriendlyId.toFriendlyId(incidencia.getCodigo()));
+            String boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "/incidencias/" + FriendlyId.toFriendlyId(incidencia.getCodigo()));
             String texto = String.format(plantillaCorreo, "Hola, se ha reportado una nueva incidencia ambiental en tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada al aspecto ambiental <b>" + incidencia.getAspecto().getNombre() + "</b>. Puedes consultar más detalles en la aplicación web.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
         } catch (Exception e) {
-            logger.error("Error en método enviarCorreoRegistro: " + e.getMessage());
+            logger.error("Error en método enviarCorreoPorNuevaIncidencia: " + e.getMessage());
         }
     }
 
@@ -81,12 +81,12 @@ public class CorreosService {
             Aspecto aspectoNuevo = aspectoRepository.getById(idAspectoNuevo);
 
             List<String> correosResponsablesAnteriores = new ArrayList<>();
-            for (Responsable responsable : aspectoAnterior.getResponsables()) {
+            for (Responsable responsable : responsableRepository.findAllByAspecto_IdAndUsuario_ActivoIsTrue(aspectoAnterior.getId())) {
                 correosResponsablesAnteriores.add(responsable.getUsuario().getCorreo());
             }
 
             List<String> correosResponsablesNuevos = new ArrayList<>();
-            for (Responsable responsable : aspectoNuevo.getResponsables()) {
+            for (Responsable responsable : responsableRepository.findAllByAspecto_IdAndUsuario_ActivoIsTrue(aspectoNuevo.getId())) {
                 correosResponsablesNuevos.add(responsable.getUsuario().getCorreo());
             }
 
@@ -98,7 +98,7 @@ public class CorreosService {
             helper.setCc(correoRecursosMateriales);
             helper.setSubject("Reasignación de incidencia ambiental");
             String boton = String.format(plantillaBoton, "Ver incidencias", baseUrl + "incidencias");
-            String texto = String.format(plantillaCorreo, "Hola, se ha removido una incidencia ambiental de tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada originalmente al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que dejará de ser visible para los responsables del aspecto original.", boton);
+            String texto = String.format(plantillaCorreo, "Hola, se ha removido una incidencia ambiental de tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada anteriormente al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que dejará de ser visible para los responsables del aspecto original.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
 
@@ -109,16 +109,17 @@ public class CorreosService {
             helper.setTo(correosResponsablesNuevos.toArray(new String[correosResponsablesNuevos.size()]));
             helper.setCc(correoRecursosMateriales);
             helper.setSubject("Reasignación de incidencia ambiental");
-            boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "hola?id=" + incidencia.getCodigo());
-            texto = String.format(plantillaCorreo, "Hola, se ha reasignado una incidencia ambiental a tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada originalmente al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que deberá ser atendida por los responsables de este aspecto. Puedes consultar más detalles en la aplicación web.", boton);
+            boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "/incidencias/" + incidencia.getCodigo());
+            texto = String.format(plantillaCorreo, "Hola, se ha reasignado una incidencia ambiental a tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada anteriormente al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que deberá ser atendida por los responsables de este aspecto. Puedes consultar más detalles en la aplicación web.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
         } catch (Exception e) {
-            logger.error("Error en método enviarCorreoRegistro: " + e.getMessage());
+            logger.error("Error en método enviarCorreoPorReasignacion: " + e.getMessage());
         }
     }
 
     // 5.3 Enviar correo de verificación de cuenta
+    @Transactional(readOnly = true)
     public void enviarCorreoPorRegistro(Usuario usuario, NoVerificado noVerificado) {
         try {
             MimeMessage message = emailSender.createMimeMessage();
@@ -126,16 +127,17 @@ public class CorreosService {
             helper.setFrom("siriaci.utez@gmail.com", "SIRIACI UTEZ");
             helper.setTo(usuario.getCorreo());
             helper.setSubject("Completa tu registro");
-            String boton = String.format(plantillaBoton, "Verificar cuenta", baseUrl + "hola?id=" + FriendlyId.toFriendlyId(noVerificado.getCodigo()));
+            String boton = String.format(plantillaBoton, "Verificar cuenta", baseUrl + "/verificar/" + usuario.getCorreo().replace("@", "%40") + "/" + FriendlyId.toFriendlyId(noVerificado.getCodigo()));
             String texto = String.format(plantillaCorreo, "Hola, " + usuario.getNombre() + ":", "Bienvenid@ a SIRIACI, se registró esta dirección de correo en nuestro sistema a nombre de <b>" + usuario.getNombre() + " " + usuario.getApellido1() + (usuario.getApellido2() != null ? (" " + usuario.getApellido2()) : "") + "</b>. Utiliza el botón de abajo para confirmar la dirección y activar la cuenta.<br><br>Si no reconoces esta actividad, ignora este correo.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
         } catch (Exception e) {
-            logger.error("Error en método enviarCorreoRegistro: " + e.getMessage());
+            logger.error("Error en método enviarCorreoPorRegistro: " + e.getMessage());
         }
     }
 
     // 5.3 Enviar correo de verificación de cuenta
+    @Transactional(readOnly = true)
     public void enviarCorreoPorAutorregistro(Usuario usuario, NoVerificado noVerificado) {
         try {
             MimeMessage message = emailSender.createMimeMessage();
@@ -148,11 +150,12 @@ public class CorreosService {
             helper.setText(texto, true);
             emailSender.send(message);
         } catch (Exception e) {
-            logger.error("Error en método enviarCorreoRegistro: " + e.getMessage());
+            logger.error("Error en método enviarCorreoPorAutorregistro: " + e.getMessage());
         }
     }
 
     // 5.4Enviar correo de restablecimiento de contraseña
+    @Transactional(readOnly = true)
     public void enviarCorreoPorRestablecimiento(Usuario usuario, SolicitudRestablecimiento solicitudRestablecimiento) {
         try {
             MimeMessage message = emailSender.createMimeMessage();

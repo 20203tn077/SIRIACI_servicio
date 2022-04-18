@@ -42,7 +42,6 @@ public class SolicitudRestablecimiento {
         this.codigo = solicitudRestablecimiento.codigo;
         this.tiempo_solicitud = solicitudRestablecimiento.tiempo_solicitud;
         this.tiempo_canjeado = solicitudRestablecimiento.tiempo_canjeado;
-        this.usuario = solicitudRestablecimiento.usuario;
     }
 
     public Long getId() {

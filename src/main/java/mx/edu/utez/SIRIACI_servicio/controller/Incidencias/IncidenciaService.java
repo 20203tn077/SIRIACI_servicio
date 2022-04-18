@@ -1,9 +1,9 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Incidencias;
 
 import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.CorreosService;
+import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.NotificacionesService;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.Aspecto;
 import mx.edu.utez.SIRIACI_servicio.model.aspecto.AspectoRepository;
-import mx.edu.utez.SIRIACI_servicio.model.estado.Estado;
 import mx.edu.utez.SIRIACI_servicio.model.estado.EstadoRepository;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
 import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidenciaRepository;
@@ -42,7 +42,8 @@ public class IncidenciaService {
     ImagenIncidenciaRepository imagenIncidenciaRepository;
     @Autowired
     CorreosService correosService;
-
+    @Autowired
+    NotificacionesService notificacionesService;
 
     // 2.1 Registrar nuevo reporte de incidencia
     @Transactional(rollbackFor = {SQLException.class})
@@ -85,7 +86,10 @@ public class IncidenciaService {
 
         Incidencia finalIncidencia = incidencia;
         new Thread(() -> {
-            correosService.enviarCorreoPorNuevaIndicencia(finalIncidencia);
+            correosService.enviarCorreoPorNuevaIncidencia(finalIncidencia);
+        }).start();
+        new Thread(() -> {
+            notificacionesService.enviarNotificacionPorNuevaIncidencia(finalIncidencia);
         }).start();
 
         return new ResponseEntity<>(new Mensaje(false, "Incidencia registrada", null, incidencia), HttpStatus.OK);
@@ -190,6 +194,9 @@ public class IncidenciaService {
                 Byte idAspecto = finalIncidenciaActual.getAspecto().getId();
                 new Thread(() -> {
                     correosService.enviarCorreoPorReasignacion(finalIncidenciaActual, idAspecto, aspecto.get().getId());
+                }).start();
+                new Thread(() -> {
+                    notificacionesService.enviarNotificacionPorReasignacion(finalIncidenciaActual, idAspecto, aspecto.get().getId());
                 }).start();
                 incidencia.setAspecto(aspecto.get());
             }

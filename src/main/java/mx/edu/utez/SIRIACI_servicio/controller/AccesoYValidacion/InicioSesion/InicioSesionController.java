@@ -22,7 +22,7 @@ public class InicioSesionController {
     @PostMapping("/")
     public ResponseEntity<Mensaje> iniciarSesion(@Valid @RequestBody InicioSesionDTO inicioSesionDTO) {
         try {
-            return service.iniciarSesion(inicioSesionDTO.getCorreo(), inicioSesionDTO.getContrasena());
+            return service.iniciarSesion(inicioSesionDTO.getCorreo(), inicioSesionDTO.getContrasena(), inicioSesionDTO.getDispositivoMovil());
         } catch (Exception e) {
             logger.error("Error en método  iniciarSesion: " + e.getMessage());
             return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
