@@ -33,11 +33,13 @@ public class NotificacionesController {
     NotificacionesService service;
 
     @DeleteMapping("/")
-    public void desuscribirse(@RequestBody NotificacionesDTO notificacionesDTO) {
+    public ResponseEntity<Mensaje> desuscribirse(@RequestBody NotificacionesDTO notificacionesDTO) {
         try {
             service.desuscribirse(notificacionesDTO.getToken());
+            return new ResponseEntity<>(new Mensaje(false, null, null, null), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error en método desuscribirse: " + e.getMessage());
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.OK);
         }
     }
 }

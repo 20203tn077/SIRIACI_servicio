@@ -51,13 +51,9 @@ public class NotificacionesService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public void desuscribirse(String token) {
-        try {
-            Optional<DispositivoMovil> resultado = dispositivoMovilRepository.findByToken(token);
-            if (resultado.isPresent()) dispositivoMovilRepository.delete(resultado.get());
-            else logger.error("Suscribirse: Token inexistente");
-        } catch (Exception e) {
-            logger.error("Error en método suscribirse: " + e.getMessage());
-        }
+        Optional<DispositivoMovil> resultado = dispositivoMovilRepository.findByToken(token);
+        if (resultado.isPresent()) dispositivoMovilRepository.delete(resultado.get());
+        else logger.error("Suscribirse: Token inexistente");
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +65,7 @@ public class NotificacionesService {
             for (Responsable responsable : responsableRepository.findAllByAspecto_IdAndUsuario_ActivoIsTrue(incidencia.getAspecto().getId())) {
                 for (DispositivoMovil dispositivoMovil : responsable.getUsuario().getDispositivosMoviles()) {
                     if (LocalDateTime.now().until(dispositivoMovil.getTiempoSuscripcion().plus(duracionSesion, ChronoUnit.SECONDS), ChronoUnit.SECONDS) < 0)
-                    desuscribirse(dispositivoMovil.getToken());
+                        desuscribirse(dispositivoMovil.getToken());
                     else tokensDispositivosResponsables.add(dispositivoMovil.getToken());
                 }
             }
@@ -78,7 +74,8 @@ public class NotificacionesService {
 
             ExpoPushMessage expoPushMessage = new ExpoPushMessage();
             for (String token : tokensDispositivosResponsables) {
-                if (!PushClient.isExponentPushToken(token)) logger.error("El token: " + token + " no es un token válido.");
+                if (!PushClient.isExponentPushToken(token))
+                    logger.error("El token: " + token + " no es un token válido.");
                 else expoPushMessage.getTo().add(token);
             }
             expoPushMessage.setTitle("Nueva incidencia ambiental");
@@ -122,7 +119,8 @@ public class NotificacionesService {
 
             ExpoPushMessage expoPushMessage = new ExpoPushMessage();
             for (String token : tokensDispositivosResponsablesAnteriores) {
-                if (!PushClient.isExponentPushToken(token)) logger.error("El token: " + token + " no es un token válido.");
+                if (!PushClient.isExponentPushToken(token))
+                    logger.error("El token: " + token + " no es un token válido.");
                 else expoPushMessage.getTo().add(token);
             }
             expoPushMessage.setTitle("Incidencia ambiental reasignada a tu aspecto");
@@ -134,7 +132,8 @@ public class NotificacionesService {
 
             expoPushMessage = new ExpoPushMessage();
             for (String token : tokensDispositivosResponsablesNuevos) {
-                if (!PushClient.isExponentPushToken(token)) logger.error("El token: " + token + " no es un token válido.");
+                if (!PushClient.isExponentPushToken(token))
+                    logger.error("El token: " + token + " no es un token válido.");
                 else expoPushMessage.getTo().add(token);
             }
             expoPushMessage.setTitle("Incidencia ambiental removida de tu aspecto");
