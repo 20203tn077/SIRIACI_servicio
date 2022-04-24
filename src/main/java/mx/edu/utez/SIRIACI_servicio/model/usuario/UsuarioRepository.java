@@ -19,5 +19,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Page<Usuario> findAllByNoVerificadoIsNull(Pageable pageable);
     @Query(value = "SELECT U FROM Usuario U LEFT OUTER JOIN NoVerificado N ON U=N.usuario WHERE (N.id IS NULL) AND ((CONCAT(U.nombre, ' ', U.apellido1, ' ', U.apellido2) LIKE %:filtro%) OR (U.correo LIKE %:filtro%))")
     Page<Usuario> findByFiltro(@Param("filtro") String filtro, Pageable pageable);
-    void deleteAllByCorreoAndIdIsNot(String correo, long id);
+    void deleteAllByCorreoAndNoVerificadoIsNotNullAndIdIsNot(String correo, long id);
 }

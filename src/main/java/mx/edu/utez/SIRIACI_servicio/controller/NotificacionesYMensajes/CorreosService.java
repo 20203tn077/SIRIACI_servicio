@@ -63,7 +63,7 @@ public class CorreosService {
             helper.setTo(correosResponsables.toArray(new String[correosResponsables.size()]));
             helper.setCc(correoRecursosMateriales);
             helper.setSubject("¡Nueva incidencia ambiental!");
-            String boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "/incidencias/" + FriendlyId.toFriendlyId(incidencia.getCodigo()));
+            String boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "/incidencias?codigo=" + FriendlyId.toFriendlyId(incidencia.getCodigo()));
             String texto = String.format(plantillaCorreo, "Hola, se ha reportado una nueva incidencia ambiental en tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada al aspecto ambiental <b>" + incidencia.getAspecto().getNombre() + "</b>. Puedes consultar más detalles en la aplicación web.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
@@ -97,8 +97,8 @@ public class CorreosService {
             helper.setTo(correosResponsablesAnteriores.toArray(new String[correosResponsablesAnteriores.size()]));
             helper.setCc(correoRecursosMateriales);
             helper.setSubject("Reasignación de incidencia ambiental");
-            String boton = String.format(plantillaBoton, "Ver incidencias", baseUrl + "incidencias");
-            String texto = String.format(plantillaCorreo, "Hola, se ha removido una incidencia ambiental de tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada anteriormente al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que dejará de ser visible para los responsables del aspecto original.", boton);
+            String boton = String.format(plantillaBoton, "Ver incidencias", baseUrl + "/incidencias");
+            String texto = String.format(plantillaCorreo, "Hola, se ha removido una incidencia ambiental de tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que dejará de ser visible para los responsables del aspecto anterior.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
 
@@ -109,8 +109,8 @@ public class CorreosService {
             helper.setTo(correosResponsablesNuevos.toArray(new String[correosResponsablesNuevos.size()]));
             helper.setCc(correoRecursosMateriales);
             helper.setSubject("Reasignación de incidencia ambiental");
-            boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "/incidencias/" + incidencia.getCodigo());
-            texto = String.format(plantillaCorreo, "Hola, se ha reasignado una incidencia ambiental a tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada anteriormente al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que deberá ser atendida por los responsables de este aspecto. Puedes consultar más detalles en la aplicación web.", boton);
+            boton = String.format(plantillaBoton, "Ir a la incidencia", baseUrl + "/incidencias?codigo=" + incidencia.getCodigo());
+            texto = String.format(plantillaCorreo, "Hola, se ha reasignado una incidencia ambiental a tu aspecto:", "La incidencia <b>" + incidencia.getDescripcion() + "</b> fue reportada por <b>" + incidencia.getUsuario().getNombre() + " " + incidencia.getUsuario().getApellido1() + (incidencia.getUsuario().getApellido2() != null ? (" " + incidencia.getUsuario().getApellido2()) : "") + "</b> el " + Formateador.getFecha(incidencia.getTiempoIncidencia()) + " y asignada al aspecto ambiental <b>" + aspectoAnterior.getNombre() + "</b>, el " + Formateador.getFecha(LocalDateTime.now()) + " fue modificada y reasignada a <b>" + aspectoNuevo.getNombre() + "</b>, por lo que deberá ser atendida por los responsables de este aspecto. Puedes consultar más detalles en la aplicación web.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class CorreosService {
             helper.setFrom("siriaci.utez@gmail.com", "SIRIACI UTEZ");
             helper.setTo(usuario.getCorreo());
             helper.setSubject("Completa tu registro");
-            String boton = String.format(plantillaBoton, "Verificar cuenta", baseUrl + "/verificar/" + usuario.getCorreo().replace("@", "%40") + "/" + FriendlyId.toFriendlyId(noVerificado.getCodigo()));
+            String boton = String.format(plantillaBoton, "Verificar cuenta", baseUrl + "/verificacion?correo=" + usuario.getCorreo().replace("@", "%40") + "&codigo=" + FriendlyId.toFriendlyId(noVerificado.getCodigo()));
             String texto = String.format(plantillaCorreo, "Hola, " + usuario.getNombre() + ":", "Bienvenid@ a SIRIACI, se registró esta dirección de correo en nuestro sistema a nombre de <b>" + usuario.getNombre() + " " + usuario.getApellido1() + (usuario.getApellido2() != null ? (" " + usuario.getApellido2()) : "") + "</b>. Utiliza el botón de abajo para confirmar la dirección y activar la cuenta.<br><br>Si no reconoces esta actividad, ignora este correo.", boton);
             helper.setText(texto, true);
             emailSender.send(message);
@@ -145,7 +145,7 @@ public class CorreosService {
             helper.setFrom("siriaci.utez@gmail.com", "SIRIACI UTEZ");
             helper.setTo(usuario.getCorreo());
             helper.setSubject("Completa tu registro");
-            String boton = String.format(plantillaBoton, "Verificar cuenta", baseUrl + "hola?id=" + FriendlyId.toFriendlyId(noVerificado.getCodigo()));
+            String boton = String.format(plantillaBoton, "Verificar cuenta", baseUrl + "/verificacion?correo=" + usuario.getCorreo().replace("@", "%40") + "&codigo=" + FriendlyId.toFriendlyId(noVerificado.getCodigo()));
             String texto = String.format(plantillaCorreo, "Hola, " + usuario.getNombre() + ":", "Bienvenid@ a SIRIACI, registraste esta dirección de correo en nuestro sistema a nombre de <b>" + usuario.getNombre() + " " + usuario.getApellido1() + (usuario.getApellido2() != null ? (" " + usuario.getApellido2()) : "") + "</b>. Utiliza el botón de abajo para confirmar la dirección y activar la cuenta.<br><br>Si no has sido tú, ignora este correo.", boton);
             helper.setText(texto, true);
             emailSender.send(message);

@@ -47,7 +47,7 @@ public class IncidenciaControllerResponsable {
     }
 
     @GetMapping("/codigo/{id}")
-    public ResponseEntity<Mensaje> obtenerIncidencia(@PathVariable UUID codigo) {
+    public ResponseEntity<Mensaje> obtenerIncidenciaByCodigo(@PathVariable UUID codigo) {
         DetalleUsuario usuario = null;
 
         try {

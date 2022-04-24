@@ -37,17 +37,17 @@ public class VerificacionService {
     @Transactional
     public ResponseEntity<Mensaje> verificarUsuario(String correo, UUID codigo) {
         if (codigo == null)
-            return new ResponseEntity<>(new Mensaje(true, "Código de verificación ausente", null, null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Mensaje(true, "Código de verificación ausente.", null, null), HttpStatus.BAD_REQUEST);
 
         Optional<NoVerificado> resultado = noVerificadoRepository.findByUsuario_CorreoAndCodigo(correo, codigo);
-        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Código de verificación inválido", null, null), HttpStatus.BAD_REQUEST);
+        if (resultado.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Código de verificación inválido.", null, null), HttpStatus.BAD_REQUEST);
         Usuario usuario = resultado.get().getUsuario();
         
         administradorRepository.deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(usuario.getCorreo(), codigo);
         responsableRepository.deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(usuario.getCorreo(), codigo);
         estudianteRepository.deleteAllByUsuario_CorreoAndUsuario_NoVerificado_CodigoIsNot(usuario.getCorreo(), codigo);
         noVerificadoRepository.deleteAllByUsuario_Correo(usuario.getCorreo());
-        usuarioRepository.deleteAllByCorreoAndIdIsNot(usuario.getCorreo(), usuario.getId());
+        usuarioRepository.deleteAllByCorreoAndNoVerificadoIsNotNullAndIdIsNot(usuario.getCorreo(), usuario.getId());
 
         resultado.get().getUsuario().setActivo(true);
         return new ResponseEntity<>(new Mensaje(false, "Usuario verificado", null, null), HttpStatus.OK);

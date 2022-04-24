@@ -26,7 +26,7 @@ public class DetalleUsuario implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USUARIO"));
         if (usuario.getAdministrador() != null) authorities.add(new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"));
-        if (usuario.getResponsable() != null) authorities.add(new SimpleGrantedAuthority("ROLE_ RESPONSABLE"));
+        if (usuario.getResponsable() != null) authorities.add(new SimpleGrantedAuthority("ROLE_RESPONSABLE"));
         return new DetalleUsuario(usuario.getId(), usuario.getCorreo(), usuario.getContrasena(), authorities);
     }
 

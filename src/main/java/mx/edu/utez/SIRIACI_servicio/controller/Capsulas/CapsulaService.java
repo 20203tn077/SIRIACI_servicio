@@ -51,13 +51,13 @@ public class CapsulaService {
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsula(long id) {
         Optional<Capsula> capsula = capsulaRepository.findByIdAndActivoIsTrue(id);
-        if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula.get()), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulaAdministrador(long id) {
         Optional<Capsula> capsula = capsulaRepository.findById(id);
-        if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula.get()), HttpStatus.OK);
     }
 
@@ -74,10 +74,10 @@ public class CapsulaService {
         if (error.isPresent()) errores.put("contenido", error.get());
 
         Optional<Usuario> usuario = usuarioRepository.findByIdAndActivoIsTrue(capsula.getUsuario().getId());
-        if (usuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (usuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else capsula.setUsuario(usuario.get());
 
-        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar la cápsula", errores, null), HttpStatus.BAD_REQUEST);
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar la cápsula.", errores, null), HttpStatus.BAD_REQUEST);
 
         capsula = capsulaRepository.save(capsula);
 
@@ -86,7 +86,7 @@ public class CapsulaService {
             imagenCapsulaRepository.save(imagen);
         }
 
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Cápsula registrada", null, capsula), HttpStatus.OK);
     }
 
     // 3.4 Consultar cápsulas informativas realizadas
@@ -112,15 +112,15 @@ public class CapsulaService {
     public ResponseEntity<Mensaje> modificarCapsula(Capsula capsula, List<ImagenCapsula> imagenesRegistrar, List<ImagenCapsula> imagenesEliminar) {
         Capsula capsulaActual = null;
         Optional<Capsula> resultadoCapsula = capsulaRepository.findByIdAndActivoIsTrue(capsula.getId());
-        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else capsulaActual = resultadoCapsula.get();
 
         Usuario usuario = null;
         Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(capsula.getUsuario().getId());
-        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else usuario = resultadoUsuario.get();
 
-        if (capsulaActual.getUsuario().getId() != capsula.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
+        if (capsulaActual.getUsuario().getId() != capsula.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción.", null, null), HttpStatus.UNAUTHORIZED);
 
         Map<String, String> errores = new HashMap<>();
         Optional<String> error;
@@ -135,7 +135,7 @@ public class CapsulaService {
             if (error.isPresent()) errores.put("contenido", error.get());
         }
 
-        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar la cápsula", errores, null), HttpStatus.BAD_REQUEST);
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo modificar la cápsula.", errores, null), HttpStatus.BAD_REQUEST);
 
         capsulaActual.actualizar(capsula);
 
@@ -148,13 +148,13 @@ public class CapsulaService {
             imagenCapsulaRepository.deleteById(imagen.getId());
         }
 
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Cápsula actualizada", null, capsula), HttpStatus.OK);
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> modificarCapsulaAdministrador(Capsula capsula, List<ImagenCapsula> imagenesRegistrar, List<ImagenCapsula> imagenesEliminar) {
         Capsula capsulaActual = null;
         Optional<Capsula> resultadoCapsula = capsulaRepository.findByIdAndActivoIsTrue(capsula.getId());
-        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else capsulaActual = resultadoCapsula.get();
 
         Map<String, String> errores = new HashMap<>();
@@ -170,7 +170,7 @@ public class CapsulaService {
             if (error.isPresent()) errores.put("contenido", error.get());
         }
 
-        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo registrar la cápsula", errores, null), HttpStatus.BAD_REQUEST);
+        if (errores.size() > 0) return new ResponseEntity<>(new Mensaje(true, "No se pudo modificar la cápsula.", errores, null), HttpStatus.BAD_REQUEST);
 
         capsulaActual.actualizar(capsula);
 
@@ -183,7 +183,7 @@ public class CapsulaService {
             imagenCapsulaRepository.deleteById(imagen.getId());
         }
 
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Cápsula modificada", null, capsula), HttpStatus.OK);
     }
 
     // 3.6 Eliminar cápsula informativa
@@ -191,27 +191,27 @@ public class CapsulaService {
     public ResponseEntity<Mensaje> eliminarCapsula(long id, long idUsuario) {
         Capsula capsula = null;
         Optional<Capsula> resultadoCapsula = capsulaRepository.findByIdAndActivoIsTrue(id);
-        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else capsula = resultadoCapsula.get();
 
         Usuario usuario = null;
         Optional<Usuario> resultadoUsuario = usuarioRepository.findByIdAndActivoIsTrue(idUsuario);
-        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (resultadoUsuario.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Usuario inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else usuario = resultadoUsuario.get();
 
-        if (usuario.getId() != capsula.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción", null, null), HttpStatus.UNAUTHORIZED);
+        if (usuario.getId() != capsula.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción.", null, null), HttpStatus.UNAUTHORIZED);
 
         capsula.setActivo(false);
-        return new ResponseEntity<>(new Mensaje(false, "Incidencia eliminada", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Incidencia desactivada", null, capsula), HttpStatus.OK);
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> eliminarCapsulaAdministrador(long id) {
         Capsula capsula = null;
         Optional<Capsula> resultadoCapsula = capsulaRepository.findByIdAndActivoIsTrue(id);
-        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente", null, null), HttpStatus.BAD_REQUEST);
+        if (resultadoCapsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else capsula = resultadoCapsula.get();
 
         capsula.setActivo(false);
-        return new ResponseEntity<>(new Mensaje(false, "Incidencia eliminada", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Incidencia desactivada", null, capsula), HttpStatus.OK);
     }
 }

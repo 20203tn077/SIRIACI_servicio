@@ -123,8 +123,8 @@ public class NotificacionesService {
                     logger.error("El token: " + token + " no es un token válido.");
                 else expoPushMessage.getTo().add(token);
             }
-            expoPushMessage.setTitle("Incidencia ambiental reasignada a tu aspecto");
-            expoPushMessage.setBody("\"" + incidencia.getDescripcion() + "\"\nMás detalles en la aplicación web.");
+            expoPushMessage.setTitle("Incidencia ambiental removida de tu aspecto");
+            expoPushMessage.setBody("\"" + incidencia.getDescripcion() + "\"\nConsulta las incidencias de tu aspecto en la aplicación web.");
             mensajes.add(expoPushMessage);
 
             new PushClient().sendPushNotificationsAsync(mensajes);
@@ -136,8 +136,8 @@ public class NotificacionesService {
                     logger.error("El token: " + token + " no es un token válido.");
                 else expoPushMessage.getTo().add(token);
             }
-            expoPushMessage.setTitle("Incidencia ambiental removida de tu aspecto");
-            expoPushMessage.setBody("\"" + incidencia.getDescripcion() + "\"\nConsulta las incidencias de tu aspecto en la aplicación web.");
+            expoPushMessage.setTitle("Incidencia ambiental reasignada a tu aspecto");
+            expoPushMessage.setBody("\"" + incidencia.getDescripcion() + "\"\nMás detalles en la aplicación web.");
             mensajes.add(expoPushMessage);
 
             new PushClient().sendPushNotificationsAsync(mensajes);

@@ -37,8 +37,8 @@ public class IncidenciaControllerAdministrador {
         }
     }
 
-    @GetMapping("/codigo/{id}")
-    public ResponseEntity<Mensaje> obtenerIncidenciaByCodigo(@PathVariable UUID codigo) {
+    @GetMapping("/codigo/")
+    public ResponseEntity<Mensaje> obtenerIncidenciaByCodigo(@RequestParam UUID codigo) {
         try {
             return service.obtenerIncidenciaAdministradorByCodigo(codigo);
         } catch (Exception e) {

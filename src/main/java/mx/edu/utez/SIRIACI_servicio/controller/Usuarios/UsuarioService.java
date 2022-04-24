@@ -86,12 +86,12 @@ public class UsuarioService {
         if (error.isPresent()) errores.put("contrasena", error.get());
         else usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
 
-        if (isAdministrador == null) errores.put("rolAdministrador", "Debes indicar si el usuario es un administrador o no");
-        else if (isAdministrador && !isComunidadUtez) errores.put("rolAdministrador", "El usuario debe ser parte de la comunidad UTEZ para ser administrador");
+        if (isAdministrador == null) errores.put("administrador", "Debes indicar si el usuario es un administrador o no");
+        else if (isAdministrador && !isComunidadUtez) errores.put("administrador", "El usuario debe ser parte de la comunidad UTEZ para ser administrador");
 
-        if (isResponsable == null) errores.put("rolAdministrador", "Debes indicar si el usuario es un responsable de aspecto o no");
+        if (isResponsable == null) errores.put("responsable", "Debes indicar si el usuario es un responsable de aspecto o no");
         else {
-            if (isResponsable && !isComunidadUtez) errores.put("rolResponsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
+            if (isResponsable && !isComunidadUtez) errores.put("responsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
             if (isResponsable) {
                 if (responsable.getAspecto().getId() == null) errores.put("aspecto", "Debes seleccionar un aspecto");
                 else {
@@ -217,14 +217,14 @@ public class UsuarioService {
             else usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         }
 
-        if (isAdministrador == null) {if (isAdministradorActual && !isComunidadUtez) errores.put("rolAdministrador", "El usuario debe ser parte de la comunidad UTEZ para ser administrador");}
+        if (isAdministrador == null) {if (isAdministradorActual && !isComunidadUtez) errores.put("administrador", "El usuario debe ser parte de la comunidad UTEZ para ser administrador");}
         else if (!isAdministrador) {
-            if (!(administradorRepository.countByUsuario_ActivoIsTrue() > 1)) errores.put("rolAdministrador", "Debe haber al menos un administrador activo en el sistema");
+            if (!(administradorRepository.countByUsuario_ActivoIsTrue() > 1)) errores.put("administrador", "Debe haber al menos un administrador activo en el sistema");
         }
-        else if (!isComunidadUtez) errores.put("rolAdministrador", "El usuario debe ser parte de la comunidad UTEZ para ser administrador");
+        else if (!isComunidadUtez) errores.put("administrador", "El usuario debe ser parte de la comunidad UTEZ para ser administrador");
 
         if (isResponsable == null) {
-            if (isResponsableActual && !isComunidadUtez) errores.put("rolResponsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
+            if (isResponsableActual && !isComunidadUtez) errores.put("responsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
             if (isResponsableActual) {
                 if (responsable.getAspecto().getId() != null) {
                     Optional<Aspecto> aspecto = aspectoRepository.findById(responsable.getAspecto().getId());
@@ -233,7 +233,7 @@ public class UsuarioService {
                 }
             }
         } else {
-            if (isResponsable && !isComunidadUtez) errores.put("rolResponsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
+            if (isResponsable && !isComunidadUtez) errores.put("responsable", "El usuario debe ser parte de la comunidad UTEZ para ser responsable de aspecto");
             if (isResponsable) {
                 if (responsable.getAspecto().getId() == null) errores.put("aspecto", "Debes seleccionar un aspecto");
                 else {
@@ -456,11 +456,11 @@ public class UsuarioService {
             else usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         }
 
-        if (isAdministradorActual && !isComunidadUtez) errores.put("rolAdministrador", "Debes ser parte de la comunidad UTEZ para ser administrador");
+        if (isAdministradorActual && !isComunidadUtez) errores.put("administrador", "Debes ser parte de la comunidad UTEZ para ser administrador");
 
 
 
-        if (isResponsableActual && !isComunidadUtez) errores.put("rolResponsable", "Debes ser parte de la comunidad UTEZ para ser responsable de aspecto");
+        if (isResponsableActual && !isComunidadUtez) errores.put("responsable", "Debes ser parte de la comunidad UTEZ para ser responsable de aspecto");
 
 
         if (isEstudiante == isEstudianteActual) {
