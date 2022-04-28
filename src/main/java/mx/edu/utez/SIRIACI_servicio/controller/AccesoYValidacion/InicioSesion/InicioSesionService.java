@@ -3,6 +3,7 @@ package mx.edu.utez.SIRIACI_servicio.controller.AccesoYValidacion.InicioSesion;
 import mx.edu.utez.SIRIACI_servicio.controller.NotificacionesYMensajes.NotificacionesService;
 import mx.edu.utez.SIRIACI_servicio.model.dispositivoMovil.DispositivoMovil;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
+import mx.edu.utez.SIRIACI_servicio.security.DetalleUsuario;
 import mx.edu.utez.SIRIACI_servicio.security.IntentoInicioSesionService;
 import mx.edu.utez.SIRIACI_servicio.security.jwt.JwtProvider;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
@@ -61,11 +62,12 @@ public class InicioSesionService {
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = provider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        DetalleUsuario userDetails = (DetalleUsuario) authentication.getPrincipal();
         Map<String, Object> datos = new HashMap<>();
         datos.put("token", token);
         datos.put("correo", userDetails.getUsername());
         datos.put("roles", userDetails.getAuthorities());
+        datos.put("aspecto", userDetails.getAspecto());
         return new ResponseEntity<>(new Mensaje(false, "OK", null, datos), HttpStatus.OK);
     }
 }

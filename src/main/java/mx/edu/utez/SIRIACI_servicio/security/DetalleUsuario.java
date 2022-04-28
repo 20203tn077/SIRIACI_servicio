@@ -13,6 +13,7 @@ public class DetalleUsuario implements UserDetails {
     private long id;
     private String correo;
     private String contrasena;
+    private String aspecto;
     private Collection<? extends GrantedAuthority> authorities;
 
     public DetalleUsuario(long id, String correo, String contrasena, Collection<? extends GrantedAuthority> authorities) {
@@ -21,13 +22,20 @@ public class DetalleUsuario implements UserDetails {
         this.contrasena = contrasena;
         this.authorities = authorities;
     }
+    public DetalleUsuario(long id, String correo, String contrasena, String aspecto, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.aspecto = aspecto;
+        this.authorities = authorities;
+    }
 
     public static DetalleUsuario build(Usuario usuario){
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USUARIO"));
         if (usuario.getAdministrador() != null) authorities.add(new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"));
         if (usuario.getResponsable() != null) authorities.add(new SimpleGrantedAuthority("ROLE_RESPONSABLE"));
-        return new DetalleUsuario(usuario.getId(), usuario.getCorreo(), usuario.getContrasena(), authorities);
+        return usuario.getResponsable() != null ? new DetalleUsuario(usuario.getId(), usuario.getCorreo(), usuario.getContrasena(), usuario.getResponsable().getAspecto().getNombre(), authorities) :new DetalleUsuario(usuario.getId(), usuario.getCorreo(), usuario.getContrasena(), authorities);
     }
 
     @Override
@@ -67,5 +75,9 @@ public class DetalleUsuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getAspecto() {
+        return aspecto;
     }
 }

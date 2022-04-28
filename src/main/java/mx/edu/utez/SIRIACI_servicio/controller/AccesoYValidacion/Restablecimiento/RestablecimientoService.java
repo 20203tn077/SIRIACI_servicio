@@ -82,12 +82,12 @@ public class RestablecimientoService {
         }
         System.out.println(solicitudRestablecimiento.getCodigo());
         System.out.println(solicitudRestablecimientoActual.getCodigo());
-        if (!solicitudRestablecimiento.getCodigo().equals(solicitudRestablecimientoActual.getCodigo())) return new ResponseEntity<>(new Mensaje(true, "Código incorrecto.", null, null), HttpStatus.BAD_REQUEST);
+        if (!solicitudRestablecimiento.getCodigo().equals(solicitudRestablecimientoActual.getCodigo())) return new ResponseEntity<>(new Mensaje(true, "Código inválido.", null, null), HttpStatus.BAD_REQUEST);
         if (solicitudRestablecimientoActual.getTiempo_canjeado() != null) return new ResponseEntity<>(new Mensaje(true, "El código ya fue canjeado.", null, null), HttpStatus.BAD_REQUEST);
 
         solicitudRestablecimientoActual.setTiempo_canjeado(LocalDateTime.now());
 
-        return new ResponseEntity<>(new Mensaje(true, "Código canjeado", null, null), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Código verificado", null, null), HttpStatus.OK);
     }
 
     // 4.7 Establecer nueva contraseña
@@ -121,7 +121,7 @@ public class RestablecimientoService {
             solicitudRestablecimientoRepository.delete(solicitudRestablecimientoActual);
         }
 
-        return !errores.isEmpty() ? new ResponseEntity<>(new Mensaje(false, "No se pudo restablecer la contraseña.", errores, null), HttpStatus.BAD_REQUEST)
-        : new ResponseEntity<>(new Mensaje(true, "Contraseña restablecida", null, null), HttpStatus.OK);
+        return !errores.isEmpty() ? new ResponseEntity<>(new Mensaje(true, "No se pudo restablecer la contraseña.", errores, null), HttpStatus.BAD_REQUEST)
+        : new ResponseEntity<>(new Mensaje(false, "Contraseña restablecida", null, null), HttpStatus.OK);
     }
 }

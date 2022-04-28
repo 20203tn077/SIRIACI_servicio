@@ -39,7 +39,7 @@ public class NotificacionesController {
             return new ResponseEntity<>(new Mensaje(false, null, null, null), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error en método desuscribirse: " + e.getMessage());
-            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.OK);
+            return new ResponseEntity<>(new Mensaje(true, "Error en el servidor.", null, null), HttpStatus.BAD_REQUEST);
         }
     }
 }

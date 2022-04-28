@@ -15,6 +15,6 @@ public interface CapsulaRepository extends JpaRepository<Capsula, Long> {
     Page<Capsula> findAllByActivoIsTrue(Pageable pageable);
     Page<Capsula> findAllByActivoIsTrueAndTituloContains(String filtro, Pageable pageable);
     Page<Capsula> findAllByTituloContains(String filtro, Pageable pageable);
-    Page<Capsula> findAllByActivoIsTrueAndUsuario_Id(long id, Pageable pageable);
-    Page<Capsula> findAllByActivoIsTrueAndUsuario_IdAndTituloContains(long id, String filtro, Pageable pageable);
+    Page<Capsula> findAllByUsuario_Id(long id, Pageable pageable);
+    Page<Capsula> findAllByUsuario_IdAndTituloContains(long id, String filtro, Pageable pageable);
 }

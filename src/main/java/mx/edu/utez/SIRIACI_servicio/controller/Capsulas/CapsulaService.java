@@ -1,20 +1,14 @@
 package mx.edu.utez.SIRIACI_servicio.controller.Capsulas;
 
-import mx.edu.utez.SIRIACI_servicio.controller.Usuarios.UsuarioController;
 import mx.edu.utez.SIRIACI_servicio.model.capsula.Capsula;
 import mx.edu.utez.SIRIACI_servicio.model.capsula.CapsulaRepository;
 import mx.edu.utez.SIRIACI_servicio.model.imagenCapsula.ImagenCapsula;
 import mx.edu.utez.SIRIACI_servicio.model.imagenCapsula.ImagenCapsulaRepository;
-import mx.edu.utez.SIRIACI_servicio.model.imagenIncidencia.ImagenIncidencia;
-import mx.edu.utez.SIRIACI_servicio.model.incidencia.Incidencia;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.Usuario;
 import mx.edu.utez.SIRIACI_servicio.model.usuario.UsuarioRepository;
 import mx.edu.utez.SIRIACI_servicio.util.Mensaje;
 import mx.edu.utez.SIRIACI_servicio.util.Validador;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +45,12 @@ public class CapsulaService {
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsula(long id) {
         Optional<Capsula> capsula = capsulaRepository.findByIdAndActivoIsTrue(id);
+        if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula.get()), HttpStatus.OK);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<Mensaje> obtenerCapsulaResponsable(long id) {
+        Optional<Capsula> capsula = capsulaRepository.findById(id);
         if (capsula.isEmpty()) return new ResponseEntity<>(new Mensaje(true, "Cápsula inexistente.", null, null), HttpStatus.BAD_REQUEST);
         else return new ResponseEntity<>(new Mensaje(false, "OK", null, capsula.get()), HttpStatus.OK);
     }
@@ -92,11 +92,11 @@ public class CapsulaService {
     // 3.4 Consultar cápsulas informativas realizadas
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(long id, Pageable pageable) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndUsuario_Id(id, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByUsuario_Id(id, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadas(long id, Pageable pageable, String filtro) {
-        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByActivoIsTrueAndUsuario_IdAndTituloContains(id, filtro, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "OK", null, capsulaRepository.findAllByUsuario_IdAndTituloContains(id, filtro, pageable).map(capsula -> new CapsulaSalidaDTO(capsula))), HttpStatus.OK);
     }
     @Transactional(readOnly = true)
     public ResponseEntity<Mensaje> obtenerCapsulasRealizadasAdministrador(Pageable pageable) {
@@ -202,7 +202,7 @@ public class CapsulaService {
         if (usuario.getId() != capsula.getUsuario().getId()) return new ResponseEntity<>(new Mensaje(true, "No tienes permiso para realizar esta acción.", null, null), HttpStatus.UNAUTHORIZED);
 
         capsula.setActivo(false);
-        return new ResponseEntity<>(new Mensaje(false, "Incidencia desactivada", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Cápsula desactivada", null, capsula), HttpStatus.OK);
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<Mensaje> eliminarCapsulaAdministrador(long id) {
@@ -212,6 +212,6 @@ public class CapsulaService {
         else capsula = resultadoCapsula.get();
 
         capsula.setActivo(false);
-        return new ResponseEntity<>(new Mensaje(false, "Incidencia desactivada", null, capsula), HttpStatus.OK);
+        return new ResponseEntity<>(new Mensaje(false, "Cápsula desactivada", null, capsula), HttpStatus.OK);
     }
 }
